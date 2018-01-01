@@ -1,0 +1,24 @@
+{
+  "name": "qtum-core-web",
+  "version": "0.0.1",
+  "description": "qtum core wallet for web",
+  "main": "index.js",
+  "repository": "https://github.com/RedgooseDev/qtum-core-web.git",
+  "author": "redgoose <scripter@me.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "./node_modules/.bin/nuxt",
+    "build": "./node_modules/.bin/nuxt build",
+    "build-check": "./node_modules/.bin/nuxt build --analyze",
+    "start": "./node_modules/.bin/nuxt start",
+    "generate": "./node_modules/.bin/nuxt generate"
+  },
+  "dependencies": {
+    "axios": "^0.17.1",
+    "nuxt": "^1.0.0-rc11"
+  },
+  "devDependencies": {
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.6"
+  }
+}
