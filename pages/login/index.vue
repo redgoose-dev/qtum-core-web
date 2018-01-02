@@ -1,13 +1,16 @@
 <template>
-	<h1>login page</h1>
+	<main>
+		<h1>login page</h1>
+	</main>
 </template>
 
 
 <script>
+import * as lib from '../../lib';
+
 export default {
-	layout: 'login',
 	head: {
-		title: 'login'
-	},
+		title: lib.util.makeTitle('login')
+	}
 }
 </script>
