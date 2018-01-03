@@ -1,12 +1,15 @@
 <template>
-	<main>
-		<nuxt/>
-	</main>
+<main>
+	<header>
+		.header
+	</header>
+	<nuxt/>
+</main>
 </template>
 
 
 <script>
 export default {
-	middleware: 'checkAuth',
+
 }
 </script>

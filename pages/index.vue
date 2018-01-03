@@ -1,22 +1,34 @@
 <template>
-	<Dashboard/>
+	<div class="container">
+		<h2>dashboard component</h2>
+		<p>{{ foo }}</p>
+		<nav>
+			<ul>
+				<li><nuxt-link to="/">intro</nuxt-link></li>
+				<li><nuxt-link to="/transactions">transactions</nuxt-link></li>
+				<li><nuxt-link to="/login">login</nuxt-link></li>
+			</ul>
+		</nav>
+	</div>
 </template>
 
 
 <script>
-import Dashboard from '~/components/Dashboard/index.vue';
+import axios from 'axios';
+import * as modules from '../modules';
+import * as lib from '../lib';
 
 export default {
-	components: {
-		Dashboard
+
+	async asyncData(context)
+	{
+		return { foo: 'bar' };
 	},
 
-	layout: 'basic',
+	//middleware: 'intro',
 
-	async asyncData({ params }) {
-		let aa = 1;
-		let bb = 2;
-		return { foo: 'bar', asd: aa + bb };
-	},
+	// mounted() {
+	// 	console.log('mounted dashboard component');
+	// },
 }
 </script>

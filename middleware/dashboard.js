@@ -1,6 +1,4 @@
-
-
 export default function(context)
 {
-	console.log('call middleware: dashbaord');
+	console.warn('call middleware: dashbaord');
 }

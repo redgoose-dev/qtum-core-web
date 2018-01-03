@@ -45,8 +45,8 @@ module.exports = {
 		// }
 	},
 
-	// serverMiddleware: [
-	// 	'~/api/index.js'
-	// ],
+	serverMiddleware: [
+		'~/api/index.js'
+	],
 
 };
