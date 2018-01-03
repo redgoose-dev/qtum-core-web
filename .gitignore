@@ -1,6 +1,7 @@
 .idea/
 node_modules/
 .nuxt/
+.data/
 dist/
 
 npm-debug.log

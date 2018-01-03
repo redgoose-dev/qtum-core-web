@@ -1,9 +1,5 @@
 module.exports = {
 
-	router: {
-		//middleware: 'foo'
-	},
-
 	head: {
 		title: 'Qtum core',
 		meta: [
@@ -33,6 +29,20 @@ module.exports = {
 
 	loading: {
 		color: 'lime',
+	},
+
+	router: {
+		// middleware: 'foo'
+		// extendRoutes (routes, resolve) {
+		// 	routes.unshift(...[
+		// 		{
+		// 			name: 'index',
+		// 			path: '/',
+		// 			component: '~/pages/dashboard/index.vue',
+		// 		}
+		// 	]);
+		// 	console.log(routes);
+		// }
 	},
 
 	// serverMiddleware: [

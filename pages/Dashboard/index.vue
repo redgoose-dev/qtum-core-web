@@ -1,16 +1,19 @@
 <template>
-	<div>
-		<h1>dashboard page</h1>
-
-	</div>
+	<Dashboard/>
 </template>
 
 
 <script>
-import * as lib from '../../lib';
+import Dashboard from '~/components/Dashboard';
+import * as lib from '~/lib';
 
 export default {
+	components: {
+		Dashboard
+	},
+
 	layout: 'basic',
+
 	head: {
 		title: lib.util.makeTitle('dashboard')
 	},
