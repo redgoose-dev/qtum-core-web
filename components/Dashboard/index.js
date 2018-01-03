@@ -11,13 +11,13 @@ export default {
 
 	asyncData: function(params)
 	{
-		console.log('call asyncData()');
+		console.log('call asyncData() in component');
 		return {}
 	},
 
 	data: function(params)
 	{
-		console.log('call data()');
+		console.log('call data() in component', params);
 		return {};
 	},
 
@@ -25,4 +25,6 @@ export default {
 	// {
 	// 	console.log('call fetch');
 	// }
+
+	//middleware:
 };
