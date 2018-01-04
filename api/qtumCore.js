@@ -7,11 +7,11 @@
 let address = null;
 
 
-export function getinfo()
+exports.getinfo = function()
 {
 	let command = `getinfo`;
 	let result = cli(command);
-}
+};
 
 function getAddress()
 {

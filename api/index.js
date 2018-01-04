@@ -1,22 +1,25 @@
 // https://nuxtjs.org/api/configuration-servermiddleware
 
-const app = require('express')();
+const express = require('express');
+const api = express();
+
 // TODO: export 오류 해결해야함.
-//const qtumCore = require('./qtumCore');
+const qtumCore = require('./qtumCore');
 
 
-module.exports = { path: '/api', handler: app };
+module.exports = { path: '/api', handler: api };
 
 
-app.get('', (req, res) => {
+api.get('', (req, res) => {
+	console.log(qtumCore);
 	res.json({
-		foo: 'intro',
+		foo: 'api intro',
 		path: req.path,
 	});
 });
 
 
-app.get('/getinfo', (req, res) => {
+api.get('/getinfo', (req, res) => {
 	res.json({
 		foo: 'getinfo',
 		path: req.path,
@@ -25,7 +28,7 @@ app.get('/getinfo', (req, res) => {
 });
 
 
-app.get('/getstakinginfo', (req, res) => {
+api.get('/getstakinginfo', (req, res) => {
 	res.json({
 		foo: 'getstakinginfo',
 		path: req.path,

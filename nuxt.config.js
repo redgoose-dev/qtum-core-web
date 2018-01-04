@@ -33,16 +33,15 @@ module.exports = {
 
 	router: {
 		// middleware: 'foo'
-		// extendRoutes (routes, resolve) {
-		// 	routes.unshift(...[
-		// 		{
-		// 			name: 'index',
-		// 			path: '/',
-		// 			component: '~/pages/dashboard/index.vue',
-		// 		}
-		// 	]);
-		// 	console.log(routes);
-		// }
+		extendRoutes (routes, resolve) {
+			routes.push(...[
+				{
+					name: 'dashboard',
+					path: '/dashboard',
+					component: '~/pages/index.vue',
+				}
+			]);
+		}
 	},
 
 	serverMiddleware: [
