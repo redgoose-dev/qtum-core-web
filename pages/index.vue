@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<h2>dashboard component</h2>
-		<p>{{ foo }}</p>
+		<p>version: {{ version }}</p>
 		<nav>
 			<ul>
 				<li><nuxt-link to="/">intro</nuxt-link></li>
@@ -15,33 +15,37 @@
 
 <script>
 import axios from 'axios';
-import * as modules from '../modules';
 import * as lib from '../lib';
 
 export default {
 
-	async asyncData(context)
+	async asyncData({ params, error, store })
 	{
-		// TODO: .env파일을 이용하여 api 주소 만들기
-		//console.log();
-		// try {
-		// 	let result = await axios.get(`http://localhost/api`);
-		// 	console.log(result.data);
-		// } catch(e) {
-		// 	console.error(e);
-		// }
-		return { foo: 'bar' };
+		let result = null;
+		try {
+			result = await axios.get(`${process.env.config.BASE_URL}/api`);
+			if (result.status !== 200 || result.data.status !== 'success') throw 'Server error';
+			result = result.data.data;
+
+			// update store
+			store.commit('updateBalance', result.balance);
+
+			return {
+				status: 'success',
+				version: result.version,
+			};
+		} catch(e) {
+			error({
+				statusCode: 404,
+				message: `API import failed.`
+			});
+		}
 	},
 
 	// async fetch({}) {},
 
 	//middleware: 'intro',
 
-	async mounted() {
-		// console.log('mounted dashboard component');
-		// console.log('qwe');
-
-		return { foo: 'bareeeeeeee' };
-	},
+	mounted() {},
 }
 </script>

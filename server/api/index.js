@@ -37,9 +37,8 @@ function dashboard(req, res)
 
 api.get('/api', (req, res) => {
 	qtumCore.action('getinfo', (err, result) => {
-		console.log(result);
 		res.json({
-			...result,
+			...(err || result),
 			path: req.path,
 		});
 	});

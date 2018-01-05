@@ -3,4 +3,4 @@ HOST=localhost
 PORT=3000
 DEVELOPMENT=true
 
-CORE_ADDRESS=/Volumes/Datas/redgoose/qtum/bin
+CORE_ADDRESS={ADDRESS}/qtum/bin

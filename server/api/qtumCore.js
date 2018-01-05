@@ -4,9 +4,11 @@
  */
 
 const fs = require('fs');
-const process = require('child_process');
+const childProcess = require('child_process');
+const env = require('../env');
 
 
+const config = env.get();
 let address = null;
 
 
@@ -29,24 +31,8 @@ exports.action = function(cmd, cb)
  */
 function getAddress()
 {
-	if (address)
-	{
-		return true;
-	}
-	else
-	{
-		try
-		{
-			let pref = require('../.data/pref.json');
-			address = pref.coreAddress;
-			return true;
-		}
-		catch(e)
-		{
-			console.error(e);
-			return false;
-		}
-	}
+	address = config.CORE_ADDRESS || null;
+	return address;
 }
 
 /**
@@ -103,7 +89,7 @@ function cli(file='qtum-cli', params='', callback)
 		return cmd;
 	}
 
-	process.exec(`${file} ${params}`, (error, stdout, stderr) => {
+	childProcess.exec(`${file} ${params}`, (error, stdout, stderr) => {
 		if (error)
 		{
 			callback({
