@@ -1,36 +1,68 @@
 // https://nuxtjs.org/api/configuration-servermiddleware
 
 const express = require('express');
+const async = require('async');
 const api = express();
 
-// TODO: export 오류 해결해야함.
 const qtumCore = require('./qtumCore');
 
 
-module.exports = { path: '/api', handler: api };
+function dashboard(req, res)
+{
+	const tasks = [
+		function (callback) {
+			qtumCore.action('getinfo', '', (err, result) => {
+				callback(err, result);
+			});
+		}
+	];
+	async.parallel(tasks, function(err, result) {
+		if (err)
+		{
+			return;
+		}
+
+		console.log(result);
+		res.json({
+			...result,
+			path: req.path,
+		});
+	});
+}
 
 
-api.get('', (req, res) => {
-	console.log(qtumCore);
+/**
+ * ROUTE AREA
+ */
+
+api.get('/api', (req, res) => {
+	qtumCore.action('getinfo', (err, result) => {
+		console.log(result);
+		res.json({
+			...result,
+			path: req.path,
+		});
+	});
+});
+
+
+api.get('/api/getinfo', (req, res) => {
+	qtumCore.action('getinfo', (err, result) => {
+		res.json({
+			...result,
+			name: 'getinfo',
+			path: req.path,
+		});
+	});
+});
+
+
+api.get('/api/getstakinginfo', (req, res) => {
 	res.json({
-		foo: 'api intro',
+		name: 'getstakinginfo',
 		path: req.path,
 	});
 });
 
 
-api.get('/getinfo', (req, res) => {
-	res.json({
-		foo: 'getinfo',
-		path: req.path,
-	});
-	//modules.qtumCore.getinfo();
-});
-
-
-api.get('/getstakinginfo', (req, res) => {
-	res.json({
-		foo: 'getstakinginfo',
-		path: req.path,
-	});
-});
+module.exports = api;

@@ -22,13 +22,26 @@ export default {
 
 	async asyncData(context)
 	{
+		// TODO: .env파일을 이용하여 api 주소 만들기
+		//console.log();
+		// try {
+		// 	let result = await axios.get(`http://localhost/api`);
+		// 	console.log(result.data);
+		// } catch(e) {
+		// 	console.error(e);
+		// }
 		return { foo: 'bar' };
 	},
 
+	// async fetch({}) {},
+
 	//middleware: 'intro',
 
-	// mounted() {
-	// 	console.log('mounted dashboard component');
-	// },
+	async mounted() {
+		// console.log('mounted dashboard component');
+		// console.log('qwe');
+
+		return { foo: 'bareeeeeeee' };
+	},
 }
 </script>

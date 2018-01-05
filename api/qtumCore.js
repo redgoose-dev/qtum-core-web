@@ -3,41 +3,59 @@
  * qtum-core와 통신하기 위한 인터페이스
  */
 
+const fs = require('fs');
+const process = require('child_process');
+
 
 let address = null;
 
 
-exports.getinfo = function()
+/**
+ * action command
+ *
+ * @param {String} cmd
+ * @param {Function} cb
+ */
+exports.action = function(cmd, cb)
 {
-	let command = `getinfo`;
-	let result = cli(command);
+	cli('qtum-cli', cmd, cb);
 };
 
+
+/**
+ * get address
+ *
+ * @return {Boolean}
+ */
 function getAddress()
 {
-	if (!address)
+	if (address)
+	{
+		return true;
+	}
+	else
 	{
 		try
 		{
-			let pref = require('~/.data/pref.json');
+			let pref = require('../.data/pref.json');
 			address = pref.coreAddress;
+			return true;
 		}
 		catch(e)
 		{
-			return null;
+			console.error(e);
+			return false;
 		}
 	}
-
-	return address;
 }
 
 /**
  * check exec
  *
- * @param {String} command
+ * @param {String} file
  * @return {Object}
  */
-function checkExec(command='')
+function checkExec(file='qtum-cli')
 {
 	if (!getAddress())
 	{
@@ -47,41 +65,78 @@ function checkExec(command='')
 		};
 	}
 
-	// const fs = require('fs');
-	// fs.exists(`${address}/${command}`, function(exists) {
-	// 	console.log(exists);
-	// });
-	// let aa = path.existsSync();
-	// console.log(aa);
+	let addr = `${address}/${file}`;
 
-	return {};
-
-	if (false)
+	if (fs.existsSync(addr))
+	{
+		return {
+			status: 'success',
+			command: addr
+		};
+	}
+	else
 	{
 		return {
 			state: 'error',
+			command: addr,
 			message: `not found qtum-cli`,
 		};
 	}
-
-	return {
-
-	};
 }
 
-function cli(command)
+/**
+ * run cli
+ *
+ * @param {String} file
+ * @param {String} params
+ * @param {Function} callback
+ */
+function cli(file='qtum-cli', params='', callback)
 {
-	let cmd = checkExec('qtum-cli');
+	if (!(callback && typeof callback === 'function')) return null;
+
+	const cmd = checkExec(file);
 
 	// check cmd
-	if (cmd.state === 'error')
+	if (cmd.status === 'error')
 	{
 		return cmd;
 	}
 
+	process.exec(`${file} ${params}`, (error, stdout, stderr) => {
+		if (error)
+		{
+			callback({
+				status: 'error',
+				message: 'exec error'
+			}, null);
+			return;
+		}
 
-	console.log(cmd);
+		if (stdout)
+		{
+			try {
+				callback(null, {
+					status: 'success',
+					data: JSON.parse(stdout)
+				});
+			}
+			catch(e)
+			{
+				callback({
+					status: 'error',
+					message: 'parsing error',
+				}, null);
+			}
+			return;
+		}
 
-	//console.log(addr.message);
-	return null;
+		if (stderr)
+		{
+			callback({
+				status: 'error',
+				message: 'stderr'
+			}, null);
+		}
+	});
 }
