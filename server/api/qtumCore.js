@@ -23,6 +23,25 @@ exports.action = function(cmd, cb)
 	cli('qtum-cli', cmd, cb);
 };
 
+/**
+ * check core
+ *
+ * @param {Function} cb
+ */
+exports.check = function(cb)
+{
+	cli('qtum-cli', 'getinfo', function(res) {
+		if (res.status === 'error')
+		{
+			cb(false, res.message);
+		}
+		else
+		{
+			cb(!!(res && res.status === 'success' && res.data && !!res.data.version));
+		}
+	});
+};
+
 
 /**
  * get address
@@ -46,7 +65,7 @@ function checkExec(file='qtum-cli')
 	if (!getAddress())
 	{
 		return {
-			state: 'error',
+			status: 'error',
 			message: `not found qtum-core address`,
 		};
 	}
@@ -63,7 +82,7 @@ function checkExec(file='qtum-cli')
 	else
 	{
 		return {
-			state: 'error',
+			status: 'error',
 			command: addr,
 			message: `not found qtum-cli`,
 		};
@@ -79,30 +98,29 @@ function checkExec(file='qtum-cli')
  */
 function cli(file='qtum-cli', params='', callback)
 {
-	if (!(callback && typeof callback === 'function')) return null;
+	if (!(callback && typeof callback === 'function')) callback({
+		status: 'error',
+		message: 'Not found callback'
+	});
 
 	const cmd = checkExec(file);
 
-	// check cmd
-	if (cmd.status === 'error')
+	function onChildProcess(error, stdout, stderr)
 	{
-		return cmd;
-	}
-
-	childProcess.exec(`${file} ${params}`, (error, stdout, stderr) => {
 		if (error)
 		{
 			callback({
 				status: 'error',
 				message: 'exec error'
-			}, null);
+			});
 			return;
 		}
 
 		if (stdout)
 		{
-			try {
-				callback(null, {
+			try
+			{
+				callback({
 					status: 'success',
 					data: JSON.parse(stdout)
 				});
@@ -112,7 +130,7 @@ function cli(file='qtum-cli', params='', callback)
 				callback({
 					status: 'error',
 					message: 'parsing error',
-				}, null);
+				});
 			}
 			return;
 		}
@@ -122,7 +140,17 @@ function cli(file='qtum-cli', params='', callback)
 			callback({
 				status: 'error',
 				message: 'stderr'
-			}, null);
+			});
 		}
-	});
+	}
+
+	// run
+	if (cmd.status === 'success')
+	{
+		childProcess.exec(`${file} ${params}`, onChildProcess);
+	}
+	else
+	{
+		callback(cmd);
+	}
 }

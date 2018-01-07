@@ -25,7 +25,9 @@ module.exports = {
 		vendor: [ 'axios' ]
 	},
 
-	env: {},
+	env: {
+		pref: null,
+	},
 
 	loading: {
 		color: 'lime',
@@ -33,6 +35,7 @@ module.exports = {
 
 	router: {
 		// middleware: 'foo'
+		linkActiveClass: 'nuxt-active',
 		extendRoutes (routes, resolve) {
 			routes.push(...[
 				{

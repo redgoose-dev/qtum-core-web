@@ -1,6 +1,9 @@
-// TODO: .env 파일 만들기 스크립트
+/**
+ * create `.env` file
+ */
 
 const fs = require('fs');
+const consoleColor = require('../consoleColor');
 
 
 /**
@@ -34,12 +37,12 @@ function write(str, cb)
 	fs.writeFile('.env', str, function(err) {
 		if (err)
 		{
-			console.error(`Can not write file`);
+			console.log(consoleColor.red, `Can not write file`);
 			cb(false);
 		}
 		else
 		{
-			console.log(`Create 'template' file`);
+			console.log(consoleColor.green, `Create '.env' file`);
 			cb(true);
 		}
 	});

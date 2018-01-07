@@ -1,0 +1,50 @@
+@import "mixins";
+
+
+%sp-ico {
+	background: transparent url('../images/sp-ico.png') no-repeat;
+	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 1.33dppx) {
+		background-image: url('../images/sp-ico@2x.png');
+		background-size: 300px 200px;
+	}
+}
+
+
+.sp-ico {
+	display: inline-block;
+	text-align: left;
+	text-indent: -9999px;
+	overflow: hidden;
+	@extend %sp-ico;
+}
+
+
+.ico-person {
+	background-position: 0 0;
+	@include sp-size(20px, 20px);
+}
+.ico-setting {
+	background-position: -30px 0;
+	@include sp-size(20px, 20px);
+}
+.ico-more {
+	background-position: -60px 0;
+	@include sp-size(24px, 24px);
+}
+.ico-arrow-left {
+	background-position: -94px 0;
+	@include sp-size(24px, 24px);
+}
+
+.ico-gnb-home {
+	background-position: 0 -34px;
+	@include sp-size(24px, 24px);
+}
+.ico-gnb-switch {
+	background-position: -34px -34px;
+	@include sp-size(24px, 24px);
+}
+.ico-gnb-post {
+	background-position: -68px -34px;
+	@include sp-size(24px, 24px);
+}

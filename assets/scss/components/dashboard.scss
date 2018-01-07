@@ -1,5 +1,16 @@
 // dashboard component
+@import "../variables";
+
 
 .dashboard {
+	&__header {}
 
+	.section {
+		&__head {
+			border: 1px solid red;
+		}
+		&__body {
+			border: 1px solid green;
+		}
+	}
 }

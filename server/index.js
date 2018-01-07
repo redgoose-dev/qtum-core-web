@@ -2,6 +2,9 @@ const app = require('express')();
 const { Nuxt, Builder } = require('nuxt');
 const api = require('./api/index');
 const env = require('./env');
+const consoleColor = require('./consoleColor');
+const qtumCore = require('./api/qtumCore');
+
 let envConfig = null;
 
 
@@ -17,8 +20,9 @@ function start()
 	// Import and set Nuxt.js options
 	let config = require('../nuxt.config.js');
 	config.dev = envConfig.DEVELOPMENT === 'true';
-	config.env.config = envConfig;
-	config.env.config.BASE_URL = baseUrl;
+	config.env.pref = envConfig;
+	config.env.pref.BASE_URL = baseUrl;
+	config.head.title = envConfig.TITLE || config.head.title;
 
 	const nuxt = new Nuxt(config);
 
@@ -36,7 +40,7 @@ function start()
 	app.use(nuxt.render);
 
 	// Start express server
-	app.listen(config.env.config.PORT, config.env.config.HOST);
+	app.listen(config.env.pref.PORT, config.env.pref.HOST);
 }
 
 
@@ -44,16 +48,24 @@ function start()
 envConfig = env.get();
 if (!!envConfig)
 {
-	start();
+	qtumCore.check((res, message) => {
+		if (!res)
+		{
+			console.error(`Can't using command qtum-cli`, message);
+			return;
+		}
+		start();
+	});
 }
 else
 {
-	console.error(`Not found '.env'. But try create '.env' file`);
+	// if not found `.env` file
+	console.log(consoleColor.red, `Not found '.env' file.`);
 	env.create(function(result) {
 		if (result)
 		{
 			envConfig = env.get();
-			start();
+			console.log(consoleColor.yellow, `Please set '.env' and try again.`);
 		}
 	});
 }

@@ -1,3 +1,7 @@
+/**
+ * read `.env` file
+ */
+
 module.exports = function()
 {
 	let env = null;

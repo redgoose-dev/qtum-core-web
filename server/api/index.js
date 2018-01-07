@@ -36,9 +36,9 @@ function dashboard(req, res)
  */
 
 api.get('/api', (req, res) => {
-	qtumCore.action('getinfo', (err, result) => {
+	qtumCore.action('getinfo', (result) => {
 		res.json({
-			...(err || result),
+			...result,
 			path: req.path,
 		});
 	});
@@ -46,7 +46,7 @@ api.get('/api', (req, res) => {
 
 
 api.get('/api/getinfo', (req, res) => {
-	qtumCore.action('getinfo', (err, result) => {
+	qtumCore.action('getinfo', (result) => {
 		res.json({
 			...result,
 			name: 'getinfo',

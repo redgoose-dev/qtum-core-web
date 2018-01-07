@@ -1,3 +1,4 @@
+TITLE=Qtum core
 PROTOCOL=http
 HOST=localhost
 PORT=3000

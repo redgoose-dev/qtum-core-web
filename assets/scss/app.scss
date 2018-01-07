@@ -1,8 +1,16 @@
 @import "variables";
-@import "components/header";
+@import "nomalize";
+@import "fonts";
+@import "icons";
+@import "components/contents";
+@import "components/layout";
 @import "components/dashboard";
 @import "components/transactions";
 
+
+* {
+	box-sizing: border-box;
+}
 
 body {
 	min-width: 320px;
@@ -10,4 +18,9 @@ body {
 	padding: 0;
 	font-size: 16px;
 	background: $color-bg;
+	color: $color-dark;
+}
+
+body, button, input {
+	font-family: $font-basic;
 }
