@@ -2,6 +2,26 @@
 @import "../variables";
 
 
+// elements
+* {
+	box-sizing: border-box;
+}
+body {
+	min-width: 320px;
+	margin: 0;
+	padding: 0;
+	font-size: 16px;
+	background: $color-bg;
+	color: $color-dark;
+}
+body, button, input {
+	font-family: $font-basic;
+}
+a {
+	color: $color-key;
+}
+
+
 // contents header
 .contents-header {
 	margin: 0 0 15px;
@@ -12,5 +32,76 @@
 		text-transform: uppercase;
 		font-size: 32px;
 		letter-spacing: 1px;
+	}
+}
+
+
+// text align and color
+.text {
+	&-left {
+		text-align: left;
+	}
+	&-center {
+		text-align: center;
+	}
+	&-right {
+		text-align: right;
+	}
+	&-success {
+		color: $color-complete;
+	}
+	&-error {
+		color: $color-error;
+	}
+	&-key {
+		color: $color-key;
+	}
+}
+
+
+// description
+.description {
+	margin: 0;
+	display: flex;
+	align-items: center;
+	padding: 6px 0;
+	font-size: 14px;
+	&:first-child {
+		padding-top: 0;
+	}
+	&:last-child {
+		padding-bottom: 0;
+	}
+	> dt {
+		flex: 1;
+		color: #666;
+	}
+	> dd {}
+	> dt, > dd {
+		&.size-large {
+			font-size: 18px;
+		}
+	}
+}
+
+
+// table
+.table {
+	border: none;
+	border-collapse: collapse;
+	width: 100%;
+	font-size: 14px;
+	thead {
+		th {
+			padding: 15px 8px;
+		}
+	}
+	tbody {
+		tr {
+			border-top: 1px solid $color-medium-gray;
+		}
+		td {
+			padding: 15px 8px;
+		}
 	}
 }

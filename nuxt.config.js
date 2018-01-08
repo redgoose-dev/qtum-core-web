@@ -7,7 +7,7 @@ module.exports = {
 			{ name: 'viewport', content: 'width=device-width, initial-scale=1' }
 		],
 		link: [
-			{ rel: 'icon', type: 'image/x-icon', href: '/static/favicon.ico' }
+			{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico?v=2' }
 		]
 	},
 
@@ -34,6 +34,7 @@ module.exports = {
 	},
 
 	router: {
+		base: '/',
 		// middleware: 'foo'
 		linkActiveClass: 'nuxt-active',
 		extendRoutes (routes, resolve) {

@@ -15,7 +15,7 @@
 				<div class="headerSide__wrap headerSide__balance">
 					<em class="headerSide__balanceText">{{ balance }} QTUM</em>
 				</div>
-				<div v-if="false" class="headerSide__wrap">
+				<div v-if="true" class="headerSide__wrap">
 					<nav class="dropDown">
 						<button type="button" class="dropDown__button">
 							<i class="sp-ico ico-person">profile</i>
