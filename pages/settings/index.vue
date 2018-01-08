@@ -1,10 +1,19 @@
 <template>
-	<div>
-		<h1>Setting page</h1>
+<article class="contents settings">
+	<header class="contents__header settings__header">
+		<h1>Settings</h1>
+	</header>
+
+	<div class="contents__body">
+		<p>
+			// TODO: settings form
+		</p>
+
 		<nav>
 			<button type="button" v-on:click="back">back</button>
 		</nav>
 	</div>
+</article>
 </template>
 
 

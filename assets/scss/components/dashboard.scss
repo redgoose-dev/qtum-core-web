@@ -9,9 +9,16 @@
 		display: flex;
 		margin: 0 -10px;
 		padding: 10px 0;
+		&:first-child {
+			padding-top: 0;
+		}
+		&:last-child {
+			padding-bottom: 0;
+		}
 		.col {
 			flex: 1;
 			padding: 0 10px;
+			overflow: hidden;
 		}
 	}
 
@@ -58,6 +65,23 @@
 					td {
 						padding: 12px 8px;
 					}
+				}
+			}
+		}
+	}
+
+	@media (max-width: $size-mobile) {
+		.row {
+			display: block;
+			margin: 0;
+			padding: 10px 0;
+			.col {
+				padding: 10px 0;
+				&:first-child {
+					padding-top: 0;
+				}
+				&:last-child {
+					padding-bottom: 0;
 				}
 			}
 		}

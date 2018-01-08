@@ -23,7 +23,7 @@
 						<div class="dropDown__children dropDown__children-profile">
 							<ul>
 								<li>
-									<nuxt-link to="/edit-profile">Edit profile</nuxt-link>
+									<nuxt-link to="/settings">Settings</nuxt-link>
 								</li>
 								<li>
 									<button v-on:click="logout">Logout</button>
@@ -32,9 +32,9 @@
 						</div>
 					</nav>
 				</div>
-				<nuxt-link to="/setting" class="headerSide__wrap headerSide__settings">
-					<i class="sp-ico ico-setting">setting</i>
-				</nuxt-link>
+				<!--<nuxt-link to="/setting" class="headerSide__wrap headerSide__settings">-->
+					<!--<i class="sp-ico ico-setting">setting</i>-->
+				<!--</nuxt-link>-->
 			</div>
 		</div>
 	</header>

@@ -1,10 +1,19 @@
 <template>
-	<div>
-		<h1>Send qtum page</h1>
+<article class="contents send">
+	<header class="contents__header send__header">
+		<h1>Send qtum</h1>
+	</header>
+
+	<div class="contents__body">
+		<p>
+			// TODO: send qtum form
+		</p>
+
 		<nav>
 			<button type="button" v-on:click="back">back</button>
 		</nav>
 	</div>
+</article>
 </template>
 
 

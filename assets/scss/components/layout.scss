@@ -128,7 +128,7 @@ $width-side-mini: 47px;
 				border: none;
 			}
 			&-profile {
-				right: -20px;
+				right: 0;
 			}
 		}
 
@@ -198,6 +198,12 @@ $width-side-mini: 47px;
 			font-size: 13px;
 		}
 	}
+
+	@media (max-width: $size-mobile) {
+		.toggle-sidebar {
+			display: none;
+		}
+	}
 }
 
 
@@ -242,12 +248,39 @@ $width-side-mini: 47px;
 			}
 		}
 	}
+
+	@media (max-width: $size-mobile) {
+		&__sideWrap {
+			width: $width-side-mini;
+		}
+		&__side {
+			width: $width-side-mini;
+		}
+		&__body {
+			margin-left: $width-side-mini;
+		}
+		.layout-side {
+			.gnb {
+				span {
+					display: none;
+				}
+				a {
+					justify-content: center;
+					padding: 0;
+				}
+			}
+		}
+	}
 }
 
 
 // body
 .layout-body {
 	padding: 30px;
+
+	@media (max-width: $size-mobile) {
+		padding: 15px;
+	}
 }
 
 

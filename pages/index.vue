@@ -1,10 +1,10 @@
 <template>
 <article class="contents dashboard">
-	<header class="contents-header dashboard__header">
+	<header class="contents__header dashboard__header">
 		<h1>Dashboard</h1>
 	</header>
 
-	<div class="dashboard__body">
+	<div class="contents__body">
 		<div class="row">
 			<div class="col">
 				<article class="section section-balance">
