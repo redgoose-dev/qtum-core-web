@@ -51,7 +51,7 @@ if (!!envConfig)
 	qtumCore.check((res, message) => {
 		if (!res)
 		{
-			console.error(`Can't using command qtum-cli`, message);
+			console.error(`ERROR:`, message);
 			return;
 		}
 		start();
@@ -60,12 +60,5 @@ if (!!envConfig)
 else
 {
 	// if not found `.env` file
-	console.log(consoleColor.red, `Not found '.env' file.`);
-	env.create(function(result) {
-		if (result)
-		{
-			envConfig = env.get();
-			console.log(consoleColor.yellow, `Please set '.env' and try again.`);
-		}
-	});
+	console.error(`ERROR: Not found '.env' file. Please run setup.`);
 }

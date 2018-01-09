@@ -3,7 +3,6 @@
  */
 
 const fs = require('fs');
-const consoleColor = require('../consoleColor');
 
 
 /**
@@ -34,16 +33,20 @@ function read(cb)
  */
 function write(str, cb)
 {
+	if (fs.existsSync('.env'))
+	{
+		cb(false, `Exist '.env' file.`);
+		return;
+	}
+
 	fs.writeFile('.env', str, function(err) {
 		if (err)
 		{
-			console.log(consoleColor.red, `Can not write file`);
-			cb(false);
+			cb(false, `Can't write '.env' file.`);
 		}
 		else
 		{
-			console.log(consoleColor.green, `Create '.env' file`);
-			cb(true);
+			cb(true, `Success create '.env' file.`);
 		}
 	});
 }
