@@ -15,57 +15,25 @@
 		</form>
 
 		<div class="contents__box">
-			<table class="index-table index-table-center">
+			<table class="table table-fixed table-border">
 				<thead>
 				<tr>
-					<th scope="col" width="">Date</th>
+					<th scope="col" width="140">Date</th>
 					<th scope="col" width="">Type</th>
-					<th scope="col" width="">Transaction ID</th>
+					<th scope="col">Transaction ID</th>
 					<th scope="col" width="">Amount</th>
-					<th scope="col" width="">Fee</th>
 					<th scope="col" width="">Confirm</th>
 				</tr>
 				</thead>
 				<tbody>
-				<tr>
-					<td>0000-00-00 00:00</td>
-					<td>Send</td>
-					<td><a href="#">53j0uernugu954yuengero</a></td>
-					<td>0.000000</td>
-					<td>0.0000</td>
-					<td>12345</td>
-				</tr>
-				<tr>
-					<td>0000-00-00 00:00</td>
-					<td>Send</td>
-					<td><a href="#">53j0uernugu954yuengero</a></td>
-					<td>0.000000</td>
-					<td>0.0000</td>
-					<td>12345</td>
-				</tr>
-				<tr>
-					<td>0000-00-00 00:00</td>
-					<td>Send</td>
-					<td><a href="#">53j0uernugu954yuengero</a></td>
-					<td>0.000000</td>
-					<td>0.0000</td>
-					<td>12345</td>
-				</tr>
-				<tr>
-					<td>0000-00-00 00:00</td>
-					<td>Send</td>
-					<td><a href="#">53j0uernugu954yuengero</a></td>
-					<td>0.000000</td>
-					<td>0.0000</td>
-					<td>12345</td>
-				</tr>
-				<tr>
-					<td>0000-00-00 00:00</td>
-					<td>Send</td>
-					<td><a href="#">53j0uernugu954yuengero</a></td>
-					<td>0.000000</td>
-					<td>0.0000</td>
-					<td>12345</td>
+				<tr v-for="o in transactions">
+					<td class="text-center">{{ o.time }}</td>
+					<td class="text-center">{{ o.type }}</td>
+					<td class="text-center">
+						<a v-bind:href="o.txUrl" target="_blank">{{ o.txid }}</a>
+					</td>
+					<td class="text-center">{{ o.amount }}</td>
+					<td class="text-center">{{ o.confirm }}</td>
 				</tr>
 				</tbody>
 			</table>
@@ -77,18 +45,50 @@
 
 
 <script>
+import axios from 'axios';
+import moment from 'moment';
 import * as lib from '~/lib';
+
+function correction(src)
+{
+	return {
+		transactions: src.map((o, k) => {
+			return {
+				address: o.address,
+				amount: o.amount.toFixed(6),
+				time: moment.unix(o.time).format('YYYY-MM-DD HH:mm'),
+				type: o.category,
+				confirm: o.confirmations,
+				txid: o.txid,
+				txUrl: `${process.env.pref.EXPLORER_URL}/tx/${o.txid}`,
+			};
+		})
+	};
+}
 
 export default {
 	head: {
 		title: lib.util.makeTitle('Transactions')
 	},
-	middleware: 'transactions',
-	methods: {
-		back: function(e)
+	async asyncData({ params, error, store })
+	{
+		let result = {};
+		try
 		{
-			this.$router.go(-1);
+			result = await axios.get(`${process.env.pref.BASE_URL}/api/transactions`);
+			if (result.status !== 200) throw 'API import failed.';
+			result = result.data;
+			if (!(result.status === 'success' && !!result.data)) throw 'Not found response data';
+			return correction(result.data);
+		}
+		catch(e)
+		{
+			error({
+				statusCode: 400,
+				message: e
+			});
 		}
 	},
+	methods: {},
 }
 </script>

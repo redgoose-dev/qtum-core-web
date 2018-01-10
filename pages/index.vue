@@ -13,24 +13,12 @@
 					</header>
 					<div class="section__body">
 						<dl class="description">
-							<dt>Available</dt>
-							<dd><strong>0.0000</strong></dd>
-						</dl>
-						<dl class="description">
-							<dt>Pending</dt>
-							<dd><strong>0.0000</strong></dd>
-						</dl>
-						<dl class="description">
-							<dt>Immature</dt>
-							<dd><strong>0.0000</strong></dd>
-						</dl>
-						<dl class="description">
 							<dt>Staked</dt>
-							<dd><strong>0.0000</strong></dd>
+							<dd><strong>{{ stake }}</strong></dd>
 						</dl>
 						<dl class="description description-large" style="margin-top: 20px">
-							<dt><strong>Total</strong></dt>
-							<dd class="size-large"><strong class="text-key">0000.000000 QTUM</strong></dd>
+							<dt><strong>Balance</strong></dt>
+							<dd class="size-large"><strong class="text-key">{{ balance }} QTUM</strong></dd>
 						</dl>
 					</div>
 				</article>
@@ -47,27 +35,23 @@
 						</dl>
 						<dl class="description">
 							<dt>Current block</dt>
-							<dd><strong>8354</strong></dd>
+							<dd><strong>{{ blocks }}</strong></dd>
 						</dl>
 						<dl class="description">
 							<dt>Staking</dt>
-							<dd><strong class="text-success">true</strong></dd>
+							<dd><strong v-bind:class="staking ? 'text-success' : 'text-error'">{{ staking }}</strong></dd>
 						</dl>
 						<dl class="description">
 							<dt>Wallet status</dt>
-							<dd><strong>dfmgip</strong></dd>
-						</dl>
-						<dl class="description">
-							<dt>Wallet weight</dt>
-							<dd><strong>345345</strong></dd>
+							<dd><strong>{{ walletStatus }}</strong></dd>
 						</dl>
 						<dl class="description">
 							<dt>Network weight</dt>
-							<dd><strong>348590</strong></dd>
+							<dd><strong>{{ networkWeight }}</strong></dd>
 						</dl>
 						<dl class="description">
 							<dt>Connections</dt>
-							<dd><strong>8</strong></dd>
+							<dd><strong>{{ connections }}</strong></dd>
 						</dl>
 					</div>
 				</article>
@@ -85,49 +69,25 @@
 						</nav>
 					</header>
 					<div class="section__body">
-						<table class="table">
-							<thead>
+						<table class="table table-fixed">
+							<thead class="not-bg">
 							<tr>
-								<th scope="col" width="150">Date</th>
+								<th scope="col" width="140">Date</th>
 								<th scope="col" width="">Type</th>
 								<th scope="col">Transaction ID</th>
 								<th scope="col" width="">Amount</th>
-								<th scope="col" width="">Fee</th>
 								<th scope="col" width="">Confirm</th>
 							</tr>
 							</thead>
 							<tbody>
-							<tr>
-								<td class="text-center">0000-00-00 00:00</td>
-								<td class="text-center">Send</td>
-								<td class="text-center"><a href="#">digdfig54nodfgdgdip</a></td>
-								<td class="text-center">0.000000</td>
-								<td class="text-center">0.0000</td>
-								<td class="text-center">12345</td>
-							</tr>
-							<tr>
-								<td class="text-center">0000-00-00 00:00</td>
-								<td class="text-center">Send</td>
-								<td class="text-center"><a href="#">digdfig54nodfgdgdip</a></td>
-								<td class="text-center">0.000000</td>
-								<td class="text-center">0.0000</td>
-								<td class="text-center">12345</td>
-							</tr>
-							<tr>
-								<td class="text-center">0000-00-00 00:00</td>
-								<td class="text-center">Send</td>
-								<td class="text-center"><a href="#">digdfig54nodfgdgdip</a></td>
-								<td class="text-center">0.000000</td>
-								<td class="text-center">0.0000</td>
-								<td class="text-center">12345</td>
-							</tr>
-							<tr>
-								<td class="text-center">0000-00-00 00:00</td>
-								<td class="text-center">Send</td>
-								<td class="text-center"><a href="#">digdfig54nodfgdgdip</a></td>
-								<td class="text-center">0.000000</td>
-								<td class="text-center">0.0000</td>
-								<td class="text-center">12345</td>
+							<tr v-for="o in transactions">
+								<td class="text-center">{{ o.time }}</td>
+								<td class="text-center">{{ o.type }}</td>
+								<td class="text-center">
+									<a v-bind:href="o.txUrl" target="_blank">{{ o.txid }}</a>
+								</td>
+								<td class="text-center">{{ o.amount }}</td>
+								<td class="text-center">{{ o.confirm }}</td>
 							</tr>
 							</tbody>
 						</table>
@@ -142,43 +102,63 @@
 
 <script>
 import axios from 'axios';
-import * as lib from '../lib';
+import moment from 'moment';
+
+/**
+ * correction datas
+ *
+ * @param {Object} src
+ * @return {Object}
+ */
+function correction(src)
+{
+	let result = {
+		balance: src.info.balance.toFixed(6),
+		stake: src.info.stake.toFixed(6),
+		version: src.info.version,
+		blocks: src.info.blocks,
+		staking: src.staking.staking,
+		walletStatus: 'Unlock for staking',
+		networkWeight: src.staking.netstakeweight,
+		connections: src.info.connections,
+		transactions: src.transactions.map((o, k) => {
+			return {
+				address: o.address,
+				amount: o.amount.toFixed(6),
+				time: moment.unix(o.time).format('YYYY-MM-DD HH:mm'),
+				type: o.category,
+				confirm: o.confirmations,
+				txid: o.txid,
+				txUrl: `${process.env.pref.EXPLORER_URL}/tx/${o.txid}`,
+			};
+		})
+	};
+	return result;
+}
 
 export default {
-
 	async asyncData({ params, error, store })
 	{
 		let result = {};
-		try {
+		try
+		{
 			result = await axios.get(`${process.env.pref.BASE_URL}/api/dashboard`);
-
-			// TODO: API 작업이 완료되면 값 붙이기.
-			console.log(result.data);
-
-			if (result.status !== 200 || result.data.status !== 'success') throw 'API import failed.';
-			result = result.data.data;
-
-			// update store
-			//store.commit('updateBalance', result.balance);
-		} catch(e) {
-			// error({
-			// 	statusCode: 404,
-			// 	message: e
-			// });
+			if (result.status !== 200) throw 'API import failed.';
+			result = result.data;
+			return correction(result);
 		}
-
-		return {
-			status: 'success',
-			version: result.version || 0,
-		};
+		catch(e)
+		{
+			error({
+				statusCode: 400,
+				message: e
+			});
+		}
 	},
 
-	// async fetch({}) {},
-
-	//middleware: 'intro',
-
-	mounted() {
+	mounted()
+	{
 		console.warn('Mounted dashboard component');
-	},
+	}
 }
 </script>

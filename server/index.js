@@ -3,7 +3,7 @@ const { Nuxt, Builder } = require('nuxt');
 const api = require('./api/index');
 const env = require('./env');
 const consoleColor = require('./consoleColor');
-const qtumCore = require('./api/qtumCore');
+const qtumCore = require('./qtumCore');
 
 let envConfig = null;
 
@@ -15,13 +15,14 @@ function start()
 {
 	let baseUrl = `${envConfig.PROTOCOL}://${envConfig.HOST}:${envConfig.PORT}`;
 
-	console.log('\x1b[33m%s\x1b[0m', `Start server: ${baseUrl}`);
+	console.log(consoleColor.yellow, `Start server: ${baseUrl}`, consoleColor.reset);
 
 	// Import and set Nuxt.js options
 	let config = require('../nuxt.config.js');
 	config.dev = envConfig.DEVELOPMENT === 'true';
 	config.env.pref = envConfig;
 	config.env.pref.BASE_URL = baseUrl;
+	config.env.pref.EXPLORER_URL = envConfig.TESTNET === 'true' ? 'https://testnet.qtum.org' : 'https://explorer.qtum.org';
 	config.head.title = envConfig.TITLE || config.head.title;
 
 	const nuxt = new Nuxt(config);

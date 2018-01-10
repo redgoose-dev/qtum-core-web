@@ -3,5 +3,7 @@ PROTOCOL=http
 HOST=localhost
 PORT=3000
 DEVELOPMENT=true
+TESTNET=false
+LANGUAGE=en
 
 CORE_ADDRESS={ADDRESS}/qtum/bin

@@ -5,42 +5,10 @@
 
 const fs = require('fs');
 const childProcess = require('child_process');
-const env = require('../env');
-
+const env = require('./env');
 
 const config = env.get();
 let address = null;
-
-
-/**
- * action command
- *
- * @param {String} cmd
- * @param {Function} cb
- */
-exports.action = function(cmd, cb)
-{
-	cli('qtum-cli', cmd, cb);
-};
-
-/**
- * check core
- *
- * @param {Function} cb
- */
-exports.check = function(cb)
-{
-	cli('qtum-cli', 'getinfo', function(res) {
-		if (res.status === 'error')
-		{
-			cb(false, res.message);
-		}
-		else
-		{
-			cb(!!(res && res.status === 'success' && res.data && !!res.data.version));
-		}
-	});
-};
 
 
 /**
@@ -111,7 +79,7 @@ function cli(file='qtum-cli', params='', callback)
 		{
 			callback({
 				status: 'error',
-				message: 'exec error'
+				message: error
 			});
 			return;
 		}
@@ -147,10 +115,41 @@ function cli(file='qtum-cli', params='', callback)
 	// run
 	if (cmd.status === 'success')
 	{
-		childProcess.exec(`${file} ${params}`, onChildProcess);
+		childProcess.exec(`${file} ${config.TESTNET === 'true' ? '-testnet' : ''} ${params}`, onChildProcess);
 	}
 	else
 	{
 		callback(cmd);
 	}
 }
+
+
+/**
+ * action command
+ *
+ * @param {String} cmd
+ * @param {Function} cb
+ */
+exports.action = function(cmd, cb)
+{
+	cli('qtum-cli', cmd, cb);
+};
+
+/**
+ * check core
+ *
+ * @param {Function} cb
+ */
+exports.check = function(cb)
+{
+	cli('qtum-cli', 'getinfo', function(res) {
+		if (res.status === 'error')
+		{
+			cb(false, res.message);
+		}
+		else
+		{
+			cb(!!(res && res.status === 'success' && res.data && !!res.data.version));
+		}
+	});
+};

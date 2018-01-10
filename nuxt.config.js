@@ -30,12 +30,12 @@ module.exports = {
 	},
 
 	loading: {
-		color: 'lime',
+		color: '#2e9ad1',
 	},
 
 	router: {
 		base: '/',
-		// middleware: 'foo'
+		middleware: 'init',
 		linkActiveClass: 'nuxt-active',
 		extendRoutes (routes, resolve) {
 			routes.push(...[

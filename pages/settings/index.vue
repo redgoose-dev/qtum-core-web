@@ -24,7 +24,6 @@ export default {
 	head: {
 		title: lib.util.makeTitle('Settings')
 	},
-	middleware: 'transactions',
 	methods: {
 		back: function(e)
 		{

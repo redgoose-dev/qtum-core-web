@@ -4,7 +4,7 @@ const express = require('express');
 const async = require('async');
 const api = express();
 
-const qtumCore = require('./qtumCore');
+const qtumCore = require('../qtumCore');
 
 
 function dashboard(req, res)
@@ -36,30 +36,22 @@ function dashboard(req, res)
  */
 
 /**
+ * init
+ *
  * `getinfo` 파라메터로 기초 정보를 요청하고 가져온다.
  * 코어가 작동되는지 검사용으로 사용
  */
-api.get('/api', (req, res) => {
-	qtumCore.action('getinfo', (result) => {
-		res.json({
-			...result,
-			path: req.path,
-		});
-	});
-});
-
+api.get('/api', require('./init'));
 
 /**
  * dashboard
  */
-api.get('/api/dashboard', (req, res) => {
-	// TODO: 여러 api를 호출해서 조합하여 한 뭉치로 만들고 아웃풋 뽑아내기. `dashboard()` 함수 참고
+api.get('/api/dashboard', require('./dashboard'));
 
-	res.json({
-		status: 'error',
-		message: 'TODO: 작업예정....'
-	});
-});
+/**
+ * transactions
+ */
+api.get('/api/transactions', require('./transactions'));
 
 
 // api.get('/api/getinfo', (req, res) => {
