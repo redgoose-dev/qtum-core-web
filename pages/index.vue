@@ -1,3 +1,7 @@
+/**
+ * Dashboard
+ */
+
 <template>
 <article class="contents dashboard">
 	<header class="contents__header dashboard__header">
@@ -73,10 +77,10 @@
 							<thead class="not-bg">
 							<tr>
 								<th scope="col" width="140">Date</th>
-								<th scope="col" width="">Type</th>
+								<th scope="col" width="100">Type</th>
 								<th scope="col">Transaction ID</th>
-								<th scope="col" width="">Amount</th>
-								<th scope="col" width="">Confirm</th>
+								<th scope="col" width="120">Amount</th>
+								<th scope="col" width="90">Confirm</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -118,7 +122,7 @@ function correction(src)
 		version: src.info.version,
 		blocks: src.info.blocks,
 		staking: src.staking.staking,
-		walletStatus: 'Unlock for staking',
+		walletStatus: '...', // Unlock for staking
 		networkWeight: src.staking.netstakeweight,
 		connections: src.info.connections,
 		transactions: src.transactions.map((o, k) => {
@@ -133,6 +137,21 @@ function correction(src)
 			};
 		})
 	};
+
+	// set status
+	if (src.info.unlocked_until === undefined)
+	{
+		result.walletStatus = 'Not Encrypted';
+	}
+	else if (src.info.unlocked_until && src.info.unlocked_until > 0)
+	{
+		result.walletStatus = 'Unlocked For Staking';
+	}
+	else
+	{
+		result.walletStatus = 'Locked';
+	}
+
 	return result;
 }
 
@@ -142,7 +161,7 @@ export default {
 		let result = {};
 		try
 		{
-			result = await axios.get(`${process.env.pref.BASE_URL}/api/dashboard`);
+			result = await axios.get(`${process.env.pref.API_URL}/api/dashboard`);
 			if (result.status !== 200) throw 'API import failed.';
 			result = result.data;
 			return correction(result);
@@ -157,8 +176,6 @@ export default {
 	},
 
 	mounted()
-	{
-		console.warn('Mounted dashboard component');
-	}
+	{}
 }
 </script>

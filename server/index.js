@@ -13,15 +13,13 @@ let envConfig = null;
  */
 function start()
 {
-	let baseUrl = `${envConfig.PROTOCOL}://${envConfig.HOST}:${envConfig.PORT}`;
-
-	console.log(consoleColor.yellow, `Start server: ${baseUrl}`, consoleColor.reset);
+	console.log(consoleColor.yellow, `API SERVER: ${envConfig.API_URL}`, consoleColor.reset);
 
 	// Import and set Nuxt.js options
 	let config = require('../nuxt.config.js');
 	config.dev = envConfig.DEVELOPMENT === 'true';
 	config.env.pref = envConfig;
-	config.env.pref.BASE_URL = baseUrl;
+	config.env.pref.API_URL = envConfig.API_URL;
 	config.env.pref.EXPLORER_URL = envConfig.TESTNET === 'true' ? 'https://testnet.qtum.org' : 'https://explorer.qtum.org';
 	config.head.title = envConfig.TITLE || config.head.title;
 
@@ -41,7 +39,7 @@ function start()
 	app.use(nuxt.render);
 
 	// Start express server
-	app.listen(config.env.pref.PORT, config.env.pref.HOST);
+	app.listen(config.env.pref.PORT);
 }
 
 

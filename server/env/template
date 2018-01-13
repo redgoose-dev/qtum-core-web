@@ -1,7 +1,6 @@
 TITLE=Qtum core
-PROTOCOL=http
-HOST=localhost
 PORT=3000
+API_URL=http://localhost:3000
 DEVELOPMENT=true
 TESTNET=false
 LANGUAGE=en

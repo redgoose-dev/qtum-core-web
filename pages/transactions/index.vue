@@ -1,3 +1,7 @@
+/**
+ * Transactions
+ */
+
 <template>
 <article class="contents transactions">
 	<header class="contents__header transactions__header">
@@ -19,10 +23,11 @@
 				<thead>
 				<tr>
 					<th scope="col" width="140">Date</th>
-					<th scope="col" width="">Type</th>
+					<th scope="col" width="100">Type</th>
 					<th scope="col">Transaction ID</th>
-					<th scope="col" width="">Amount</th>
-					<th scope="col" width="">Confirm</th>
+					<th scope="col" width="120">Amount</th>
+					<th scope="col" width="100">Fee</th>
+					<th scope="col" width="100">Confirm</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -33,13 +38,13 @@
 						<a v-bind:href="o.txUrl" target="_blank">{{ o.txid }}</a>
 					</td>
 					<td class="text-center">{{ o.amount }}</td>
+					<td class="text-center">{{ o.fee }}</td>
 					<td class="text-center">{{ o.confirm }}</td>
 				</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
-
 </article>
 </template>
 
@@ -60,6 +65,7 @@ function correction(src)
 				type: o.category,
 				confirm: o.confirmations,
 				txid: o.txid,
+				fee: o.fee || 0,
 				txUrl: `${process.env.pref.EXPLORER_URL}/tx/${o.txid}`,
 			};
 		})
@@ -75,7 +81,7 @@ export default {
 		let result = {};
 		try
 		{
-			result = await axios.get(`${process.env.pref.BASE_URL}/api/transactions`);
+			result = await axios.get(`${process.env.pref.API_URL}/api/transactions`);
 			if (result.status !== 200) throw 'API import failed.';
 			result = result.data;
 			if (!(result.status === 'success' && !!result.data)) throw 'Not found response data';

@@ -7,6 +7,10 @@ module.exports = function(req, res)
 
 		if (result.status === 'success' && !!result.data)
 		{
+			if (result.data.length)
+			{
+				result.data.reverse();
+			}
 			res.json(result);
 		}
 		else

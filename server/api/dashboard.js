@@ -36,7 +36,13 @@ module.exports = function(req, res)
 			qtumCore.action('listtransactions', (result) => {
 				if (result.status === 'success' && !!result.data)
 				{
-					cb(null, result.data);
+					let arr = result.data;
+					if (arr.length)
+					{
+						arr.reverse();
+						arr = arr.slice(0,5);
+					}
+					cb(null, arr);
 				}
 				else
 				{

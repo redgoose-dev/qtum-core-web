@@ -16,7 +16,7 @@ export const actions = {
 		try
 		{
 			// get api data
-			result = await axios.get(`${process.env.pref.BASE_URL}/api`);
+			result = await axios.get(`${process.env.pref.API_URL}/api`);
 
 			// check server
 			if (!(result.status === 200 && !!result.data)) throw 'Server error';
