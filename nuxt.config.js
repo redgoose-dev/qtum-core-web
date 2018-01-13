@@ -17,9 +17,7 @@ module.exports = {
 
 	modules: [],
 
-	plugins: [
-		//{ src: '~/plugins/test.js' }
-	],
+	plugins: [],
 
 	build: {
 		vendor: [ 'axios' ]

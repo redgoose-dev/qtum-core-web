@@ -17,9 +17,8 @@ function start()
 
 	// Import and set Nuxt.js options
 	let config = require('../nuxt.config.js');
-	config.dev = envConfig.DEVELOPMENT === 'true';
+	config.dev = process.env.NODE_ENV ? (process.env.NODE_ENV === 'production') : true;
 	config.env.pref = envConfig;
-	config.env.pref.API_URL = envConfig.API_URL;
 	config.env.pref.EXPLORER_URL = envConfig.TESTNET === 'true' ? 'https://testnet.qtum.org' : 'https://explorer.qtum.org';
 	config.head.title = envConfig.TITLE || config.head.title;
 
