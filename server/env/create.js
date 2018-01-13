@@ -1,5 +1,5 @@
 /**
- * create `.env` file
+ * create `.env.js` file
  */
 
 const fs = require('fs');
@@ -33,20 +33,20 @@ function read(cb)
  */
 function write(str, cb)
 {
-	if (fs.existsSync('.env'))
+	if (fs.existsSync('.env.js'))
 	{
-		cb(false, `Exist '.env' file.`);
+		cb(false, `Exist '.env.js' file.`);
 		return;
 	}
 
-	fs.writeFile('.env', str, function(err) {
+	fs.writeFile('.env.js', str, function(err) {
 		if (err)
 		{
-			cb(false, `Can't write '.env' file.`);
+			cb(false, `Can't write '.env.js' file.`);
 		}
 		else
 		{
-			cb(true, `Success create '.env' file.`);
+			cb(true, `Success create '.env.js' file.`);
 		}
 	});
 }

@@ -105,7 +105,7 @@ export default {
 	},
 	data() {
 		return {
-			title: process.env.pref.TITLE,
+			title: process.env.TITLE,
 			minimumSide: false,
 		};
 	},

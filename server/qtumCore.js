@@ -18,7 +18,7 @@ let address = null;
  */
 function getAddress()
 {
-	address = config.CORE_ADDRESS || null;
+	address = config.pref.CORE_ADDRESS || null;
 	return address;
 }
 
@@ -97,7 +97,7 @@ function cli(file='qtum-cli', params='', callback)
 			{
 				callback({
 					status: 'error',
-					message: 'parsing error',
+					message: `parsing error/${e}`,
 				});
 			}
 			return;
@@ -115,7 +115,7 @@ function cli(file='qtum-cli', params='', callback)
 	// run
 	if (cmd.status === 'success')
 	{
-		childProcess.exec(`${file} ${config.TESTNET === 'true' ? '-testnet' : ''} ${params}`, onChildProcess);
+		childProcess.exec(`${cmd.command} ${config.pref.TESTNET ? '-testnet' : ''} ${params}`, onChildProcess);
 	}
 	else
 	{

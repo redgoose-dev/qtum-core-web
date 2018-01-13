@@ -9,8 +9,7 @@ module.exports = function()
 
 	try
 	{
-		env = require('dotenv').config();
-		config = env.parsed;
+		config = require('../../.env');
 	}
 	catch(e)
 	{

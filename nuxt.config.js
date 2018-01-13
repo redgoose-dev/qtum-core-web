@@ -1,3 +1,6 @@
+const pref = require('./.env').pref;
+
+
 module.exports = {
 
 	head: {
@@ -24,7 +27,12 @@ module.exports = {
 	},
 
 	env: {
-		pref: null,
+		TITLE: pref.TITLE || 'Qtum core',
+		API_URL: pref.API_URL || 'http://localhost:3000',
+		PORT: pref.PORT || 3000,
+		TESTNET: pref.TESTNET || false,
+		LANGUAGE: pref.LANGUAGE || 'en',
+		CORE_ADDRESS: pref.CORE_ADDRESS || '',
 	},
 
 	loading: {

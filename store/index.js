@@ -11,12 +11,12 @@ export const state = () => ({
 
 // action
 export const actions = {
-	async nuxtServerInit({ commit }) {
+	async nuxtServerInit(context) {
 		let result = {};
 		try
 		{
 			// get api data
-			result = await axios.get(`${process.env.pref.API_URL}/api`);
+			result = await axios.get(`${process.env.API_URL}/api`);
 
 			// check server
 			if (!(result.status === 200 && !!result.data)) throw 'Server error';
@@ -31,13 +31,13 @@ export const actions = {
 			result = result.data;
 
 			// update balance
-			commit('updateCore', true);
-			commit('updateBalance', result.info.balance);
+			context.commit('updateCore', true);
+			context.commit('updateBalance', result.info.balance);
 		}
 		catch(e)
 		{
 			console.error(e);
-			commit('updateCore', false);
+			context.commit('updateCore', false);
 		}
 	}
 };

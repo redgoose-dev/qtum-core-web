@@ -1,7 +1,8 @@
-TITLE=Qtum core
-PORT=3000
-API_URL=http://localhost:3000
-TESTNET=false
-LANGUAGE=en
-
-CORE_ADDRESS={ADDRESS}/qtum/bin
+exports.pref = {
+  TITLE: 'Qtum core',
+  PORT: 3000,
+  API_URL: 'http://localhost:3000',
+  TESTNET: false,
+  LANGUAGE: 'en',
+  CORE_ADDRESS: '{ADDRESS}/qtum/bin',
+};

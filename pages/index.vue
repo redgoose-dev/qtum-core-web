@@ -133,7 +133,7 @@ function correction(src)
 				type: o.category,
 				confirm: o.confirmations,
 				txid: o.txid,
-				txUrl: `${process.env.pref.EXPLORER_URL}/tx/${o.txid}`,
+				txUrl: `${process.env.EXPLORER_URL}/tx/${o.txid}`,
 			};
 		})
 	};
@@ -161,7 +161,7 @@ export default {
 		let result = {};
 		try
 		{
-			result = await axios.get(`${process.env.pref.API_URL}/api/dashboard`);
+			result = await axios.get(`${process.env.API_URL}/api/dashboard`);
 			if (result.status !== 200) throw 'API import failed.';
 			result = result.data;
 			return correction(result);
@@ -174,8 +174,5 @@ export default {
 			});
 		}
 	},
-
-	mounted()
-	{}
 }
 </script>

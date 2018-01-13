@@ -66,7 +66,7 @@ function correction(src)
 				confirm: o.confirmations,
 				txid: o.txid,
 				fee: o.fee || 0,
-				txUrl: `${process.env.pref.EXPLORER_URL}/tx/${o.txid}`,
+				txUrl: `${process.env.EXPLORER_URL}/tx/${o.txid}`,
 			};
 		})
 	};
@@ -81,7 +81,9 @@ export default {
 		let result = {};
 		try
 		{
-			result = await axios.get(`${process.env.pref.API_URL}/api/transactions`);
+			// console.log(process.env);
+			// console.log(`${process.env.API_URL}/api/transactions`);
+			result = await axios.get(`${process.env.API_URL}/api/transactions`);
 			if (result.status !== 200) throw 'API import failed.';
 			result = result.data;
 			if (!(result.status === 'success' && !!result.data)) throw 'Not found response data';

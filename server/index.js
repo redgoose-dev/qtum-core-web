@@ -1,11 +1,9 @@
 const app = require('express')();
 const { Nuxt, Builder } = require('nuxt');
 const api = require('./api/index');
-const env = require('./env');
+const env = require('./env').get();
 const consoleColor = require('./consoleColor');
 const qtumCore = require('./qtumCore');
-
-let envConfig = null;
 
 
 /**
@@ -13,14 +11,20 @@ let envConfig = null;
  */
 function start()
 {
-	console.log(consoleColor.yellow, `API SERVER: ${envConfig.API_URL}`, consoleColor.reset);
+	// get env
+	const pref = env.pref;
 
 	// Import and set Nuxt.js options
 	let config = require('../nuxt.config.js');
-	config.dev = process.env.NODE_ENV ? (process.env.NODE_ENV === 'production') : true;
-	config.env.pref = envConfig;
-	config.env.pref.EXPLORER_URL = envConfig.TESTNET === 'true' ? 'https://testnet.qtum.org' : 'https://explorer.qtum.org';
-	config.head.title = envConfig.TITLE || config.head.title;
+
+	// set config
+	config.dev = process.env.NODE_ENV !== 'production';
+	//config.env = Object.assign(config.env, envConfig);
+	//config.env.EXPLORER_URL = env.pref.testnet === 'true' ? 'https://testnet.qtum.org' : 'https://explorer.qtum.org';
+	//config.head.title = env.pref.title || config.head.title;
+
+	console.log(consoleColor.yellow, `API SERVER: ${pref.API_URL}`, consoleColor.reset);
+	console.log(consoleColor.yellow, `PRODUCTION: ${!config.dev}`, consoleColor.reset);
 
 	const nuxt = new Nuxt(config);
 
@@ -38,15 +42,14 @@ function start()
 	app.use(nuxt.render);
 
 	// Start express server
-	app.listen(config.env.pref.PORT);
+	app.listen(pref.PORT);
 }
 
 
 // check env
-envConfig = env.get();
-if (!!envConfig)
+if (!!env.pref)
 {
-	qtumCore.check((res, message) => {
+	qtumCore.check(function(res, message) {
 		if (!res)
 		{
 			console.error(`ERROR:`, message);
