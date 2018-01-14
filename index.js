@@ -1,10 +1,10 @@
 #!/usr/bin/env nodejs
 const app = require('express')();
 const { Nuxt, Builder } = require('nuxt');
-const api = require('./api/index');
-const env = require('./env').get();
-const consoleColor = require('./consoleColor');
-const qtumCore = require('./qtumCore');
+const api = require('./server/api/index');
+const env = require('./server/env').get();
+const consoleColor = require('./server/consoleColor');
+const qtumCore = require('./server/qtumCore');
 
 
 /**
@@ -16,7 +16,7 @@ function start()
 	const pref = env.pref;
 
 	// Import and set Nuxt.js options
-	let config = require('../nuxt.config.js');
+	let config = require('./nuxt.config.js');
 
 	// set config
 	config.dev = process.env.NODE_ENV === 'development';

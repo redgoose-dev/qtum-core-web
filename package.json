@@ -7,9 +7,9 @@
   "author": "redgoose <https://redgoose.me scripter@me.com>",
   "license": "MIT",
   "scripts": {
-    "setup": "node ./server/setup.js",
-    "dev": "NODE_ENV=development node ./server/index.js",
-    "start": "node ./server/index.js",
+    "setup": "node ./setup.js",
+    "dev": "NODE_ENV=development node ./index.js",
+    "start": "node ./index.js",
     "build": "./node_modules/.bin/nuxt build",
     "build-check": "./node_modules/.bin/nuxt build --analyze"
   },
