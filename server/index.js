@@ -1,3 +1,4 @@
+#!/usr/bin/env nodejs
 const app = require('express')();
 const { Nuxt, Builder } = require('nuxt');
 const api = require('./api/index');
@@ -18,10 +19,7 @@ function start()
 	let config = require('../nuxt.config.js');
 
 	// set config
-	config.dev = process.env.NODE_ENV !== 'production';
-	//config.env = Object.assign(config.env, envConfig);
-	//config.env.EXPLORER_URL = env.pref.testnet === 'true' ? 'https://testnet.qtum.org' : 'https://explorer.qtum.org';
-	//config.head.title = env.pref.title || config.head.title;
+	config.dev = process.env.NODE_ENV === 'development';
 
 	console.log(consoleColor.yellow, `API SERVER: ${pref.API_URL}`, consoleColor.reset);
 	console.log(consoleColor.yellow, `PRODUCTION: ${!config.dev}`, consoleColor.reset);
