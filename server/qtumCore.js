@@ -62,9 +62,10 @@ function checkExec(file='qtum-cli')
  *
  * @param {String} file
  * @param {String} params
+ * @param {Boolean} json
  * @param {Function} callback
  */
-function cli(file='qtum-cli', params='', callback)
+function cli(file='qtum-cli', params='', json=true, callback)
 {
 	if (!(callback && typeof callback === 'function')) callback({
 		status: 'error',
@@ -90,7 +91,7 @@ function cli(file='qtum-cli', params='', callback)
 			{
 				callback({
 					status: 'success',
-					data: JSON.parse(stdout)
+					data: json ? JSON.parse(stdout) : stdout
 				});
 			}
 			catch(e)
@@ -128,11 +129,12 @@ function cli(file='qtum-cli', params='', callback)
  * action command
  *
  * @param {String} cmd
+ * @param {Boolean} json
  * @param {Function} cb
  */
-exports.action = function(cmd, cb)
+exports.action = function(cmd, json=true, cb)
 {
-	cli('qtum-cli', cmd, cb);
+	cli('qtum-cli', cmd, json, cb);
 };
 
 /**
@@ -142,7 +144,7 @@ exports.action = function(cmd, cb)
  */
 exports.check = function(cb)
 {
-	cli('qtum-cli', 'getinfo', function(res) {
+	cli('qtum-cli', 'getinfo', true, function(res) {
 		if (res.status === 'error')
 		{
 			cb(false, res.message);

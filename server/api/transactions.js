@@ -3,7 +3,7 @@ const qtumCore = require('../qtumCore');
 
 module.exports = function(req, res)
 {
-	qtumCore.action('listtransactions', (result) => {
+	qtumCore.action('listtransactions', true, (result) => {
 
 		if (result.status === 'success' && !!result.data)
 		{

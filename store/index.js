@@ -3,9 +3,11 @@ import axios from 'axios';
 
 // state
 export const state = () => ({
-	core: false,
 	balance: 0,
-	status: {},
+	status: {
+		core: false,
+		staking: false,
+	},
 });
 
 
@@ -30,14 +32,21 @@ export const actions = {
 			// update data
 			result = result.data;
 
+			// update status
+			context.commit('updateStatus', {
+				core: true,
+				staking: !!(result.info.unlocked_until && result.info.unlocked_until > 0)
+			});
 			// update balance
-			context.commit('updateCore', true);
 			context.commit('updateBalance', result.info.balance);
 		}
 		catch(e)
 		{
 			console.error(e);
-			context.commit('updateCore', false);
+			context.commit('updateStatus', {
+				core: false,
+				staking: false
+			});
 		}
 	}
 };
@@ -48,18 +57,23 @@ export const mutations = {
 
 	/**
 	 * update balance
-	 *
-	 * @param {Object} state
-	 * @param {Number} value
+	 * 현재 잔액을 업데이트 한다.
 	 */
 	updateBalance(state, value)
 	{
 		state.balance = value;
 	},
 
-	updateCore(state, value=false)
+	/**
+	 * Update status
+	 * 현재의 상태를 업데이트 한다.
+	 */
+	updateStatus(state, value=false)
 	{
-		state.core = value;
+		state.status = {
+			...state,
+			...value,
+		};
 	},
 
 };
