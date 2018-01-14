@@ -5,7 +5,7 @@
 
 const fs = require('fs');
 const childProcess = require('child_process');
-const env = require('./env');
+const env = require('../env');
 
 const config = env.get();
 let address = null;
@@ -18,7 +18,7 @@ let address = null;
  */
 function getAddress()
 {
-	address = config.pref.CORE_ADDRESS || null;
+	address = config.CORE_ADDRESS || null;
 	return address;
 }
 
@@ -116,7 +116,7 @@ function cli(file='qtum-cli', params='', json=true, callback)
 	// run
 	if (cmd.status === 'success')
 	{
-		childProcess.exec(`${cmd.command} ${config.pref.TESTNET ? '-testnet' : ''} ${params}`, onChildProcess);
+		childProcess.exec(`${cmd.command} ${config.TESTNET ? '-testnet' : ''} ${params}`, onChildProcess);
 	}
 	else
 	{

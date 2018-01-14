@@ -1,8 +1,8 @@
 <template>
-	<main>
+	<article>
 		<h1>[{{ error.statusCode}}] Error page</h1>
 		<p>{{ error.message }}</p>
-	</main>
+	</article>
 </template>
 
 

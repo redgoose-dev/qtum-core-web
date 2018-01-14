@@ -12,7 +12,7 @@ const fs = require('fs');
  */
 function read(cb)
 {
-	fs.readFile('./server/env/template', 'utf8', function(err, data) {
+	fs.readFile('./modules/env/template', 'utf8', function(err, data) {
 		if (data)
 		{
 			cb(data);

@@ -54,7 +54,14 @@ import axios from 'axios';
 import moment from 'moment';
 import * as lib from '~/lib';
 
-function correction(src)
+/**
+ * correction datas
+ *
+ * @param {Object} src
+ * @param {Object} store
+ * @return {Object}
+ */
+function correction(src, store)
 {
 	return {
 		transactions: src.map((o, k) => {
@@ -66,7 +73,7 @@ function correction(src)
 				confirm: o.confirmations,
 				txid: o.txid,
 				fee: o.fee || 0,
-				txUrl: `${process.env.EXPLORER_URL}/tx/${o.txid}`,
+				txUrl: `${store.system.url_explorer}/tx/${o.txid}`,
 			};
 		})
 	};
@@ -81,19 +88,18 @@ export default {
 		let result = {};
 		try
 		{
-			// console.log(process.env);
-			// console.log(`${process.env.API_URL}/api/transactions`);
-			result = await axios.get(`${process.env.API_URL}/api/transactions`);
+			result = await axios.get(`${store.state.system.url_api}/api/transactions`);
 			if (result.status !== 200) throw 'API import failed.';
 			result = result.data;
 			if (!(result.status === 'success' && !!result.data)) throw 'Not found response data';
-			return correction(result.data);
+			return correction(result.data, store.state);
 		}
 		catch(e)
 		{
 			error({
 				statusCode: 400,
-				message: e
+				title: 'Transactions',
+				message: 'Failed to import API',
 			});
 		}
 	},

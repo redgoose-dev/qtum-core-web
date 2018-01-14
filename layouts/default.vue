@@ -6,9 +6,9 @@
 			<h1 class="layout-header__logo">
 				<nuxt-link to="/" :title="title">
 					<img
-							src="~static/images/img-logo.png"
-							srcset="~static/images/img-logo@2x.png 2x"
-							alt="Qtum core web"/>
+						src="~static/images/img-logo.png"
+						srcset="~static/images/img-logo@2x.png 2x"
+						alt="Qtum core web"/>
 				</nuxt-link>
 			</h1>
 			<div class="headerSide layout-header__right">
@@ -43,7 +43,7 @@
 	<!-- Container -->
 	<div :class="[
 		'layout-container',
-		minimumSide && 'layout-container-minimum-side'
+		!openSidebar && 'layout-container-minimum-side'
 	]">
 		<!-- Side bar -->
 		<div class="layout-container__sideWrap">
@@ -100,13 +100,16 @@
 export default {
 	computed: {
 		balance() {
-			return this.$store.state.balance.toFixed(6);
+			return this.$store.state.status.balance.toFixed(6);
+		},
+		openSidebar() {
+			return this.$store.state.layout.openSidebar;
 		}
 	},
 	data() {
 		return {
 			title: process.env.TITLE,
-			minimumSide: false,
+			//openSidebar: this.$store.state.layout.openSidebar,
 		};
 	},
 	methods: {
@@ -117,7 +120,9 @@ export default {
 		},
 		toggleSideBar: function()
 		{
-			this.minimumSide = !this.minimumSide;
+			this.$store.commit('updateLayout', {
+				openSidebar: !this.$store.state.layout.openSidebar,
+			});
 		}
 	}
 }

@@ -1,5 +1,5 @@
-const env = require('./env');
-const consoleColor = require('./consoleColor');
+const env = require('./modules/env');
+const consoleColor = require('./modules/consoleColor');
 
 
 // create `.env` file

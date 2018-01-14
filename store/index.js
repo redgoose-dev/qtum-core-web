@@ -1,24 +1,38 @@
 import axios from 'axios';
 
+const pref = require('../.env');
+
 
 // state
 export const state = () => ({
-	balance: 0,
 	status: {
 		core: false,
 		staking: false,
+		balance: 0,
+	},
+	layout: {
+		openSidebar: true,
+	},
+	system: {
+		title: pref.TITLE || 'QTUM CORE',
+		url_api: pref.API_URL || 'http://localhost:3000',
+		url_explorer: pref.TESTNET ? 'https://testnet.qtum.org' : 'https://explorer.qtum.org',
+		cmd_qtum: pref.CORE_ADDRESS || '',
+		testnet: pref.TESTNET || false,
+		lang: pref.LANGUAGE || 'en',
 	},
 });
 
 
 // action
 export const actions = {
-	async nuxtServerInit(context) {
+	async nuxtServerInit(cox) {
+		// get api datas
 		let result = {};
 		try
 		{
 			// get api data
-			result = await axios.get(`${process.env.API_URL}/api`);
+			result = await axios.get(`${cox.state.system.url_api}/api`);
 
 			// check server
 			if (!(result.status === 200 && !!result.data)) throw 'Server error';
@@ -33,19 +47,17 @@ export const actions = {
 			result = result.data;
 
 			// update status
-			context.commit('updateStatus', {
+			cox.commit('updateStatus', {
 				core: true,
-				staking: !!(result.info.unlocked_until && result.info.unlocked_until > 0)
+				staking: !!(result.info.unlocked_until && result.info.unlocked_until > 0),
+				...((result.info.balance && typeof result.info.balance === 'number') ? { balance: result.info.balance } : null)
 			});
-			// update balance
-			context.commit('updateBalance', result.info.balance);
 		}
 		catch(e)
 		{
-			console.error(e);
-			context.commit('updateStatus', {
+			console.error('Error get API in store');
+			cox.commit('updateStatus', {
 				core: false,
-				staking: false
 			});
 		}
 	}
@@ -54,14 +66,15 @@ export const actions = {
 
 // mutations
 export const mutations = {
-
 	/**
-	 * update balance
-	 * 현재 잔액을 업데이트 한다.
+	 * Update system
 	 */
-	updateBalance(state, value)
+	updateSystem(state, value={})
 	{
-		state.balance = value;
+		state.system = {
+			...state.system,
+			...value,
+		};
 	},
 
 	/**
@@ -71,9 +84,27 @@ export const mutations = {
 	updateStatus(state, value=false)
 	{
 		state.status = {
-			...state,
+			...state.status,
 			...value,
 		};
 	},
 
+	/**
+	 * change balance
+	 * 가격을 변경한다.
+	 */
+	changeBalance(state, value=0)
+	{},
+
+	/**
+	 * Update layout
+	 * 레이아웃에 관한 상태를 업데이트 한다.
+	 */
+	updateLayout(state, value={})
+	{
+		state.layout = {
+			...state.layout,
+			...value,
+		};
+	},
 };

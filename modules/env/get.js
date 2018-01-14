@@ -4,7 +4,6 @@
 
 module.exports = function()
 {
-	let env = null;
 	let config = null;
 
 	try

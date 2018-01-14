@@ -112,9 +112,10 @@ import moment from 'moment';
  * correction datas
  *
  * @param {Object} src
+ * @param {Object} store
  * @return {Object}
  */
-function correction(src)
+function correction(src, store)
 {
 	let result = {
 		balance: src.info.balance.toFixed(6),
@@ -122,7 +123,6 @@ function correction(src)
 		version: src.info.version,
 		blocks: src.info.blocks,
 		staking: src.staking.staking,
-		walletStatus: '...', // Unlock for staking
 		networkWeight: src.staking.netstakeweight,
 		connections: src.info.connections,
 		transactions: src.transactions.map((o, k) => {
@@ -133,7 +133,7 @@ function correction(src)
 				type: o.category,
 				confirm: o.confirmations,
 				txid: o.txid,
-				txUrl: `${process.env.EXPLORER_URL}/tx/${o.txid}`,
+				txUrl: `${store.system.url_explorer}/tx/${o.txid}`,
 			};
 		})
 	};
@@ -156,21 +156,27 @@ function correction(src)
 }
 
 export default {
+	computed: {
+		core() {
+			return this.$store.state.status.core;
+		}
+	},
 	async asyncData({ params, error, store })
 	{
 		let result = {};
 		try
 		{
-			result = await axios.get(`${process.env.API_URL}/api/dashboard`);
+			result = await axios.get(`${store.state.system.url_api}/api/dashboard`);
 			if (result.status !== 200) throw 'API import failed.';
 			result = result.data;
-			return correction(result);
+			return correction(result, store.state);
 		}
 		catch(e)
 		{
 			error({
 				statusCode: 400,
-				message: e
+				title: 'Dashboard',
+				message: 'Failed to import API',
 			});
 		}
 	},

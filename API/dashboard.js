@@ -1,5 +1,5 @@
 const async = require('async');
-const qtumCore = require('../qtumCore');
+const qtumCore = require('../modules/qtumCore');
 
 
 module.exports = function(req, res)
