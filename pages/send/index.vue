@@ -18,17 +18,17 @@
 
 
 <script>
-	import * as lib from '~/lib';
+import * as lib from '~/lib';
 
-	export default {
-		head: {
-			title: lib.util.makeTitle('Send')
-		},
-		methods: {
-			back: function(e)
-			{
-				this.$router.go(-1);
-			}
-		},
-	}
+export default {
+	head: {
+		title: lib.util.makeTitle('Send')
+	},
+	methods: {
+		back: function(e)
+		{
+			this.$router.go(-1);
+		}
+	},
+}
 </script>
