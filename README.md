@@ -29,3 +29,10 @@ https://github.com/qtumproject/qtum/releases
 
 1. run `yarn run dev`
 1. connect browser `http://localhost:3000`
+
+
+## Donation
+
+Thank you for your donation.
+
+Qtum wallet : `QXJZPwJTT3mnuVASuPMChCPaPZ7vm9mJU1`

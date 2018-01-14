@@ -18,7 +18,8 @@
     "axios": "^0.17.1",
     "express": "^4.16.2",
     "moment": "^2.20.1",
-    "nuxt": "^1.0.0"
+    "nuxt": "^1.0.0",
+    "query-string": "^5.0.1"
   },
   "devDependencies": {
     "node-sass": "^4.7.2",

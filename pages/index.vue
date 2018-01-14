@@ -1,7 +1,6 @@
 /**
  * Dashboard
  */
-
 <template>
 <article class="contents dashboard">
 	<header class="contents__header dashboard__header">
@@ -107,6 +106,7 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
+import * as lib from '../lib';
 
 /**
  * correction datas
@@ -121,9 +121,9 @@ function correction(src, store)
 		balance: src.info.balance.toFixed(6),
 		stake: src.info.stake.toFixed(6),
 		version: src.info.version,
-		blocks: src.info.blocks,
+		blocks: lib.number.toLocaleNumber(src.info.blocks),
 		staking: src.staking.staking,
-		networkWeight: src.staking.netstakeweight,
+		networkWeight: lib.number.toLocaleNumber(src.staking.netstakeweight, 0.00000001),
 		connections: src.info.connections,
 		transactions: src.transactions.map((o, k) => {
 			return {

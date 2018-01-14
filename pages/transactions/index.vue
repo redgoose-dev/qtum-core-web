@@ -88,7 +88,7 @@ export default {
 		let result = {};
 		try
 		{
-			result = await axios.get(`${store.state.system.url_api}/api/transactions`);
+			result = await axios.get(`${store.state.system.url_api}/api/transactions/?page=1&size=30`);
 			if (result.status !== 200) throw 'API import failed.';
 			result = result.data;
 			if (!(result.status === 'success' && !!result.data)) throw 'Not found response data';
