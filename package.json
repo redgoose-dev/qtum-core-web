@@ -8,8 +8,8 @@
   "license": "MIT",
   "scripts": {
     "setup": "node ./setup.js",
-    "dev": "./node_modules/.bin/nuxt",
-    "start": "./node_modules/.bin/nuxt start",
+    "dev": "PORT=3000 ./node_modules/.bin/nuxt",
+    "start": "PORT=3000 ./node_modules/.bin/nuxt start",
     "build": "./node_modules/.bin/nuxt build",
     "build-check": "./node_modules/.bin/nuxt build --analyze"
   },
