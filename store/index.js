@@ -1,4 +1,6 @@
 import axios from 'axios';
+import * as lib from '../lib';
+
 
 const pref = require('../.env');
 
@@ -12,6 +14,7 @@ export const state = () => ({
 	},
 	layout: {
 		openSidebar: true,
+		dashboard__count_recent: 10,
 	},
 	system: {
 		title: pref.TITLE || 'QTUM CORE',
@@ -26,13 +29,13 @@ export const state = () => ({
 
 // action
 export const actions = {
-	async nuxtServerInit(cox) {
+	async nuxtServerInit({ state, commit }, { req }) {
 		// get api datas
 		let result = {};
 		try
 		{
 			// get api data
-			result = await axios.get(`${cox.state.system.url_api}/api`);
+			result = await axios.get(`${state.system.url_api}/api`);
 
 			// check server
 			if (!(result.status === 200 && !!result.data)) throw 'Server error';
@@ -47,7 +50,7 @@ export const actions = {
 			result = result.data;
 
 			// update status
-			cox.commit('updateStatus', {
+			commit('updateStatus', {
 				core: true,
 				staking: !!(result.info.unlocked_until && result.info.unlocked_until > 0),
 				...((result.info.balance && typeof result.info.balance === 'number') ? { balance: result.info.balance } : null)
@@ -56,9 +59,23 @@ export const actions = {
 		catch(e)
 		{
 			console.error('Error get API in store');
-			cox.commit('updateStatus', {
+			commit('updateStatus', {
 				core: false,
 			});
+		}
+
+		// restore layout
+		if (req.headers.cookie)
+		{
+			let layout = lib.cookie.get(req.headers.cookie, 'layout');
+			if (layout && typeof layout === 'string')
+			{
+				layout = JSON.parse(layout);
+				commit('updateLayout', {
+					...state.layout,
+					...layout
+				});
+			}
 		}
 	}
 };
@@ -102,9 +119,15 @@ export const mutations = {
 	 */
 	updateLayout(state, value={})
 	{
-		state.layout = {
+		let newState = {
 			...state.layout,
 			...value,
 		};
+
+		// set cookie
+		lib.cookie.set('layout', JSON.stringify(newState), 7);
+
+		// update
+		state.layout = newState;
 	},
 };

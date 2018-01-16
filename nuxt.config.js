@@ -52,7 +52,7 @@ module.exports = {
 	},
 
 	serverMiddleware: [
-		'~/api'
+		'~/api',
 	],
 
 };

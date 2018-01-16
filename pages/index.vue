@@ -166,7 +166,8 @@ export default {
 		let result = {};
 		try
 		{
-			result = await axios.get(`${store.state.system.url_api}/api/dashboard`);
+			const count = store.state.layout.dashboard__count_recent;
+			result = await axios.get(`${store.state.system.url_api}/api/dashboard/?count_recent=${count}`);
 			if (result.status !== 200) throw 'API import failed.';
 			result = result.data;
 			return correction(result, store.state);

@@ -1,9 +1,11 @@
 const async = require('async');
 const qtumCore = require('../modules/qtumCore');
+const string = require('./lib/string');
 
 
 module.exports = function(req, res)
 {
+	const params = string.urlToQueryObject(req.url);
 	const tasks = {
 		info: function(cb)
 		{
@@ -33,14 +35,15 @@ module.exports = function(req, res)
 		},
 		transactions: function(cb)
 		{
-			qtumCore.action('listtransactions', true, (result) => {
+			const start = 0;
+			const size = params.count_recent || 8;
+			qtumCore.action(`listtransactions "*" ${size} ${start}`, true, (result) => {
 				if (result.status === 'success' && !!result.data)
 				{
 					let arr = result.data;
 					if (arr.length)
 					{
 						arr.reverse();
-						arr = arr.slice(0,5);
 					}
 					cb(null, arr);
 				}
