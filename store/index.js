@@ -64,7 +64,7 @@ export const actions = {
 			});
 		}
 
-		// restore layout
+		// store recovery from layout
 		if (req.headers.cookie)
 		{
 			let layout = lib.cookie.get(req.headers.cookie, 'layout');

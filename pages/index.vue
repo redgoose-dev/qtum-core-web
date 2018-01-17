@@ -19,7 +19,7 @@
 							<dt>Staked</dt>
 							<dd><strong>{{ stake }}</strong></dd>
 						</dl>
-						<dl class="description description-large" style="margin-top: 20px">
+						<dl class="description description-large">
 							<dt><strong>Balance</strong></dt>
 							<dd class="size-large"><strong class="text-key">{{ balance }} QTUM</strong></dd>
 						</dl>
@@ -55,6 +55,10 @@
 						<dl class="description">
 							<dt>Connections</dt>
 							<dd><strong>{{ connections }}</strong></dd>
+						</dl>
+						<dl class="description">
+							<dt>Testnet</dt>
+							<dd><strong>{{ testnet }}</strong></dd>
 						</dl>
 					</div>
 				</article>
@@ -103,83 +107,4 @@
 </template>
 
 
-<script>
-import axios from 'axios';
-import moment from 'moment';
-import * as lib from '../lib';
-
-/**
- * correction datas
- *
- * @param {Object} src
- * @param {Object} store
- * @return {Object}
- */
-function correction(src, store)
-{
-	let result = {
-		balance: src.info.balance.toFixed(6),
-		stake: src.info.stake.toFixed(6),
-		version: src.info.version,
-		blocks: lib.number.toLocaleNumber(src.info.blocks),
-		staking: src.staking.staking,
-		networkWeight: lib.number.toLocaleNumber(src.staking.netstakeweight, 0.00000001),
-		connections: src.info.connections,
-		transactions: src.transactions.map((o, k) => {
-			return {
-				address: o.address,
-				amount: o.amount.toFixed(6),
-				time: moment.unix(o.time).format('YYYY-MM-DD HH:mm'),
-				type: o.category,
-				confirm: o.confirmations,
-				txid: o.txid,
-				txUrl: `${store.system.url_explorer}/tx/${o.txid}`,
-			};
-		})
-	};
-
-	// set status
-	if (src.info.unlocked_until === undefined)
-	{
-		result.walletStatus = 'Not Encrypted';
-	}
-	else if (src.info.unlocked_until && src.info.unlocked_until > 0)
-	{
-		result.walletStatus = 'Unlocked For Staking';
-	}
-	else
-	{
-		result.walletStatus = 'Locked';
-	}
-
-	return result;
-}
-
-export default {
-	computed: {
-		core() {
-			return this.$store.state.status.core;
-		}
-	},
-	async asyncData({ params, error, store })
-	{
-		let result = {};
-		try
-		{
-			const count = store.state.layout.dashboard__count_recent;
-			result = await axios.get(`${store.state.system.url_api}/api/dashboard/?count_recent=${count}`);
-			if (result.status !== 200) throw 'API import failed.';
-			result = result.data;
-			return correction(result, store.state);
-		}
-		catch(e)
-		{
-			error({
-				statusCode: 400,
-				title: 'Dashboard',
-				message: 'Failed to import API',
-			});
-		}
-	},
-}
-</script>
+<script src="./index.js"></script>

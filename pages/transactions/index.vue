@@ -9,11 +9,11 @@
 	</header>
 
 	<div class="contents__body">
-		<form action="#" method="get" class="search" style="display: none;">
+		<form action="#" method="get" class="search">
 			<fieldset>
 				<legend class="blind">filter and search form</legend>
 				<div>
-
+					TODO: filter form
 				</div>
 			</fieldset>
 		</form>
@@ -63,7 +63,7 @@ import axios from 'axios';
 import moment from 'moment';
 import * as lib from '~/lib';
 
-const SIZE = 20;
+const SIZE = 15;
 
 
 /**

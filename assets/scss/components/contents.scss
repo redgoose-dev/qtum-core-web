@@ -100,10 +100,31 @@ a {
 		flex: 1;
 		color: #666;
 	}
-	> dd {}
+	> dd {
+		margin: 0;
+	}
 	> dt, > dd {
 		&.size-large {
 			font-size: 18px;
+		}
+	}
+	&-large {
+		margin-top: 15px;
+	}
+
+	@media (max-width: 480px) {
+		display: block;
+		padding: 10px 15px;
+		margin: 0 -15px;
+		border-top: 1px dashed #ccc;
+		&:first-child {
+			border-top: none;
+		}
+		> dd {
+			margin-top: 10px;
+		}
+		&-large {
+			margin-top: inherit;
 		}
 	}
 }
