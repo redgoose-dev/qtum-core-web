@@ -3,12 +3,6 @@
 
 .login {
 	height: 100vh;
-	//position: absolute;
-	//left: 0;
-	//right: 0;
-	//top: 0;
-	//bottom: 0;
-	// TODO 레이아웃 해결 필요함
 
 	&__body {
 		display: block;
@@ -73,6 +67,7 @@
 			border: none;
 			font-size: 14px;
 			letter-spacing: .5px;
+			background: none;
 			&:focus {
 				outline: none;
 				& + i:after {
@@ -83,11 +78,13 @@
 	}
 
 	@media (max-width: $size-mini) {
-		background: #fff;
+		background: none;
 		&__body {
-			min-width: 0;
-			//min-height: 100%;
+			min-width: 240px;
+			padding: 0 0 0;
 			box-shadow: 0 0 0;
+			background: none;
+			border-radius: 0;
 		}
 	}
 }
