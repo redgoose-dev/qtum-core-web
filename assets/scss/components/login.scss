@@ -1,0 +1,93 @@
+@import "../variables";
+
+
+.login {
+	height: 100vh;
+	//position: absolute;
+	//left: 0;
+	//right: 0;
+	//top: 0;
+	//bottom: 0;
+	// TODO 레이아웃 해결 필요함
+
+	&__body {
+		display: block;
+		background: #fff;
+		min-width: 380px;
+		padding: 50px 40px 50px;
+		margin: 0 0 30px;
+		box-shadow: 0 2px 8px rgba(0,0,0,.15);
+		border-radius: 3px;
+	}
+	&__logo {
+		margin: 0 0 50px;
+		img {
+			display: block;
+			margin: 0 auto;
+		}
+	}
+	&__form {
+		margin: 0;
+		fieldset {
+			margin: 0;
+			padding: 0;
+			border: none;
+		}
+	}
+	&__label {
+		display: block;
+		margin: 0 0 8px;
+		font-size: 16px;
+		font-weight: 600;
+	}
+	&__input {
+		display: block;
+		position: relative;
+		height: 44px;
+		i {
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			height: 2px;
+			background: $color-medium-gray;
+			&:after {
+				content: '';
+				display: block;
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				background: $color-key;
+				transform: scaleX(0);
+				transform-origin: 0 0;
+				transition: transform .25s ease-out;
+			}
+		}
+		input {
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 100%;
+			border: none;
+			font-size: 14px;
+			letter-spacing: .5px;
+			&:focus {
+				outline: none;
+				& + i:after {
+					transform: scaleX(1);
+				}
+			}
+		}
+	}
+
+	@media (max-width: $size-mini) {
+		background: #fff;
+		&__body {
+			min-width: 0;
+			//min-height: 100%;
+			box-shadow: 0 0 0;
+		}
+	}
+}

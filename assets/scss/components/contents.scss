@@ -22,6 +22,18 @@ a {
 }
 
 
+// attributes
+.blind {
+	position: absolute;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+	font-size: 0;
+	line-height: 0;
+}
+
+
 // contents
 .contents {
 	&__header {
@@ -112,7 +124,7 @@ a {
 		margin-top: 15px;
 	}
 
-	@media (max-width: 480px) {
+	@media (max-width: $size-mini) {
 		display: block;
 		padding: 10px 15px;
 		margin: 0 -15px;
@@ -173,3 +185,11 @@ a {
 
 // index
 .index {}
+
+
+// center contents
+.center-content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
