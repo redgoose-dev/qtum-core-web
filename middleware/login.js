@@ -1,4 +1,4 @@
 export default function({})
 {
-	console.warn('call middleware: login');
+	console.warn('call middleware: login. TODO: check login');
 }

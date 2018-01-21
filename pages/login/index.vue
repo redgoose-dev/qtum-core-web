@@ -6,11 +6,11 @@
 				<img
 					src="~/static/images/img-login-logo.png"
 					srcset="~/static/images/img-login-logo@2x.png"
-					v-bind:alt="title"
+					:alt="title"
 					width="193"/>
 			</h1>
 
-			<form action="#" method="post" class="login__form">
+			<form action="#" method="post" class="login__form" v-on:submit="onSubmit">
 				<fieldset>
 					<legend class="blind">login form</legend>
 					<label for="login_password" class="login__label">Password</label>
@@ -24,6 +24,17 @@
 						<i></i>
 					</span>
 				</fieldset>
+
+				<form-checkbox
+					label="Remember me"
+					v-model="rememberAuth"
+					className="foooo"/>
+
+				<nav>
+					<form-button
+						href="https://redgoose.me"
+						label="LOGIN"/>
+				</nav>
 			</form>
 		</div>
 	</article>
@@ -32,9 +43,15 @@
 
 
 <script>
-import * as lib from '../../lib';
+import FormCheckbox from '~/components/forms/form-checkbox';
+import FormButton from '~/components/forms/form-button';
+import * as lib from '~/lib';
 
 export default {
+	components: {
+		FormCheckbox,
+		FormButton,
+	},
 	layout: 'blank',
 	head: {
 		title: lib.util.makeTitle('login')
@@ -43,12 +60,18 @@ export default {
 	asyncData({ store }) {
 		return {
 			title: store.state.system.title,
+			rememberAuth: false,
 		};
 	},
 	methods: {
-		back: function(e)
+		onSubmit: function(e)
 		{
-			this.$router.go(-1);
+			e.preventDefault();
+			console.log('call on submit');
+		},
+		foo: function(e)
+		{
+			console.log('call login button', e, this);
 		}
 	},
 }
