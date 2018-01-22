@@ -32,8 +32,9 @@
 
 				<nav>
 					<form-button
-						href="https://redgoose.me"
-						label="LOGIN"/>
+						type="submit"
+						label="LOGIN"
+						class="form-button"/>
 				</nav>
 			</form>
 		</div>
@@ -69,10 +70,6 @@ export default {
 			e.preventDefault();
 			console.log('call on submit');
 		},
-		foo: function(e)
-		{
-			console.log('call login button', e, this);
-		}
 	},
 }
 </script>
