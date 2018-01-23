@@ -4,7 +4,7 @@
 
 <template>
 <article class="contents transactions">
-	<header class="contents__header transactions__header">
+	<header class="contents__header">
 		<h1>Transactions</h1>
 	</header>
 

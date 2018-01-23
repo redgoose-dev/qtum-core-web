@@ -8,7 +8,6 @@ $width-side-mini: 47px;
 
 // header
 .layout-header {
-
 	$line-color: rgba(255,255,255,.15);
 
 	height: $height-header;
@@ -23,7 +22,6 @@ $width-side-mini: 47px;
 		height: $height-header;
 		background: $color-dark;
 	}
-
 	&__logo {
 		flex: 1;
 		display: flex;
@@ -34,8 +32,11 @@ $width-side-mini: 47px;
 			height: 100%;
 			padding: 0 15px;
 		}
-		img {
+		&-basic {
 			display: block;
+		}
+		&-mobile {
+			display: none;
 		}
 	}
 
@@ -50,13 +51,16 @@ $width-side-mini: 47px;
 		&__balance {
 			display: flex;
 			align-items: center;
-			padding: 0 20px;
+			padding: 0 15px;
 		}
 		&__balanceText {
 			font-size: 14px;
 			font-style: normal;
 			color: $color-key;
 			font-family: $font-qtum;
+			&:after {
+				content: 'QTUM';
+			}
 		}
 		&__settings {
 			width: $height-header;
@@ -66,7 +70,6 @@ $width-side-mini: 47px;
 			}
 		}
 	}
-
 	.dropDown {
 		$self: &;
 		height: 100%;
@@ -142,6 +145,23 @@ $width-side-mini: 47px;
 		}
 	}
 
+	@media (max-width: $size-mobile) {
+		&__logo {
+			&-basic {
+				display: none;
+			}
+			&-mobile {
+				display: block;
+			}
+		}
+	}
+	@media (max-width: 375px) {
+		.headerSide {
+			&__balance {
+				display: none;
+			}
+		}
+	}
 }
 
 
@@ -163,11 +183,11 @@ $width-side-mini: 47px;
 		font-size: 0;
 		border: none;
 		cursor: pointer;
+		height: 24px;
 		&:focus {
 			outline: $border-focus;
 		}
 	}
-
 	.gnb {
 		ul {
 			margin: 0;
@@ -187,8 +207,15 @@ $width-side-mini: 47px;
 				background: $color-light-gray;
 			}
 		}
-		i {
-			display: block;
+		em {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 24px;
+			height: 24px;
+			i {
+				display: block;
+			}
 		}
 		span {
 			display: block;

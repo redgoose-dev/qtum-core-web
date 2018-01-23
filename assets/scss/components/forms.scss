@@ -1,12 +1,74 @@
+@import "../variables";
+
 // input
 .form-input {
-
+	display: block;
+	height: 44px;
+	> input {
+		height: 100%;
+	}
 }
 
 // checkbox
 .form-checkbox {
-
-	&-group {}
+	position: relative;
+	display: block;
+	padding: 0;
+	margin: 0;
+	font-size: 0;
+	overflow: hidden;
+	cursor: pointer;
+	> input {
+		display: block;
+		position: absolute;
+		left: 5px;
+		top: 5px;
+		margin: 0;
+		border: 1px solid #000;
+		opacity: 0;
+		&:checked + i {
+			&:after {
+				opacity: 1;
+			}
+		}
+	}
+	> i {
+		display: inline-block;
+		position: relative;
+		width: 20px;
+		height: 20px;
+		border: 1px solid $color-form-border;
+		border-radius: 2px;
+		&:after {
+			content: '';
+			position: absolute;
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			left: 50%;
+			top: 50%;
+			margin: -5px 0 0 -5px;
+			background: $color-key;
+			border-radius: 2px;
+			transition: opacity .15s ease-out;
+			opacity: 0;
+		}
+	}
+	&-label {
+		display: block;
+		cursor: pointer;
+		font-size: 0;
+		padding: 5px 0;
+		> * {
+			display: inline-block;
+			vertical-align: middle;
+		}
+		> em {
+			font-style: normal;
+			margin: 0 0 0 8px;
+			font-size: 14px;
+		}
+	}
 }
 
 
@@ -18,5 +80,43 @@
 
 // button
 .form-button {
-	border: 1px solid #000;
+	display: block;
+	margin: 0;
+	height: 44px;
+	padding: 0 15px;
+	border-radius: 2px;
+	background: #fff;
+	border: 1px solid $color-form-border;
+	color: $color-dark;
+	font-size: 16px;
+	font-weight: 600;
+	cursor: pointer;
+	&:focus {
+		outline: $border-focus;
+	}
+	&[type=button],
+	&[type=submit],
+	&[type=reset] {
+		width: 100%;
+	}
+	&-key {
+		background: $color-key;
+		border: 1px solid $color-key;
+		color: #fff;
+	}
+	&-complete {
+		background: $color-complete;
+		border: 1px solid $color-complete;
+		color: #fff;
+	}
+	&-error {
+		background: $color-error;
+		border: 1px solid $color-error;
+		color: #fff;
+	}
+	&-disabled {
+		background: $color-form-border;
+		border: 1px solid $color-form-border;
+		color: #fff;
+	}
 }

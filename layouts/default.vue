@@ -8,12 +8,26 @@
 					<img
 						src="~static/images/img-logo.png"
 						srcset="~static/images/img-logo@2x.png 2x"
-						alt="Qtum core web"/>
+						alt="Qtum core web"
+						class="layout-header__logo-basic"/>
+					<img
+						src="~static/images/img-logo-mobile.png"
+						srcset="~static/images/img-logo-mobile@2x.png 2x"
+						alt="Qtum core web"
+						class="layout-header__logo-mobile"/>
 				</nuxt-link>
 			</h1>
 			<div class="headerSide layout-header__right">
+				<div class="headerSide__wrap headerSide__status">
+					<i class="sp-ico ico-status-power-off"></i>
+					<i class="sp-ico ico-status-power-on"></i>
+					<i class="sp-ico ico-status-lock"></i>
+					<i class="sp-ico ico-status-unlock"></i>
+					<i class="sp-ico ico-status-staking-off"></i>
+					<i class="sp-ico ico-status-staking-on"></i>
+				</div>
 				<div class="headerSide__wrap headerSide__balance">
-					<em class="headerSide__balanceText">{{ balance }} QTUM</em>
+					<em class="headerSide__balanceText">{{ balance }}</em>
 				</div>
 				<div v-if="true" class="headerSide__wrap">
 					<nav class="dropDown">
@@ -54,20 +68,26 @@
 				<nav class="gnb">
 					<ul>
 						<li class="gnb__item">
-							<nuxt-link to="/" title="DASHBOARD">
-								<i class="sp-ico ico-gnb-home"></i>
+							<nuxt-link to="/" title="Dashboard">
+								<em><i class="sp-ico ico-gnb-home"></i></em>
 								<span>DASHBOARD</span>
 							</nuxt-link>
 						</li>
 						<li class="gnb__item">
-							<nuxt-link to="/transactions" title="TRANSACTIONS">
-								<i class="sp-ico ico-gnb-switch"></i>
+							<nuxt-link to="/transactions" title="Transactions">
+								<em><i class="sp-ico ico-gnb-switch"></i></em>
 								<span>TRANSACTIONS</span>
 							</nuxt-link>
 						</li>
 						<li class="gnb__item">
-							<nuxt-link to="/send" title="SEND">
-								<i class="sp-ico ico-gnb-post"></i>
+							<nuxt-link to="/wallets" title="Wallets">
+								<em><i class="sp-ico ico-gnb-wallet"></i></em>
+								<span>WALLETS</span>
+							</nuxt-link>
+						</li>
+						<li class="gnb__item">
+							<nuxt-link to="/send" title="Send to">
+								<em><i class="sp-ico ico-gnb-post"></i></em>
 								<span>SEND</span>
 							</nuxt-link>
 						</li>
@@ -100,7 +120,7 @@
 export default {
 	computed: {
 		balance() {
-			return this.$store.state.status.balance.toFixed(6);
+			return this.$store.state.status.balance.toFixed(0);
 		},
 		openSidebar() {
 			return this.$store.state.layout.openSidebar;
@@ -109,14 +129,13 @@ export default {
 	data() {
 		return {
 			title: process.env.TITLE,
-			//openSidebar: this.$store.state.layout.openSidebar,
 		};
 	},
 	methods: {
 		logout: function(e)
 		{
 			alert('call logout');
-			console.log('call logout');
+			console.log('TODO: call logout');
 		},
 		toggleSideBar: function()
 		{

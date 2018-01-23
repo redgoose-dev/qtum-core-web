@@ -71,7 +71,7 @@
 						<h1>Recent transactions</h1>
 						<nav>
 							<nuxt-link to="/transactions" title="More transactions">
-								<i class="sp-ico ico-more2"></i>
+								<i class="sp-ico ico-more-active"></i>
 							</nuxt-link>
 						</nav>
 					</header>

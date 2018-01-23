@@ -1,6 +1,6 @@
 <template>
 <main>
-	<article class="login center-content">
+	<article class="center-content login">
 		<div class="login__body">
 			<h1 class="login__logo">
 				<img
@@ -28,13 +28,13 @@
 				<form-checkbox
 					label="Remember me"
 					v-model="rememberAuth"
-					className="foooo"/>
+					className="login__rememberMe"/>
 
-				<nav>
+				<nav class="login__nav">
 					<form-button
 						type="submit"
 						label="LOGIN"
-						class="form-button"/>
+						class="form-button form-button-key"/>
 				</nav>
 			</form>
 		</div>

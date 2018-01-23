@@ -23,8 +23,8 @@
 				@change="onChange"
 			/>
 			<i class="form-checkbox__skin"></i>
-			<em>{{ label }}</em>
 		</span>
+		<em class="form-checkbox__label">{{ label }}</em>
 	</label>
 </template>
 

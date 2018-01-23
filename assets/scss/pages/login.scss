@@ -8,13 +8,13 @@
 		display: block;
 		background: #fff;
 		min-width: 380px;
-		padding: 50px 40px 50px;
+		padding: 42px 40px;
 		margin: 0 0 30px;
 		box-shadow: 0 2px 8px rgba(0,0,0,.15);
 		border-radius: 3px;
 	}
 	&__logo {
-		margin: 0 0 50px;
+		margin: 0 0 40px;
 		img {
 			display: block;
 			margin: 0 auto;
@@ -65,7 +65,7 @@
 			width: 100%;
 			height: 100%;
 			border: none;
-			font-size: 14px;
+			font-size: 16px;
 			letter-spacing: .5px;
 			background: none;
 			&:focus {
@@ -74,7 +74,16 @@
 					transform: scaleX(1);
 				}
 			}
+			&::placeholder {
+				color: #aaa;
+			}
 		}
+	}
+	&__rememberMe {
+		margin: 10px 0;
+	}
+	&__nav {
+		margin: 20px 0 0;
 	}
 
 	@media (max-width: $size-mini) {
