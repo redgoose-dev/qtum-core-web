@@ -96,6 +96,8 @@
 	}
 
 	&-loading {
-		background: lime;
+		> i {
+			animation: 2s roty infinite linear;
+		}
 	}
 }
