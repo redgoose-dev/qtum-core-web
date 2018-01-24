@@ -14,6 +14,8 @@ function correction(src, store)
 {
 	let result = {
 		balance: src.info.balance.toFixed(6),
+		immature_balance: src.wallet.immature_balance.toFixed(6),
+		unconfirmed_balance: src.wallet.unconfirmed_balance.toFixed(6),
 		stake: src.info.stake.toFixed(6),
 		version: src.info.version,
 		blocks: lib.number.toLocaleNumber(src.info.blocks),
@@ -40,7 +42,7 @@ function correction(src, store)
 	}
 	else if (src.info.unlocked_until && src.info.unlocked_until > 0)
 	{
-		result.walletStatus = 'Unlocked For Staking';
+		result.walletStatus = (store.status.unlockForStaking) ? 'Unlocked For Staking' : 'Unlocked';
 	}
 	else
 	{
@@ -62,6 +64,8 @@ export default {
 	{
 		let result = {
 			balance: 0,
+			immature_balance: 0,
+			unconfirmed_balance: 0,
 			stake: 0,
 			version: 0,
 			blocks: 0,

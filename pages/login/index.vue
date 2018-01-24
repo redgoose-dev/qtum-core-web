@@ -31,10 +31,10 @@
 					className="login__rememberMe"/>
 
 				<nav class="login__nav">
-					<form-button
+					<button-basic
 						type="submit"
 						label="LOGIN"
-						class="form-button form-button-key"/>
+						className="button-key"/>
 				</nav>
 			</form>
 		</div>
@@ -44,14 +44,14 @@
 
 
 <script>
-import FormCheckbox from '~/components/forms/form-checkbox';
-import FormButton from '~/components/forms/form-button';
 import * as lib from '~/lib';
+import FormCheckbox from '~/components/forms/form-checkbox';
+import ButtonBasic from '~/components/button/button-basic';
 
 export default {
 	components: {
 		FormCheckbox,
-		FormButton,
+		ButtonBasic,
 	},
 	layout: 'blank',
 	head: {

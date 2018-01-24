@@ -1,6 +1,7 @@
 <template>
 	<button
 		:type="type"
+		:class="[ 'button', className ]"
 		@click="onClick"
 		v-if="type === 'button' || type === 'submit'">
 		{{ label }}
@@ -15,12 +16,14 @@
 </template>
 
 <script>
+	//form-button-key
 export default {
 	props: [
 		'type',
 		'href',
 		'target',
 		'label',
+		'className'
 	],
 	methods: {
 		onClick: function(e)

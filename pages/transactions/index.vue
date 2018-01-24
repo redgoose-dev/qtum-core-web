@@ -45,14 +45,10 @@
 			</table>
 		</div>
 
-		<nav v-if="!noMore">
-			<button type="button" v-if="!loading_more" v-on:click="more">
-				<span>more..</span>
-			</button>
-			<div v-else>
-				<p>LOADING...</p>
-			</div>
-		</nav>
+		<button-more
+			:show="!noMore"
+			:loading="!!loading_more"
+			@click="more"/>
 	</div>
 </article>
 </template>

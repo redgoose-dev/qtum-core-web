@@ -59,7 +59,7 @@ $width-side-mini: 47px;
 			color: $color-key;
 			font-family: $font-qtum;
 			&:after {
-				content: 'QTUM';
+				content: ' QTUM';
 			}
 		}
 		&__settings {
@@ -67,6 +67,19 @@ $width-side-mini: 47px;
 			justify-content: center;
 			&:focus {
 				outline: $border-focus;
+			}
+		}
+		&__status {
+			padding: 0 10px;
+			span {
+				display: flex;
+				padding: 0 4px;
+				height: $height-header;
+				justify-content: center;
+				align-items: center;
+			}
+			i {
+				display: block;
 			}
 		}
 	}

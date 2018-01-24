@@ -5,11 +5,36 @@ import * as lib from '../lib';
 const pref = require('../.env');
 
 
+/**
+ * Get lock information
+ *
+ * @param {Number} unlocked_until
+ * @return {String}
+ */
+function getLockInformation(unlocked_until=null)
+{
+	if (unlocked_until === 0)
+	{
+		return 'encrypted'; // 잠겨있음
+	}
+	else if (unlocked_until > 0)
+	{
+		return 'unLock'; // 잠김해제되어있음
+	}
+	else
+	{
+		return 'notEncrypted'; // 잠금설정되어있지 않음
+	}
+}
+
+
 // state
 export const state = () => ({
 	status: {
 		core: false,
 		staking: false,
+		lock: null,
+		unlockForStaking: false,
 		balance: 0,
 	},
 	layout: {
@@ -25,7 +50,6 @@ export const state = () => ({
 		lang: pref.LANGUAGE || 'en',
 	},
 });
-
 
 // action
 export const actions = {
@@ -52,16 +76,15 @@ export const actions = {
 			// update status
 			commit('updateStatus', {
 				core: true,
-				staking: !!(result.info.unlocked_until && result.info.unlocked_until > 0),
+				staking: result.staking.staking,
+				lock: getLockInformation(result.wallet.unlocked_until),
 				...((result.info.balance && typeof result.info.balance === 'number') ? { balance: result.info.balance } : null)
 			});
 		}
 		catch(e)
 		{
-			console.error('Error get API in store');
-			commit('updateStatus', {
-				core: false,
-			});
+			console.error('ERROR', e);
+			commit('updateStatus', { core: false });
 		}
 
 		// store recovery from layout
@@ -79,7 +102,6 @@ export const actions = {
 		}
 	}
 };
-
 
 // mutations
 export const mutations = {

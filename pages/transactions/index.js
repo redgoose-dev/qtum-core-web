@@ -1,9 +1,10 @@
 import axios from 'axios';
 import moment from 'moment';
 import * as lib from '~/lib';
+import ButtonMore from '~/components/button/button-more';
 
 
-const SIZE = 15;
+const SIZE = 12;
 
 
 /**
@@ -50,48 +51,22 @@ async function getTransactions(store, page=1, size=SIZE)
 
 
 export default {
-
-	// created() {}, // TODO: 이거 한번 시도해보기
-
 	head: {
 		title: lib.util.makeTitle('Transactions')
 	},
 
-	async asyncData({ params, error, store })
-	{
-		let result = {
-			page: 1,
-			loading_more: false,
-			noMore: false,
-			transactions: [],
-		};
-
-		try
-		{
-			let transactions = await getTransactions(store.state);
-			if (transactions.status === 'error') throw transactions.message;
-			return {
-				...result,
-				transactions: transactions.data,
-				noMore: (transactions.data && transactions.data.length < SIZE),
-			};
-		}
-		catch(e)
-		{
-			error({
-				statusCode: 400,
-				title: 'Transactions',
-				message: 'Failed to import API',
-			});
-		}
+	components: {
+		ButtonMore
 	},
 
 	methods: {
 		more: async function(e)
 		{
+			console.log('call more');
 			this.loading_more = true;
 			try
 			{
+				await lib.util.sleep(3000); // TODO : 로딩중임을 확인하기 위한 딜레이
 				let transactions = await getTransactions(this.$store.state, this.page + 1);
 				if (transactions.status === 'error') throw transactions.message;
 				if (transactions.data && transactions.data.length)
@@ -112,6 +87,34 @@ export default {
 				console.error('ERROR MORE', e);
 			}
 			this.loading_more = false;
+		}
+	},
+
+	async asyncData({ params, error, store })
+	{
+		let result = {
+			page: 1,
+			loading_more: false,
+			noMore: false,
+			transactions: [],
+		};
+		try
+		{
+			let transactions = await getTransactions(store.state);
+			if (transactions.status === 'error') throw transactions.message;
+			return {
+				...result,
+				transactions: transactions.data,
+				noMore: (transactions.data && transactions.data.length < SIZE),
+			};
+		}
+		catch(e)
+		{
+			error({
+				statusCode: 400,
+				title: 'Transactions',
+				message: 'Failed to import API',
+			});
 		}
 	},
 }

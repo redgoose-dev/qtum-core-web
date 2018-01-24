@@ -19,12 +19,18 @@
 			</h1>
 			<div class="headerSide layout-header__right">
 				<div class="headerSide__wrap headerSide__status">
-					<i class="sp-ico ico-status-power-off"></i>
-					<i class="sp-ico ico-status-power-on"></i>
-					<i class="sp-ico ico-status-lock"></i>
-					<i class="sp-ico ico-status-unlock"></i>
-					<i class="sp-ico ico-status-staking-off"></i>
-					<i class="sp-ico ico-status-staking-on"></i>
+					<span :title="core ? 'On core' : 'Off core'">
+						<i class="sp-ico ico-status-power-on" v-if="core"></i>
+						<i class="sp-ico ico-status-power-off" v-else></i>
+					</span>
+					<span :title="`${lock} wallet`" v-if="core">
+						<i class="sp-ico ico-status-unlock" v-if="lock === 'unLock'"></i>
+						<i class="sp-ico ico-status-lock" v-else></i>
+					</span>
+					<span :title="staking ? 'Staking' : 'Not staking'" v-if="core">
+						<i class="sp-ico ico-status-staking-on" v-if="staking"></i>
+						<i class="sp-ico ico-status-staking-off" v-else></i>
+					</span>
 				</div>
 				<div class="headerSide__wrap headerSide__balance">
 					<em class="headerSide__balanceText">{{ balance }}</em>
@@ -119,12 +125,11 @@
 <script>
 export default {
 	computed: {
-		balance() {
-			return this.$store.state.status.balance.toFixed(0);
-		},
-		openSidebar() {
-			return this.$store.state.layout.openSidebar;
-		}
+		core() { return this.$store.state.status.core; },
+		staking() { return this.$store.state.status.staking; },
+		balance() { return this.$store.state.status.balance.toFixed(2); },
+		openSidebar() { return this.$store.state.layout.openSidebar; },
+		lock() { return this.$store.state.status.lock; },
 	},
 	data() {
 		return {

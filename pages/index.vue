@@ -19,6 +19,14 @@
 							<dt>Staked</dt>
 							<dd><strong>{{ stake }}</strong></dd>
 						</dl>
+						<dl class="description">
+							<dt>immature</dt>
+							<dd><strong>{{ immature_balance }}</strong></dd>
+						</dl>
+						<dl class="description">
+							<dt>unconfirmed</dt>
+							<dd><strong>{{ unconfirmed_balance }}</strong></dd>
+						</dl>
 						<dl class="description description-large">
 							<dt><strong>Balance</strong></dt>
 							<dd class="size-large"><strong class="text-key">{{ balance }} QTUM</strong></dd>
@@ -56,7 +64,7 @@
 							<dt>Connections</dt>
 							<dd><strong>{{ connections }}</strong></dd>
 						</dl>
-						<dl class="description">
+						<dl class="description" v-if="testnet">
 							<dt>Testnet</dt>
 							<dd><strong>{{ testnet }}</strong></dd>
 						</dl>

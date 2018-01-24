@@ -18,9 +18,22 @@ module.exports = function(req, res)
 				}
 			});
 		},
-		stakinginfo: function(cb)
+		staking: function(cb)
 		{
 			qtumCore.action('getstakinginfo', true, (result) => {
+				if (result.status === 'success' && !!result.data)
+				{
+					cb(null, result.data);
+				}
+				else
+				{
+					cb(result.message, null);
+				}
+			});
+		},
+		wallet: function(cb)
+		{
+			qtumCore.action('getwalletinfo', true, (result) => {
 				if (result.status === 'success' && !!result.data)
 				{
 					cb(null, result.data);
@@ -34,7 +47,7 @@ module.exports = function(req, res)
 	};
 
 	async.parallel(tasks, function(err, result) {
-		if (result && result.info && result.stakinginfo)
+		if (result && result.info && result.staking)
 		{
 			res.json(result);
 		}

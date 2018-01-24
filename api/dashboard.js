@@ -20,6 +20,19 @@ module.exports = function(req, res)
 				}
 			});
 		},
+		wallet: function(cb)
+		{
+			qtumCore.action('getwalletinfo', true, (result) => {
+				if (result.status === 'success' && !!result.data)
+				{
+					cb(null, result.data);
+				}
+				else
+				{
+					cb(result.message, null);
+				}
+			});
+		},
 		staking: function(cb)
 		{
 			qtumCore.action('getstakinginfo', true, (result) => {
