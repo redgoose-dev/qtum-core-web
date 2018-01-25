@@ -32,6 +32,11 @@ router.get('/dashboard', require('./dashboard'));
  */
 router.get('/transactions', require('./transactions'));
 
+/**
+ * wallets
+ */
+router.get('/wallets', require('./wallets'));
+
 
 // export
 module.exports = {

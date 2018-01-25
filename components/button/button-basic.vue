@@ -16,7 +16,6 @@
 </template>
 
 <script>
-	//form-button-key
 export default {
 	props: [
 		'type',
@@ -25,6 +24,12 @@ export default {
 		'label',
 		'className'
 	],
+	computed: {
+		isButton() {
+			// TODO: 이 부분 테스트 해보기
+			return true;
+		}
+	},
 	methods: {
 		onClick: function(e)
 		{
