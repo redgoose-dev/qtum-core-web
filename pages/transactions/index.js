@@ -62,11 +62,9 @@ export default {
 	methods: {
 		more: async function(e)
 		{
-			console.log('call more');
 			this.loading_more = true;
 			try
 			{
-				await lib.util.sleep(3000); // TODO : 로딩중임을 확인하기 위한 딜레이
 				let transactions = await getTransactions(this.$store.state, this.page + 1);
 				if (transactions.status === 'error') throw transactions.message;
 				if (transactions.data && transactions.data.length)

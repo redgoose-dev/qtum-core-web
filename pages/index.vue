@@ -16,6 +16,10 @@
 					</header>
 					<div class="section__body">
 						<dl class="description">
+							<dt><strong>Balance</strong></dt>
+							<dd class="size-large"><strong class="text-key">{{ balance }} QTUM</strong></dd>
+						</dl>
+						<dl class="description">
 							<dt>Staked</dt>
 							<dd><strong>{{ stake }}</strong></dd>
 						</dl>
@@ -26,10 +30,6 @@
 						<dl class="description">
 							<dt>unconfirmed</dt>
 							<dd><strong>{{ unconfirmed_balance }}</strong></dd>
-						</dl>
-						<dl class="description description-large">
-							<dt><strong>Balance</strong></dt>
-							<dd class="size-large"><strong class="text-key">{{ balance }} QTUM</strong></dd>
 						</dl>
 					</div>
 				</article>

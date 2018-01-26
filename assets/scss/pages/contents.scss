@@ -121,9 +121,6 @@ a {
 			font-size: 18px;
 		}
 	}
-	&-large {
-		margin-top: 15px;
-	}
 
 	@media (max-width: $size-mini) {
 		display: block;
@@ -135,9 +132,6 @@ a {
 		}
 		> dd {
 			margin-top: 10px;
-		}
-		&-large {
-			margin-top: inherit;
 		}
 	}
 }
