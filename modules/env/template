@@ -4,7 +4,7 @@
   "TESTNET": false,
   "CORE_ADDRESS": "{ADDRESS}/qtum/bin",
   "LANGUAGE": "en",
-  "USE_AUTH": false,
-  "NOT_ALLOW": ["base"],
+  "USE_AUTH": true,
+  "NOT_ALLOW": ["wallets", "send"],
   "HASH": ""
 }
