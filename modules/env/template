@@ -1,7 +1,10 @@
-module.exports = {
-  TITLE: 'QTUM CORE',
-  API_URL: 'http://localhost:3000',
-  TESTNET: false,
-  CORE_ADDRESS: '{ADDRESS}/qtum/bin',
-  LANGUAGE: 'en',
-};
+{
+  "TITLE": "QTUM CORE",
+  "API_URL": "http://localhost:3000",
+  "TESTNET": false,
+  "CORE_ADDRESS": "{ADDRESS}/qtum/bin",
+  "LANGUAGE": "en",
+  "USE_AUTH": false,
+  "NOT_ALLOW": ["base"],
+  "HASH": ""
+}

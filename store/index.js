@@ -2,9 +2,6 @@ import axios from 'axios';
 import * as lib from '../lib';
 
 
-const pref = require('../.env');
-
-
 /**
  * Get lock information
  *
@@ -42,19 +39,48 @@ export const state = () => ({
 		dashboard__count_recent: 10,
 	},
 	system: {
-		title: pref.TITLE || 'QTUM CORE',
-		url_api: pref.API_URL || 'http://localhost:3000',
-		url_explorer: pref.TESTNET ? 'https://testnet.qtum.org' : 'https://explorer.qtum.org',
-		cmd_qtum: pref.CORE_ADDRESS || '',
-		testnet: pref.TESTNET || false,
-		lang: pref.LANGUAGE || 'en',
+		title: '',
+		url_api: '',
+		url_explorer: '',
+		cmd_qtum: '',
+		testnet: false,
+		lang: '',
+		useAuth: false,
+		notAllow: [],
+		hash: null,
 	},
 });
 
 // action
 export const actions = {
 	async nuxtServerInit({ state, commit }, { req }) {
-		// get api datas
+		// update system
+		const pref = require('../.env.json');
+		let system = {
+			title: pref.TITLE || 'QTUM CORE',
+			url_api: pref.API_URL || 'http://localhost:3000',
+			url_explorer: pref.TESTNET ? 'https://testnet.qtum.org' : 'https://explorer.qtum.org',
+			cmd_qtum: pref.CORE_ADDRESS || '',
+			testnet: pref.TESTNET || false,
+			lang: pref.LANGUAGE || 'en',
+			useAuth: pref.USE_AUTH || false,
+			notAllow: pref.NOT_ALLOW || [],
+		};
+		// set hash
+		if (req.headers.cookie)
+		{
+			let hash = lib.cookie.get(req.headers.cookie, 'hash');
+			// 쿠키에 있는 `hash`값 검사
+			if (hash && typeof hash === 'string')
+			{
+				// 쿠키에 있는 `hash`와 `env.HASH`에 있는 값을 대조해본다.
+				hash = decodeURIComponent(hash);
+				system.hash = (hash === pref.HASH) ? hash : null;
+			}
+		}
+		commit('updateSystem', system);
+
+		// update status
 		let result = {};
 		try
 		{

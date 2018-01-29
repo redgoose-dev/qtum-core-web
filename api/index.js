@@ -37,6 +37,12 @@ router.get('/transactions', require('./transactions'));
  */
 router.get('/wallets', require('./wallets'));
 
+/**
+ * auth
+ */
+router.post('/login', require('./auth'));
+router.post('/logout', require('./auth'));
+
 
 // export
 module.exports = {

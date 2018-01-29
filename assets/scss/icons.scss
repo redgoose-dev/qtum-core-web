@@ -40,6 +40,10 @@
 	background-position: -76px 0;
 	@include sp-size(7px, 12px);
 }
+.ico-lock {
+	background-position: -93px 0;
+	@include sp-size(13px, 17px);
+}
 
 // sidebar icons
 .ico-gnb-home {
@@ -62,25 +66,25 @@
 // status icons
 .ico-status-power-off {
 	background-position: 0 -80px;
-	@include sp-size(16px, 16px);
+	@include sp-size(20px, 20px);
 }
 .ico-status-power-on {
-	background-position: -26px -80px;
-	@include sp-size(16px, 16px);
+	background-position: -30px -80px;
+	@include sp-size(20px, 20px);
 }
 .ico-status-lock {
-	background-position: -52px -80px;
-	@include sp-size(16px, 16px);
+	background-position: -60px -80px;
+	@include sp-size(20px, 20px);
 }
 .ico-status-unlock {
-	background-position: -78px -80px;
-	@include sp-size(16px, 16px);
+	background-position: -90px -80px;
+	@include sp-size(20px, 20px);
 }
 .ico-status-staking-on {
-	background-position: -104px -80px;
-	@include sp-size(16px, 16px);
+	background-position: -120px -80px;
+	@include sp-size(20px, 20px);
 }
 .ico-status-staking-off {
-	background-position: -130px -80px;
-	@include sp-size(16px, 16px);
+	background-position: -150px -80px;
+	@include sp-size(20px, 20px);
 }

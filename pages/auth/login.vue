@@ -16,10 +16,14 @@
 					<label for="login_password" class="login__label">Password</label>
 					<span class="login__input">
 						<input
+							ref="form_password"
 							type="password"
 							id="login_password"
 							name="password"
 							maxlength="24"
+							minlength="4"
+							v-model="password"
+							required
 							placeholder="Please enter a password."/>
 						<i></i>
 					</span>
@@ -33,7 +37,8 @@
 				<nav class="login__nav">
 					<button-basic
 						type="submit"
-						label="LOGIN"
+						:label="processing ? 'Processing..' : 'LOGIN'"
+						:disabled="processing"
 						className="button-key"/>
 				</nav>
 			</form>
@@ -44,6 +49,7 @@
 
 
 <script>
+import axios from 'axios';
 import * as lib from '~/lib';
 import FormCheckbox from '~/components/forms/form-checkbox';
 import ButtonBasic from '~/components/button/button-basic';
@@ -62,13 +68,49 @@ export default {
 		return {
 			title: store.state.system.title,
 			rememberAuth: false,
+			password: '',
+			processing: false,
 		};
 	},
 	methods: {
-		onSubmit: function(e)
+		onSubmit: async function(e)
 		{
 			e.preventDefault();
-			console.log('call on submit');
+			this.processing = true;
+
+			// check password
+			if (!(this.password && this.password.length >= 4))
+			{
+				alert('please input password');
+				this.$refs.form_password.focus();
+				return;
+			}
+
+			// call api
+			let data = JSON.stringify({
+				remember: this.rememberAuth,
+				password: this.password,
+			});
+			let res = await axios.post(`${this.$store.state.system.url_api}/api/login`, data);
+			if (res.status === 200 && res.data) res = res.data;
+
+			if (res.status === 'success' && res.data.is_login === 1)
+			{
+				// update store
+				this.$store.commit('updateSystem', { hash: res.data.hash });
+				// redirect index
+				this.$router.replace('/');
+			}
+			else
+			{
+				alert('login failed');
+				this.$refs.form_password.focus();
+			}
+
+			// reset form data
+			this.password = '';
+			this.rememberAuth = false;
+			this.processing = false;
 		},
 	},
 }

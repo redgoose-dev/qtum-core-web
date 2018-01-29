@@ -16,6 +16,7 @@
   "dependencies": {
     "async": "^2.6.0",
     "axios": "^0.17.1",
+    "bcrypt": "^1.0.3",
     "express": "^4.16.2",
     "moment": "^2.20.1",
     "nuxt": "^1.0.0",

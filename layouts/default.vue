@@ -35,7 +35,10 @@
 				<div class="headerSide__wrap headerSide__balance">
 					<em class="headerSide__balanceText">{{ balance }}</em>
 				</div>
-				<div v-if="true" class="headerSide__wrap">
+				<nuxt-link to="/auth/login" class="headerSide__wrap headerSide__settings" v-if="!isLogin">
+					<i class="sp-ico ico-lock">login</i>
+				</nuxt-link>
+				<div class="headerSide__wrap" v-else>
 					<nav class="dropDown">
 						<button type="button" class="dropDown__button">
 							<i class="sp-ico ico-person">profile</i>
@@ -46,7 +49,10 @@
 									<nuxt-link to="/settings">Settings</nuxt-link>
 								</li>
 								<li>
-									<button v-on:click="logout">Logout</button>
+									<nuxt-link to="/unlock-wallet">Unlock wallet</nuxt-link>
+								</li>
+								<li>
+									<nuxt-link to="/auth/logout">Logout</nuxt-link>
 								</li>
 							</ul>
 						</div>
@@ -130,6 +136,7 @@ export default {
 		balance() { return this.$store.state.status.balance.toFixed(2); },
 		openSidebar() { return this.$store.state.layout.openSidebar; },
 		lock() { return this.$store.state.status.lock; },
+		isLogin() { return !!this.$store.state.system.hash; },
 	},
 	data() {
 		return {
@@ -137,11 +144,6 @@ export default {
 		};
 	},
 	methods: {
-		logout: function(e)
-		{
-			alert('call logout');
-			console.log('TODO: call logout');
-		},
 		toggleSideBar: function()
 		{
 			this.$store.commit('updateLayout', {

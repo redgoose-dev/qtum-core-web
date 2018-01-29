@@ -10,7 +10,7 @@
 }
 
 // checkbox
-.form-checkbox {
+.form-checkbox, .form-radio {
 	position: relative;
 	display: block;
 	padding: 0;
@@ -62,6 +62,9 @@
 		> * {
 			display: inline-block;
 			vertical-align: middle;
+			> input:focus + i {
+				border-color: $color-key;
+			}
 		}
 		> em {
 			font-style: normal;

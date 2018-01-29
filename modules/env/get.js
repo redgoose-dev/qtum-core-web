@@ -2,13 +2,16 @@
  * read `.env` file
  */
 
+const resource = require('./resource');
+
+
 module.exports = function()
 {
 	let config = null;
 
 	try
 	{
-		config = require('../../.env');
+		config = require(`../../${resource.file}`);
 	}
 	catch(e)
 	{

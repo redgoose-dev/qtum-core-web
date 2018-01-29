@@ -3,24 +3,25 @@
  */
 
 const fs = require('fs');
+const resource = require('./resource');
 
 
 /**
- * read
+ * read template
  *
  * @param {Function} cb
  */
-function read(cb)
+function readTemplate(cb)
 {
 	fs.readFile('./modules/env/template', 'utf8', function(err, data) {
 		if (data)
 		{
-			cb(data);
+			cb(false, data);
 		}
 		else
 		{
 			console.error(`Not found 'template' file`);
-			cb(null);
+			cb(true);
 		}
 	});
 }
@@ -33,29 +34,39 @@ function read(cb)
  */
 function write(str, cb)
 {
-	if (fs.existsSync('.env.js'))
-	{
-		cb(false, `Exist '.env.js' file.`);
-		return;
-	}
-
-	fs.writeFile('.env.js', str, function(err) {
-		if (err)
-		{
-			cb(false, `Can't write '.env.js' file.`);
-		}
-		else
-		{
-			cb(true, `Success create '.env.js' file.`);
-		}
-	});
+	fs.writeFile(resource.file, str, cb);
 }
 
 
-module.exports = function(callback)
+/**
+ * create env
+ *
+ * @param {String} str
+ * @param {Function} callback
+ */
+module.exports = function(str, callback)
 {
-	read(function(data) {
-		if (!data) callback(false);
-		write(data, callback);
-	});
+	function result(err, type='create')
+	{
+		if (err)
+		{
+			callback(true, `Can't ${type} '${resource.file}' file.`);
+		}
+		else
+		{
+			callback(false, `Success ${type} '${resource.file}' file.`);
+		}
+	}
+
+	if (str)
+	{
+		write(str, (err) => result(err, 'update'));
+	}
+	else
+	{
+		readTemplate(function(err, data) {
+			if (err) callback(false, 'Not found template file.');
+			write(data, (err) => result(err, 'make'));
+		});
+	}
 };

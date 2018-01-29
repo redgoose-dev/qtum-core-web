@@ -3,6 +3,7 @@
 		:type="type"
 		:class="[ 'button', className ]"
 		@click="onClick"
+		:disabled="disabled"
 		v-if="type === 'button' || type === 'submit'">
 		{{ label }}
 	</button>
@@ -22,6 +23,7 @@ export default {
 		'href',
 		'target',
 		'label',
+		'disabled',
 		'className'
 	],
 	computed: {

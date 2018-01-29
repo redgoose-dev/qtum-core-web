@@ -6,5 +6,5 @@ dist/
 
 npm-debug.log
 yarn.lock
-.env.js
+.env.json
 .DS_Store

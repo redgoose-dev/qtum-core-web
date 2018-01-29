@@ -9,9 +9,14 @@
 	</header>
 
 	<div class="contents__body">
-		<!--<ul v-for="o in index">-->
-			<!--<li>{{ o }}</li>-->
-		<!--</ul>-->
+		<ul v-for="key in Object.keys(index).sort()">
+			<li>
+				<p><strong>"{{ key || `` }}"</strong></p>
+				<ul v-for="address in index[key]">
+					<li>{{ address }}</li>
+				</ul>
+			</li>
+		</ul>
 	</div>
 </article>
 </template>
@@ -36,12 +41,10 @@ export default {
 			res = res.data;
 			if (!(res.status === 'success' && !!res.data)) throw 'Not found response data';
 
-			// result = {
-			// 	...result,
-			// 	index: lib.object.treeToList(res.data),
-			// };
-
-			return result;
+			return {
+				...result,
+				index: res.data,
+			};
 		}
 		catch(e)
 		{

@@ -38,7 +38,7 @@ module.exports = {
 
 	router: {
 		base: '/',
-		middleware: 'init',
+		middleware: ['init'],
 		linkActiveClass: 'nuxt-active',
 		extendRoutes (routes, resolve) {
 			routes.push(...[

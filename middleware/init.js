@@ -1,14 +1,32 @@
-export default function({ store, req })
+import * as lib from '../lib';
+
+
+export default function(cox)
 {
+	const { store, redirect, route, req, isDev } = cox;
+
+	// print current route
+	if (cox.isDev)
+	{
+		console.log(`REDIRECT TO : ${route.name} :: ${route.path}`);
+	}
+
+	// check auth
+	if (store.state.system.useAuth && !store.state.system.hash)
+	{
+		// 허용되지않은 `route.name`값을 검사하여 로그인으로 이동
+		if (lib.object.findKeyInArray(store.state.system.notAllow, route.name))
+		{
+			redirect('/auth/login');
+		}
+	}
+
 	if (process.server)
 	{
-		//console.log('AAA', process.env.API_URL);
 		// 처음 불러올때..
-		//console.log('AAA')
 	}
 	else
 	{
-		//console.log('BBB', process.env.API_URL);
-		//console.log('BBB');
+		// 브라우저에서 이동
 	}
 }

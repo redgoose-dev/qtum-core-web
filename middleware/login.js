@@ -1,4 +1,7 @@
-export default function({})
+export default function({ store, req, redirect })
 {
-	console.warn('call middleware: login. TODO: check login');
+	if (store.state.system.hash)
+	{
+		redirect('/');
+	}
 }
