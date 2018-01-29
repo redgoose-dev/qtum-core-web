@@ -20,7 +20,7 @@ https://github.com/qtumproject/qtum/releases
 1. run `yarn run start`
 
 
-## setup `.env.js` file
+## setup `.env.json` file
 
 기본적으로 상황에 맞게 수정해주시면 됩니다.  
 `yarn run setup` 명령을 실행하면 `.env.json`파일이 만들어지는데 여기서 `qtum-cli` 파일의 절대경로로 수정해줘야 합니다.
