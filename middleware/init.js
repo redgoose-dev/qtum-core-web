@@ -14,6 +14,12 @@ export default function(cox)
 	// check auth
 	if (store.state.system.useAuth && !store.state.system.hash)
 	{
+		// `NOT_ALLOW`값이 all이라면 무조건 로그인 페이지로 보내버린다.
+		if (lib.object.findKeyInArray(store.state.system.notAllow, 'all'))
+		{
+			redirect('/auth/login');
+		}
+
 		// 허용되지않은 `route.name`값을 검사하여 로그인으로 이동
 		if (lib.object.findKeyInArray(store.state.system.notAllow, route.name))
 		{

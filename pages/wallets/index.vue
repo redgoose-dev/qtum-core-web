@@ -9,14 +9,26 @@
 	</header>
 
 	<div class="contents__body">
-		<ul v-for="key in Object.keys(index).sort()">
-			<li>
-				<p><strong>"{{ key || `` }}"</strong></p>
-				<ul v-for="address in index[key]">
-					<li>{{ address }}</li>
-				</ul>
-			</li>
-		</ul>
+		<div class="contents__box">
+			<div class="table__responsive table__responsive-border">
+				<table class="table">
+					<thead>
+					<tr>
+						<th scope="col">Label</th>
+						<th scope="col">Address</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr v-for="o in index">
+						<td>
+							<strong class="text-brackets-quotes">{{ o.key }}</strong>
+						</td>
+						<td>{{ o.address }}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</div>
 </article>
 </template>
@@ -24,7 +36,7 @@
 
 <script>
 import axios from 'axios';
-import * as lib from '~/lib';
+import * as lib from '../../lib';
 
 export default {
 	head: {
@@ -43,7 +55,7 @@ export default {
 
 			return {
 				...result,
-				index: res.data,
+				index: lib.object.treeToList(res.data, 'key', 'address', true),
 			};
 		}
 		catch(e)

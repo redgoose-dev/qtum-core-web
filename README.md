@@ -25,6 +25,22 @@ https://github.com/qtumproject/qtum/releases
 기본적으로 상황에 맞게 수정해주시면 됩니다.  
 `yarn run setup` 명령을 실행하면 `.env.json`파일이 만들어지는데 여기서 `qtum-cli` 파일의 절대경로로 수정해줘야 합니다.
 
+- `TITLE` : 브라우저에 표시되는 제목
+- `API_URL`
+- `TESTNET`
+- `CORE_ADDRESS`
+- `LANGUAGE`
+- `USE_AUTH`
+- `NOT_ALLOW` : 허용하지 않는 페이지를 설정합니다.
+  - `all` : all pages
+  - `index` : dashboard
+  - `transactions`
+  - `wallets`
+  - `send`
+  - `settings`
+  - `unlock-wallet`
+- `HASH`
+
 
 ## development
 

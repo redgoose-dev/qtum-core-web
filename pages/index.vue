@@ -84,28 +84,30 @@
 						</nav>
 					</header>
 					<div class="section__body">
-						<table class="table table-fixed">
-							<thead class="not-bg">
-							<tr>
-								<th scope="col" width="140">Date</th>
-								<th scope="col" width="100">Type</th>
-								<th scope="col">Transaction ID</th>
-								<th scope="col" width="120">Amount</th>
-								<th scope="col" width="90">Confirm</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr v-for="o in transactions">
-								<td class="text-center">{{ o.time }}</td>
-								<td class="text-center">{{ o.type }}</td>
-								<td class="text-center">
-									<a v-bind:href="o.txUrl" target="_blank">{{ o.txid }}</a>
-								</td>
-								<td class="text-center">{{ o.amount }}</td>
-								<td class="text-center">{{ o.confirm }}</td>
-							</tr>
-							</tbody>
-						</table>
+						<div class="table__responsive">
+							<table class="table table-fixed">
+								<thead class="not-bg">
+								<tr>
+									<th scope="col" width="140">Date</th>
+									<th scope="col" width="100">Type</th>
+									<th scope="col" width="180">Transaction ID</th>
+									<th scope="col" width="120">Amount</th>
+									<th scope="col" width="90">Confirm</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr v-for="o in transactions">
+									<td class="text-center">{{ o.time }}</td>
+									<td class="text-center">{{ o.type }}</td>
+									<td class="text-center overflow">
+										<a v-bind:href="o.txUrl" target="_blank">{{ o.txid }}</a>
+									</td>
+									<td class="text-center">{{ o.amount }}</td>
+									<td class="text-center">{{ o.confirm }}</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</article>
 			</div>
