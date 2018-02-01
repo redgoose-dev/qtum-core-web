@@ -23,6 +23,7 @@
 	}
 
 	.section {
+		$self: '.section';
 		border: 1px solid $color-medium-gray;
 		background: #fff;
 		&__head {
@@ -66,6 +67,12 @@
 						padding: 12px 8px;
 					}
 				}
+			}
+		}
+
+		&-transactions {
+			#{$self}__body {
+				padding: 0;
 			}
 		}
 	}

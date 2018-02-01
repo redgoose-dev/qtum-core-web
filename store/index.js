@@ -36,7 +36,7 @@ export const state = () => ({
 	},
 	layout: {
 		openSidebar: true,
-		dashboard__count_recent: 10,
+		dashboard__count_recent: 5,
 	},
 	system: {
 		title: '',

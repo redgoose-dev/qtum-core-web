@@ -30,6 +30,7 @@ function correction(src, store)
 				type: o.category,
 				confirm: o.confirmations,
 				txid: o.txid,
+				fee: o.fee || 0,
 				txUrl: `${store.system.url_explorer}/tx/${o.txid}`,
 			};
 		})

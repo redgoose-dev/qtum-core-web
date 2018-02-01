@@ -14,7 +14,7 @@
 				<table class="table">
 					<thead>
 					<tr>
-						<th scope="col">Label</th>
+						<th scope="col" width="30%">Label</th>
 						<th scope="col">Address</th>
 					</tr>
 					</thead>

@@ -27,9 +27,15 @@ export default function(cox)
 		}
 	}
 
+	// check on qtum-core
+	if (!store.state.status.core)
+	{
+		redirect('/off-core');
+	}
+
 	if (process.server)
 	{
-		// 처음 불러올때..
+
 	}
 	else
 	{

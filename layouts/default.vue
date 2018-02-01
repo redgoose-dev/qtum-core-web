@@ -138,11 +138,6 @@ export default {
 		lock() { return this.$store.state.status.lock; },
 		isLogin() { return !!this.$store.state.system.hash; },
 	},
-	data() {
-		return {
-			title: process.env.TITLE,
-		};
-	},
 	methods: {
 		toggleSideBar: function()
 		{
@@ -150,6 +145,12 @@ export default {
 				openSidebar: !this.$store.state.layout.openSidebar,
 			});
 		}
-	}
+	},
+	data()
+	{
+		return {
+			title: process.env.TITLE,
+		};
+	},
 }
 </script>
