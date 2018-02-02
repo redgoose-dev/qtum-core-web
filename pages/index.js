@@ -61,8 +61,9 @@ export default {
 		}
 	},
 
-	async asyncData({ params, error, store })
+	async asyncData(cox)
 	{
+		const { params, error, store } = cox;
 		let result = {
 			balance: 0,
 			immature_balance: 0,

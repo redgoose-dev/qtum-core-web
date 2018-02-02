@@ -69,7 +69,8 @@
 	<!-- Container -->
 	<div :class="[
 		'layout-container',
-		!openSidebar && 'layout-container-minimum-side'
+		!openSidebar && 'layout-container-minimum-side',
+		!core && 'layout-container-off-side',
 	]">
 		<!-- Side bar -->
 		<div class="layout-container__sideWrap">

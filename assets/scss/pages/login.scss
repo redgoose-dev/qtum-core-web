@@ -84,6 +84,9 @@
 	}
 	&__nav {
 		margin: 20px 0 0;
+		button {
+			font-size: 16px;
+		}
 	}
 
 	@media (max-width: $size-mini) {

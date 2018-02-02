@@ -2,15 +2,17 @@
 
 // basic
 .button {
+	$self: '.button';
+
 	display: block;
 	margin: 0;
 	height: 44px;
-	padding: 0 15px;
+	padding: 0 20px;
 	border-radius: 2px;
 	background: #fff;
 	border: 1px solid $color-form-border;
 	color: $color-dark;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 600;
 	cursor: pointer;
 
@@ -52,6 +54,15 @@
 		border: 1px solid $color-form-border;
 		color: #fff;
 		cursor: default;
+	}
+	&-inline {
+		&[type=button],
+		&[type=submit],
+		&[type=reset] {
+			display: inline-block;
+			width: auto;
+			vertical-align: middle;
+		}
 	}
 }
 

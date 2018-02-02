@@ -6,9 +6,9 @@ export default function(cox)
 	const { store, redirect, route, req, isDev } = cox;
 
 	// print current route
-	if (cox.isDev)
+	if (isDev)
 	{
-		console.log(`REDIRECT TO : ${route.name} :: ${route.path}`);
+		console.warn(`REDIRECT TO : ${route.name} :: ${route.path}`);
 	}
 
 	// check auth
@@ -28,7 +28,11 @@ export default function(cox)
 	}
 
 	// check on qtum-core
-	if (!store.state.status.core)
+	// 로그인, off core 페이지가 아닌 상태에서 코어가 꺼져 있으면 off core 페이지로 이동하기
+	if (route.name !== 'auth-logout' &&
+		route.name !== 'auth-login' &&
+		route.name !== 'off-core' &&
+		!store.state.status.core)
 	{
 		redirect('/off-core');
 	}

@@ -92,5 +92,14 @@
 				}
 			}
 		}
+		.section {
+			&__body {
+				.description {
+					&-hidden {
+						display: none;
+					}
+				}
+			}
+		}
 	}
 }

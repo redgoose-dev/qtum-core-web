@@ -19,15 +19,15 @@
 							<dt><strong>Balance</strong></dt>
 							<dd class="size-large"><strong class="text-key">{{ balance }} QTUM</strong></dd>
 						</dl>
-						<dl class="description">
+						<dl class="description" v-if="stake > 0">
 							<dt>Staked</dt>
 							<dd><strong>{{ stake }}</strong></dd>
 						</dl>
-						<dl class="description">
+						<dl class="description" v-if="immature_balance > 0">
 							<dt>immature</dt>
 							<dd><strong>{{ immature_balance }}</strong></dd>
 						</dl>
-						<dl class="description">
+						<dl class="description" v-if="unconfirmed_balance > 0">
 							<dt>unconfirmed</dt>
 							<dd><strong>{{ unconfirmed_balance }}</strong></dd>
 						</dl>
@@ -86,7 +86,7 @@
 					<div class="section__body">
 						<ul class="index">
 							<li v-for="o in transactions" class="index__item index__item-row">
-								<div class="index__col index__col-flex index__col-overflow">
+								<div class="index__col index__col-flex index__col-body index__col-overflow">
 									<p class="index__date">{{ o.time }}</p>
 									<p class="index__metas">
 										<span>
@@ -106,7 +106,7 @@
 										Transaction ID: <a v-bind:href="o.txUrl" target="_blank">{{ o.txid }}</a>
 									</p>
 								</div>
-								<div class="index__col">
+								<div class="index__col index__col-type">
 									<p class="index__type">{{ o.type }}</p>
 								</div>
 							</li>

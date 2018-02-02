@@ -249,6 +249,8 @@ $width-side-mini: 47px;
 
 // container
 .layout-container {
+	$self: '.layout-container';
+
 	&__sideWrap {
 		width: $width-side;
 	}
@@ -260,7 +262,7 @@ $width-side-mini: 47px;
 	}
 
 	&-minimum-side {
-		.layout-container {
+		#{$self} {
 			&__sideWrap {
 				width: $width-side-mini;
 			}
@@ -285,6 +287,16 @@ $width-side-mini: 47px;
 					justify-content: center;
 					padding: 0;
 				}
+			}
+		}
+	}
+	&-off-side {
+		#{$self} {
+			&__sideWrap {
+				display: none;
+			}
+			&__body {
+				margin-left: 0;
 			}
 		}
 	}
