@@ -109,7 +109,7 @@ export const actions = {
 		}
 		catch(e)
 		{
-			console.error('ERROR', e);
+			console.error('[Store error]', e);
 			commit('updateStatus', { core: false });
 		}
 

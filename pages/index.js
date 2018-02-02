@@ -79,6 +79,8 @@ export default {
 			walletStatus: 'Locked',
 		};
 
+		// TODO: 코어 체크해야함. 이유는 로그인 후에 이 페이지로 이동하기 때문에 리다이렉트되면서 API 호출이 일어나서 엉뚱한 에러 메시지가 나옴.
+
 		try
 		{
 			const count = store.state.layout.dashboard__count_recent;
