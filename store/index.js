@@ -1,4 +1,3 @@
-import axios from 'axios';
 import * as lib from '../lib';
 
 
@@ -42,29 +41,31 @@ export const state = () => ({
 		title: '',
 		url_api: '',
 		url_explorer: '',
-		cmd_qtum: '',
 		testnet: false,
 		lang: '',
 		useAuth: false,
 		notAllow: [],
 		hash: null,
+		token: null,
 	},
 });
 
 // action
 export const actions = {
-	async nuxtServerInit({ state, commit }, { req }) {
-		// update system
+	async nuxtServerInit(cox, { req, app }) {
+		const { state, commit } = cox;
 		const pref = require('../.env.json');
+
+		// update system
 		let system = {
 			title: pref.TITLE || 'QTUM CORE',
 			url_api: pref.API_URL || 'http://localhost:3000',
 			url_explorer: pref.TESTNET ? 'https://testnet.qtum.org' : 'https://explorer.qtum.org',
-			cmd_qtum: pref.CORE_ADDRESS || '',
 			testnet: pref.TESTNET || false,
 			lang: pref.LANGUAGE || 'en',
 			useAuth: pref.USE_AUTH || false,
 			notAllow: pref.NOT_ALLOW || [],
+			hash: null,
 		};
 		// set hash
 		if (req.headers.cookie)
@@ -81,23 +82,17 @@ export const actions = {
 		commit('updateSystem', system);
 
 		// update status
-		let result = {};
 		try
 		{
+			let result = {};
+
 			// get api data
-			result = await axios.get(`${state.system.url_api}/api`);
+			result = await app.$axios.$get(`/api`);
+
+			if (result.status === 'error') throw result.message;
 
 			// check server
-			if (!(result.status === 200 && !!result.data)) throw 'Server error';
-
-			// check data status
-			if (result.data.status === 'error') throw result.data.message;
-
-			// check data
-			if (!(result.data)) throw 'Not found data';
-
-			// update data
-			result = result.data;
+			if (!result.info) throw 'Server error';
 
 			// update status
 			commit('updateStatus', {
@@ -110,7 +105,8 @@ export const actions = {
 		catch(e)
 		{
 			console.error('[Store error]', e);
-			commit('updateStatus', { core: false });
+			commit('updateStatus', { error: true, message: e });
+			return;
 		}
 
 		// store recovery from layout
@@ -153,13 +149,6 @@ export const mutations = {
 			...value,
 		};
 	},
-
-	/**
-	 * change balance
-	 * 가격을 변경한다.
-	 */
-	changeBalance(state, value=0)
-	{},
 
 	/**
 	 * Update layout

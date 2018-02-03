@@ -18,7 +18,7 @@
 				</nuxt-link>
 			</h1>
 			<div class="headerSide layout-header__right">
-				<div class="headerSide__wrap headerSide__status">
+				<div class="headerSide__wrap headerSide__status" v-if="showStatus">
 					<span :title="core ? 'On core' : 'Off core'">
 						<i class="sp-ico ico-status-power-on" v-if="core"></i>
 						<i class="sp-ico ico-status-power-off" v-else></i>
@@ -32,13 +32,13 @@
 						<i class="sp-ico ico-status-staking-off" v-else></i>
 					</span>
 				</div>
-				<div class="headerSide__wrap headerSide__balance">
+				<div class="headerSide__wrap headerSide__balance" v-if="showStatus && core">
 					<em class="headerSide__balanceText">{{ balance }}</em>
 				</div>
 				<nuxt-link to="/auth/login" class="headerSide__wrap headerSide__settings" v-if="!isLogin">
 					<i class="sp-ico ico-lock">login</i>
 				</nuxt-link>
-				<div class="headerSide__wrap" v-else>
+				<div class="headerSide__wrap" v-else-if="!systemError">
 					<nav class="dropDown">
 						<button type="button" class="dropDown__button">
 							<i class="sp-ico ico-person">profile</i>
@@ -48,7 +48,7 @@
 								<li>
 									<nuxt-link to="/settings">Settings</nuxt-link>
 								</li>
-								<li>
+								<li v-if="core">
 									<nuxt-link to="/unlock-wallet">Unlock wallet</nuxt-link>
 								</li>
 								<li>
@@ -130,6 +130,7 @@
 
 
 <script>
+import * as lib from '../lib';
 export default {
 	computed: {
 		core() { return this.$store.state.status.core; },
@@ -138,6 +139,24 @@ export default {
 		openSidebar() { return this.$store.state.layout.openSidebar; },
 		lock() { return this.$store.state.status.lock; },
 		isLogin() { return !!this.$store.state.system.hash; },
+		showStatus() {
+			const { system, status } = this.$store.state;
+			if (status.error)
+			{
+				return false;
+			}
+			if (lib.object.findKeyInArray(system.notAllow, 'layout'))
+			{
+				return !!system.hash;
+			}
+			else
+			{
+				return true;
+			}
+		},
+		systemError() {
+			return !!this.$store.state.status.error;
+		}
 	},
 	methods: {
 		toggleSideBar: function()

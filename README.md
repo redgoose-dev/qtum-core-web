@@ -39,6 +39,7 @@ https://github.com/qtumproject/qtum/releases
   - `send`
   - `settings`
   - `unlock-wallet`
+  - `layout` : 레이아웃 상단의 정보를 노출할지 결정
 - `HASH`
 
 

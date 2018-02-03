@@ -6,5 +6,6 @@
   "LANGUAGE": "en",
   "USE_AUTH": true,
   "NOT_ALLOW": ["wallets", "send"],
-  "HASH": ""
+  "HASH": "",
+  "TOKEN": ""
 }

@@ -3,12 +3,22 @@ import * as lib from '../lib';
 
 export default function(cox)
 {
-	const { store, redirect, route, req, isDev } = cox;
+	const { store, redirect, route, isDev, error } = cox;
 
 	// print current route
 	if (isDev)
 	{
 		console.warn(`REDIRECT TO : ${route.name} :: ${route.path}`);
+	}
+
+	if (store.state.status.error)
+	{
+		error({
+			statusCode: 500,
+			title: 'Core',
+			message: store.state.status.message || 'System error',
+		});
+		return;
 	}
 
 	// check auth
@@ -35,14 +45,5 @@ export default function(cox)
 		!store.state.status.core)
 	{
 		redirect('/off-core');
-	}
-
-	if (process.server)
-	{
-
-	}
-	else
-	{
-		// 브라우저에서 이동
 	}
 }

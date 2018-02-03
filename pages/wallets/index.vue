@@ -1,7 +1,6 @@
 /**
  * Wallets
  */
-
 <template>
 <article class="contents wallets">
 	<header class="contents__header">
@@ -35,7 +34,6 @@
 
 
 <script>
-import axios from 'axios';
 import * as lib from '../../lib';
 
 export default {
@@ -43,16 +41,14 @@ export default {
 		title: lib.util.makeTitle('Wallets')
 	},
 
-	async asyncData({ params, error, store })
+	async asyncData(cox)
 	{
+		const { params, error, store, $axios } = cox;
 		let result = {};
 		try
 		{
-			let res = await axios.get(`${store.state.system.url_api}/api/wallets/`);
-			if (res.status !== 200) throw 'API import failed.';
-			res = res.data;
-			if (!(res.status === 'success' && !!res.data)) throw 'Not found response data';
-
+			let res = await $axios.$get(`/api/wallets`);
+			if (!(res.status === 'success' && !!res.data)) throw 'API import failed.';
 			return {
 				...result,
 				index: lib.object.treeToList(res.data, 'key', 'address', true),

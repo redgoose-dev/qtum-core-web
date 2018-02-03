@@ -1,10 +1,19 @@
 const password = require('../modules/password');
 const cookie = require('./lib/cookie');
 const env = require('../modules/env');
+const authorization = require('./lib/authorization');
 
 
 module.exports = function(req, res)
 {
+	if (!authorization(req.headers))
+	{
+		res.json({
+			status: 'error',
+			message: 'error authorization'
+		});
+	}
+
 	const pref = require(`../${env.resource.file}`);
 	let body = '';
 

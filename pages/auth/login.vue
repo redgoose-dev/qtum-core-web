@@ -49,7 +49,6 @@
 
 
 <script>
-import axios from 'axios';
 import * as lib from '~/lib';
 import FormCheckbox from '~/components/forms/form-checkbox';
 import ButtonBasic from '~/components/button/button-basic';
@@ -91,9 +90,7 @@ export default {
 				remember: this.rememberAuth,
 				password: this.password,
 			});
-			let res = await axios.post(`${this.$store.state.system.url_api}/api/login`, data);
-			if (res.status === 200 && res.data) res = res.data;
-
+			let res = await this.$axios.$post(`/api/login`, data);
 			if (res.status === 'success' && res.data.is_login === 1)
 			{
 				// update store

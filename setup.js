@@ -52,7 +52,8 @@ function inputPassword(cb)
 	// input password
 	ask('input password: ', function(pw) {
 		let nextEnv = require(`./${env.resource.file}`);
-		nextEnv.HASH = password.create(pw);
+		nextEnv.HASH = password.create(pw, 10);
+		nextEnv.TOKEN = password.create(String(Date.now()), 5);
 		let str = JSON.stringify(nextEnv, null, 2);
 		env.create(str, function(err, message) {
 			completeMakeEnvFile(err, message);

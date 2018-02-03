@@ -1,4 +1,3 @@
-import axios from 'axios';
 import moment from 'moment';
 import * as lib from '../lib';
 
@@ -63,7 +62,7 @@ export default {
 
 	async asyncData(cox)
 	{
-		const { params, error, store } = cox;
+		const { params, error, store, $axios } = cox;
 		let result = {
 			balance: 0,
 			immature_balance: 0,
@@ -79,14 +78,13 @@ export default {
 			walletStatus: 'Locked',
 		};
 
-		// TODO: 코어 체크해야함. 이유는 로그인 후에 이 페이지로 이동하기 때문에 리다이렉트되면서 API 호출이 일어나서 엉뚱한 에러 메시지가 나옴.
+		if (!store.state.status.core) return;
 
 		try
 		{
 			const count = store.state.layout.dashboard__count_recent;
-			let res = await axios.get(`${store.state.system.url_api}/api/dashboard/?count_recent=${count}`);
-			if (res.status !== 200) throw 'API import failed.';
-			res = res.data;
+			let res = await $axios.$get(`/api/dashboard/?count_recent=${count}`);
+			if (!res.info) throw 'API import failed.';
 			return {
 				...result,
 				...correction(res, store.state),

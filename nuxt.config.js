@@ -18,12 +18,16 @@ module.exports = {
 		'~assets/scss/app.scss'
 	],
 
-	modules: [],
+	modules: [
+		'@nuxtjs/axios',
+	],
 
-	plugins: [],
+	plugins: [
+		'~/plugins/axios'
+	],
 
-	build: {
-		vendor: [ 'axios' ]
+	axios: {
+		baseURL: pref.API_URL,
 	},
 
 	env: {
@@ -38,7 +42,7 @@ module.exports = {
 
 	router: {
 		base: '/',
-		middleware: ['init'],
+		middleware: ['hook'],
 		linkActiveClass: 'nuxt-active',
 		extendRoutes (routes, resolve) {
 			routes.push(...[

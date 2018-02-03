@@ -1,10 +1,20 @@
 const async = require('async');
 const qtumCore = require('../modules/qtumCore');
 const string = require('./lib/string');
+const authorization = require('./lib/authorization');
 
 
 module.exports = function(req, res)
 {
+	if (!authorization(req.headers))
+	{
+		res.json({
+			status: 'error',
+			message: 'error authorization'
+		});
+		return;
+	}
+
 	const params = string.urlToQueryObject(req.url);
 	const tasks = {
 		info: function(cb)

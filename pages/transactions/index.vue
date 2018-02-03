@@ -9,7 +9,7 @@
 	</header>
 
 	<div class="contents__body">
-		<form action="#" method="get" class="search">
+		<form action="#" method="get" class="search" v-if="false">
 			<fieldset>
 				<legend class="blind">filter and search form</legend>
 				<div>
