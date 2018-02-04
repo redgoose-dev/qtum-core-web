@@ -84,7 +84,7 @@ $width-side-mini: 47px;
 		}
 	}
 	.dropDown {
-		$self: &;
+		$self: '.dropDown';
 		height: 100%;
 		&__button {
 			display: block;
@@ -101,6 +101,7 @@ $width-side-mini: 47px;
 			i {
 				display: block;
 				margin: 0 auto;
+				pointer-events: none;
 			}
 		}
 		&__children {
@@ -148,14 +149,15 @@ $width-side-mini: 47px;
 			}
 		}
 
-		&:hover {
-			.dropDown__button {
+		&__button {
+			&-active {
 				background: rgba(0,0,0,.2);
-			}
-			.dropDown__children {
-				display: block;
+				& + #{$self}__children {
+					display: block;
+				}
 			}
 		}
+
 	}
 
 	@media (max-width: $size-mobile) {

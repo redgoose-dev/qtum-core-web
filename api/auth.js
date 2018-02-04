@@ -10,7 +10,7 @@ module.exports = function(req, res)
 	{
 		res.json({
 			status: 'error',
-			message: 'error authorization'
+			message: 'Error authorization'
 		});
 	}
 

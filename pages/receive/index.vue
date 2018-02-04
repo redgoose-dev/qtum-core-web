@@ -1,13 +1,16 @@
 /**
- * Wallets
+ * Receive
  */
 <template>
-<article class="contents wallets">
+<article class="contents receive">
 	<header class="contents__header">
-		<h1>Wallets</h1>
+		<h1>Receive</h1>
 	</header>
 
 	<div class="contents__body">
+		<nav class="text-right">
+			<button type="button">Add address</button>
+		</nav>
 		<div class="contents__box">
 			<div class="table__responsive table__responsive-border">
 				<table class="table">
@@ -15,14 +18,21 @@
 					<tr>
 						<th scope="col" width="30%">Label</th>
 						<th scope="col">Address</th>
+						<th scope="col" width="15%">Amount</th>
+						<th scope="col"></th>
 					</tr>
 					</thead>
 					<tbody>
 					<tr v-for="o in index">
 						<td>
-							<strong class="text-brackets-quotes">{{ o.key }}</strong>
+							<strong class="text-brackets-quotes">{{ o.label }}</strong>
 						</td>
 						<td>{{ o.address }}</td>
+						<td class="text-center">{{ o.amount }}</td>
+						<td class="text-center">
+							<button type="button">Edit</button>
+							<button type="button">QR Code</button>
+						</td>
 					</tr>
 					</tbody>
 				</table>
@@ -38,27 +48,29 @@ import * as lib from '../../lib';
 
 export default {
 	head: {
-		title: lib.util.makeTitle('Wallets')
+		title: lib.util.makeTitle('Receive')
 	},
 
 	async asyncData(cox)
 	{
 		const { params, error, store, $axios } = cox;
-		let result = {};
+		let result = {
+			index: [],
+		};
 		try
 		{
-			let res = await $axios.$get(`/api/wallets`);
+			let res = await $axios.$get(`/api/receive`);
 			if (!(res.status === 'success' && !!res.data)) throw 'API import failed.';
 			return {
 				...result,
-				index: lib.object.treeToList(res.data, 'key', 'address', true),
+				index: res.data.index,
 			};
 		}
 		catch(e)
 		{
 			error({
 				statusCode: 400,
-				title: 'Wallets',
+				title: 'Receive',
 				message: 'Failed to import API',
 			});
 		}

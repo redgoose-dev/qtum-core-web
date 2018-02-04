@@ -89,7 +89,7 @@ export const actions = {
 			// get api data
 			result = await app.$axios.$get(`/api`);
 
-			if (result.status === 'error') throw result.message;
+			if (result.status === 'error') throw result;
 
 			// check server
 			if (!result.info) throw 'Server error';
@@ -105,7 +105,11 @@ export const actions = {
 		catch(e)
 		{
 			console.error('[Store error]', e);
-			commit('updateStatus', { error: true, message: e });
+			commit('updateStatus', {
+				error: true,
+				errorCode: e.code,
+				errorMessage: e.message
+			});
 			return;
 		}
 

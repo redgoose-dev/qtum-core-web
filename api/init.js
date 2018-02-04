@@ -1,6 +1,7 @@
 const async = require('async');
 const qtumCore = require('../modules/qtumCore');
 const authorization = require('./lib/authorization');
+const error = require('./lib/error');
 
 
 module.exports = function(req, res)
@@ -65,7 +66,7 @@ module.exports = function(req, res)
 		{
 			res.json({
 				status: 'error',
-				message: 'error API'
+				...error.message(err),
 			});
 		}
 	});

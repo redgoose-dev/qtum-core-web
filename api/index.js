@@ -35,7 +35,7 @@ router.get('/transactions', require('./transactions'));
 /**
  * wallets
  */
-router.get('/wallets', require('./wallets'));
+router.get('/receive', require('./receive'));
 
 /**
  * auth

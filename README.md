@@ -35,7 +35,7 @@ https://github.com/qtumproject/qtum/releases
   - `all` : all pages
   - `index` : dashboard
   - `transactions`
-  - `wallets`
+  - `receive`
   - `send`
   - `settings`
   - `unlock-wallet`

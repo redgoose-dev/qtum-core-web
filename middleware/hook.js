@@ -14,9 +14,20 @@ export default function(cox)
 	if (store.state.status.error)
 	{
 		error({
-			statusCode: 500,
-			title: 'Core',
-			message: store.state.status.message || 'System error',
+			statusCode: store.state.status.errorCode || 500,
+			title: 'error page',
+			message: store.state.status.errorMessage || 'System error',
+		});
+		return;
+	}
+
+	// check on qtum-core
+	if (!store.state.status.core)
+	{
+		error({
+			statusCode: 600,
+			title: 'error page',
+			message: 'qtum-core is turned off.',
 		});
 		return;
 	}
@@ -35,15 +46,5 @@ export default function(cox)
 		{
 			redirect('/auth/login');
 		}
-	}
-
-	// check on qtum-core
-	// 로그인, off core 페이지가 아닌 상태에서 코어가 꺼져 있으면 off core 페이지로 이동하기
-	if (route.name !== 'auth-logout' &&
-		route.name !== 'auth-login' &&
-		route.name !== 'off-core' &&
-		!store.state.status.core)
-	{
-		redirect('/off-core');
 	}
 }

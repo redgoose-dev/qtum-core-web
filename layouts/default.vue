@@ -40,7 +40,7 @@
 				</nuxt-link>
 				<div class="headerSide__wrap" v-else-if="!systemError">
 					<nav class="dropDown">
-						<button type="button" class="dropDown__button">
+						<button type="button" class="dropDown__button" @click="toggleDropDown">
 							<i class="sp-ico ico-person">profile</i>
 						</button>
 						<div class="dropDown__children dropDown__children-profile">
@@ -48,8 +48,11 @@
 								<li>
 									<nuxt-link to="/settings">Settings</nuxt-link>
 								</li>
-								<li v-if="core">
+								<li v-if="core && lock">
 									<nuxt-link to="/unlock-wallet">Unlock wallet</nuxt-link>
+								</li>
+								<li v-if="core && !lock">
+									<button type="button">Lock wallet</button>
 								</li>
 								<li>
 									<nuxt-link to="/auth/logout">Logout</nuxt-link>
@@ -58,9 +61,6 @@
 						</div>
 					</nav>
 				</div>
-				<!--<nuxt-link to="/setting" class="headerSide__wrap headerSide__settings">-->
-					<!--<i class="sp-ico ico-setting">setting</i>-->
-				<!--</nuxt-link>-->
 			</div>
 		</div>
 	</header>
@@ -93,9 +93,9 @@
 							</nuxt-link>
 						</li>
 						<li class="gnb__item">
-							<nuxt-link to="/wallets" title="Wallets">
-								<em><i class="sp-ico ico-gnb-wallet"></i></em>
-								<span>WALLETS</span>
+							<nuxt-link to="/receive" title="Receive">
+								<em><i class="sp-ico ico-gnb-receive"></i></em>
+								<span>RECEIVE</span>
 							</nuxt-link>
 						</li>
 						<li class="gnb__item">
@@ -164,6 +164,36 @@ export default {
 			this.$store.commit('updateLayout', {
 				openSidebar: !this.$store.state.layout.openSidebar,
 			});
+		},
+		toggleDropDown: function(e)
+		{
+			e.stopPropagation();
+
+			const classNameActive = 'dropDown__button-active';
+			const classList = e.currentTarget.classList;
+
+			function close()
+			{
+				classList.remove(classNameActive);
+				document.removeEventListener('click', close);
+			}
+
+			if (classList.contains(classNameActive))
+			{
+				classList.remove(classNameActive);
+			}
+			else
+			{
+				classList.add(classNameActive);
+				document.addEventListener('click', close);
+			}
+		}
+	},
+	mounted()
+	{
+		if (lib.util.detectTouch())
+		{
+			document.querySelector('html').classList.add('touch');
 		}
 	},
 	data()

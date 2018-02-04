@@ -2,6 +2,7 @@ const async = require('async');
 const qtumCore = require('../modules/qtumCore');
 const string = require('./lib/string');
 const authorization = require('./lib/authorization');
+const error = require('./lib/error');
 
 
 module.exports = function(req, res)
@@ -79,16 +80,16 @@ module.exports = function(req, res)
 	};
 
 	async.parallel(tasks, function(err, result) {
-		if (err)
+		if (!err)
 		{
-			res.json({
-				status: 'error',
-				message: 'error API'
-			});
+			res.json(result);
 		}
 		else
 		{
-			res.json(result);
+			res.json({
+				status: 'error',
+				...error.message(err),
+			});
 		}
 	});
 };

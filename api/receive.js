@@ -1,5 +1,5 @@
+const async = require('async');
 const qtumCore = require('../modules/qtumCore');
-const string = require('./lib/string');
 const authorization = require('./lib/authorization');
 const error = require('./lib/error');
 
@@ -10,23 +10,33 @@ module.exports = function(req, res)
 	{
 		res.json({
 			status: 'error',
-			message: 'error authorization'
+			message: 'Error authorization'
 		});
 		return;
 	}
 
-	const params = string.urlToQueryObject(req.url);
-	let size = params.size || 10;
-	let start = size * (params.page ? params.page - 1 : 0);
-
-	qtumCore.action(`listtransactions "*" ${size} ${start}`, true, (result) => {
+	qtumCore.action(`listaddressgroupings`, true, (result) => {
 		if (result.status === 'success' && !!result.data)
 		{
-			if (result.data.length)
-			{
-				result.data.reverse();
-			}
-			res.json(result);
+			let index = [];
+
+			// convert index
+			result.data.forEach((o, k) => {
+				o.forEach((item) => {
+					index.push({
+						address: item[0],
+						amount: item[1],
+						label: item[2] || ''
+					});
+				});
+			});
+
+			res.json({
+				status: 'success',
+				data: {
+					index,
+				},
+			});
 		}
 		else
 		{
