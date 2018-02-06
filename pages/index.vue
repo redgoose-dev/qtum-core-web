@@ -42,7 +42,7 @@
 					<div class="section__body">
 						<dl class="description">
 							<dt>Version</dt>
-							<dd><strong>{{ version }}</strong></dd>
+							<dd><strong>v{{ version }}</strong></dd>
 						</dl>
 						<dl class="description">
 							<dt>Current block</dt>

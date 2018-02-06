@@ -97,6 +97,7 @@ export const actions = {
 			// update status
 			commit('updateStatus', {
 				core: true,
+				coreVersion: result.version,
 				staking: result.staking.staking,
 				lock: getLockInformation(result.wallet.unlocked_until),
 				...((result.info.balance && typeof result.info.balance === 'number') ? { balance: result.info.balance } : null)

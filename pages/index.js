@@ -88,6 +88,7 @@ export default {
 			return {
 				...result,
 				...correction(res, store.state),
+				version: store.state.status.coreVersion,
 			};
 		}
 		catch(e)
