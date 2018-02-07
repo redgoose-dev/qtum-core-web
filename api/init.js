@@ -18,7 +18,7 @@ module.exports = function(req, res)
 	const tasks = {
 		info: function(cb)
 		{
-			qtumCore.action('getinfo', true, (result) => {
+			qtumCore.action('getinfo', !!req.headers.testnet, true, (result) => {
 				if (result.status === 'success' && !!result.data)
 				{
 					cb(null, result.data);
@@ -31,7 +31,7 @@ module.exports = function(req, res)
 		},
 		staking: function(cb)
 		{
-			qtumCore.action('getstakinginfo', true, (result) => {
+			qtumCore.action('getstakinginfo', !!req.headers.testnet, true, (result) => {
 				if (result.status === 'success' && !!result.data)
 				{
 					cb(null, result.data);
@@ -44,7 +44,7 @@ module.exports = function(req, res)
 		},
 		wallet: function(cb)
 		{
-			qtumCore.action('getwalletinfo', true, (result) => {
+			qtumCore.action('getwalletinfo', !!req.headers.testnet, true, (result) => {
 				if (result.status === 'success' && !!result.data)
 				{
 					cb(null, result.data);
@@ -57,7 +57,7 @@ module.exports = function(req, res)
 		},
 		version: function(cb)
 		{
-			qtumCore.action('-version', false, (result) => {
+			qtumCore.action('-version', !!req.headers.testnet, false, (result) => {
 				if (result.status === 'success' && !!result.data)
 				{
 					let regex = new RegExp(/version v\s*([\d.]+)-/, 'i');

@@ -61,11 +61,12 @@ function checkExec(file='qtum-cli')
  * run cli
  *
  * @param {String} file
+ * @param {Boolean} testnet
  * @param {String} params
  * @param {Boolean} json
  * @param {Function} callback
  */
-function cli(file='qtum-cli', params='', json=true, callback)
+function cli(file='qtum-cli', testnet=null, params='', json=true, callback)
 {
 	if (!(callback && typeof callback === 'function')) callback({
 		status: 'error',
@@ -73,6 +74,7 @@ function cli(file='qtum-cli', params='', json=true, callback)
 	});
 
 	const cmd = checkExec(file);
+	testnet = (typeof testnet !== 'boolean') ? config.TESTNET : testnet;
 
 	function onChildProcess(error, stdout, stderr)
 	{
@@ -116,7 +118,7 @@ function cli(file='qtum-cli', params='', json=true, callback)
 	// run
 	if (cmd.status === 'success')
 	{
-		childProcess.exec(`${cmd.command} ${config.TESTNET ? '-testnet' : ''} ${params}`, onChildProcess);
+		childProcess.exec(`${cmd.command} ${testnet ? '-testnet' : ''} ${params}`, onChildProcess);
 	}
 	else
 	{
@@ -129,22 +131,24 @@ function cli(file='qtum-cli', params='', json=true, callback)
  * action command
  *
  * @param {String} cmd
+ * @param {Boolean} testnet
  * @param {Boolean} json
  * @param {Function} cb
  */
-exports.action = function(cmd, json=true, cb)
+exports.action = function(cmd, testnet, json=true, cb)
 {
-	cli('qtum-cli', cmd, json, cb);
+	cli('qtum-cli', testnet, cmd, json, cb);
 };
 
 /**
  * check core
  *
+ * @param {Boolean} testnet
  * @param {Function} cb
  */
-exports.check = function(cb)
+exports.check = function(testnet=null, cb)
 {
-	cli('qtum-cli', 'getinfo', true, function(res) {
+	cli('qtum-cli', testnet, 'getinfo', true, function(res) {
 		if (res.status === 'error')
 		{
 			cb(false, res.message);

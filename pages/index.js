@@ -55,10 +55,10 @@ function correction(src, store)
 
 export default {
 	computed: {
-		core() {
-			return this.$store.state.status.core;
-		}
+		core() { return this.$store.state.status.core; },
 	},
+
+	middleware: 'checkCore',
 
 	async asyncData(cox)
 	{

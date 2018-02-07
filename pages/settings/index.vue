@@ -24,6 +24,7 @@ export default {
 	head: {
 		title: lib.util.makeTitle('Settings')
 	},
+
 	methods: {
 		back: function(e)
 		{

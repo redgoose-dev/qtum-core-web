@@ -17,5 +17,7 @@ export default {
 	head: {
 		title: lib.util.makeTitle('unlock wallet')
 	},
+
+	middleware: 'checkCore',
 }
 </script>

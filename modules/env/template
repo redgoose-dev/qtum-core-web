@@ -4,8 +4,6 @@
   "TESTNET": false,
   "CORE_ADDRESS": "{ADDRESS}/qtum/bin",
   "LANGUAGE": "en",
-  "USE_AUTH": true,
-  "NOT_ALLOW": ["unlock-wallet", "settings", ""receive", "send"],
   "HASH": "",
   "TOKEN": ""
 }

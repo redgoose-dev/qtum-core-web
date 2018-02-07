@@ -4,8 +4,8 @@
 		<div class="login__body">
 			<h1 class="login__logo">
 				<img
-					src="~/static/images/img-login-logo.png"
-					srcset="~/static/images/img-login-logo@2x.png"
+					:src="`/images/img-login-logo${system.testnet ? '-testnet' : ''}.png`"
+					:srcset="`/images/img-login-logo${system.testnet ? '-testnet' : ''}@2x.png`"
 					:alt="title"
 					width="193"/>
 			</h1>
@@ -62,8 +62,13 @@ export default {
 	head: {
 		title: lib.util.makeTitle('login')
 	},
+	computed: {
+		system() { return this.$store.state.system; },
+	},
 	middleware: 'login',
-	asyncData({ store }) {
+	async asyncData(cox) {
+		const { store, $axios } = cox;
+
 		return {
 			title: store.state.system.title,
 			rememberAuth: false,
@@ -86,12 +91,12 @@ export default {
 			}
 
 			// call api
-			let data = JSON.stringify({
+			let data = {
 				remember: this.rememberAuth,
 				password: this.password,
-			});
+			};
 			let res = await this.$axios.$post(`/api/login`, data);
-			if (res.status === 'success' && res.data.is_login === 1)
+			if (res.status === 'success' && !!res.data.hash)
 			{
 				// update store
 				this.$store.commit('updateSystem', { hash: res.data.hash });
@@ -100,7 +105,7 @@ export default {
 			}
 			else
 			{
-				alert('login failed');
+				alert('Login failed');
 				this.$refs.form_password.focus();
 			}
 

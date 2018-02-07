@@ -6,39 +6,36 @@
 			<h1 class="layout-header__logo">
 				<nuxt-link to="/" :title="title">
 					<img
-						src="~static/images/img-logo.png"
-						srcset="~static/images/img-logo@2x.png 2x"
+						:src="`/images/img-logo${system.testnet ? '-testnet' : ''}.png`"
+						:srcset="`/images/img-logo${system.testnet ? '-testnet' : ''}@2x.png 2x`"
 						alt="Qtum core web"
 						class="layout-header__logo-basic"/>
 					<img
-						src="~static/images/img-logo-mobile.png"
-						srcset="~static/images/img-logo-mobile@2x.png 2x"
+						:src="`/images/img-logo-mobile${system.testnet ? '-testnet' : ''}.png`"
+						:srcset="`/images/img-logo-mobile${system.testnet ? '-testnet' : ''}@2x.png 2x`"
 						alt="Qtum core web"
 						class="layout-header__logo-mobile"/>
 				</nuxt-link>
 			</h1>
 			<div class="headerSide layout-header__right">
-				<div class="headerSide__wrap headerSide__status" v-if="showStatus">
-					<span :title="core ? 'On core' : 'Off core'">
-						<i class="sp-ico ico-status-power-on" v-if="core"></i>
+				<div class="headerSide__wrap headerSide__status">
+					<span :title="status.core ? 'On core' : 'Off core'">
+						<i class="sp-ico ico-status-power-on" v-if="status.core"></i>
 						<i class="sp-ico ico-status-power-off" v-else></i>
 					</span>
-					<span :title="`${lock} wallet`" v-if="core">
-						<i class="sp-ico ico-status-unlock" v-if="lock === 'unLock'"></i>
+					<span :title="`${status.lock} wallet`" v-if="status.core">
+						<i class="sp-ico ico-status-unlock" v-if="status.lock === 'unLock'"></i>
 						<i class="sp-ico ico-status-lock" v-else></i>
 					</span>
-					<span :title="staking ? 'Staking' : 'Not staking'" v-if="core">
-						<i class="sp-ico ico-status-staking-on" v-if="staking"></i>
+					<span :title="status.staking ? 'Staking' : 'Not staking'" v-if="status.core">
+						<i class="sp-ico ico-status-staking-on" v-if="status.staking"></i>
 						<i class="sp-ico ico-status-staking-off" v-else></i>
 					</span>
 				</div>
-				<div class="headerSide__wrap headerSide__balance" v-if="showStatus && core">
+				<div class="headerSide__wrap headerSide__balance" v-if="status.core">
 					<em class="headerSide__balanceText">{{ balance }}</em>
 				</div>
-				<nuxt-link to="/auth/login" class="headerSide__wrap headerSide__settings" v-if="!isLogin">
-					<i class="sp-ico ico-lock">login</i>
-				</nuxt-link>
-				<div class="headerSide__wrap" v-else-if="!systemError">
+				<div class="headerSide__wrap">
 					<nav class="dropDown">
 						<button type="button" class="dropDown__button" @click="toggleDropDown">
 							<i class="sp-ico ico-person">profile</i>
@@ -48,10 +45,10 @@
 								<li>
 									<nuxt-link to="/settings">Settings</nuxt-link>
 								</li>
-								<li v-if="core && lock">
+								<li v-if="status.core && status.lock">
 									<nuxt-link to="/unlock-wallet">Unlock wallet</nuxt-link>
 								</li>
-								<li v-if="core && !lock">
+								<li v-if="status.core && !status.lock">
 									<button type="button">Lock wallet</button>
 								</li>
 								<li>
@@ -69,8 +66,7 @@
 	<!-- Container -->
 	<div :class="[
 		'layout-container',
-		!openSidebar && 'layout-container-minimum-side',
-		!core && 'layout-container-off-side',
+		!layout.openSidebar && 'layout-container-minimum-side',
 	]">
 		<!-- Side bar -->
 		<div class="layout-container__sideWrap">
@@ -131,32 +127,13 @@
 
 <script>
 import * as lib from '../lib';
+
 export default {
 	computed: {
-		core() { return this.$store.state.status.core; },
-		staking() { return this.$store.state.status.staking; },
+		status() { return this.$store.state.status; },
+		layout() { return this.$store.state.layout; },
+		system() { return this.$store.state.system; },
 		balance() { return this.$store.state.status.balance.toFixed(2); },
-		openSidebar() { return this.$store.state.layout.openSidebar; },
-		lock() { return this.$store.state.status.lock; },
-		isLogin() { return !!this.$store.state.system.hash; },
-		showStatus() {
-			const { system, status } = this.$store.state;
-			if (status.error)
-			{
-				return false;
-			}
-			if (lib.object.findKeyInArray(system.notAllow, 'layout'))
-			{
-				return !!system.hash;
-			}
-			else
-			{
-				return true;
-			}
-		},
-		systemError() {
-			return !!this.$store.state.status.error;
-		}
 	},
 	methods: {
 		toggleSideBar: function()

@@ -19,7 +19,7 @@ module.exports = function(req, res)
 	let size = params.size || 10;
 	let start = size * (params.page ? params.page - 1 : 0);
 
-	qtumCore.action(`listtransactions "*" ${size} ${start}`, true, (result) => {
+	qtumCore.action(`listtransactions "*" ${size} ${start}`, !!req.headers.testnet, true, (result) => {
 		if (result.status === 'success' && !!result.data)
 		{
 			if (result.data.length)

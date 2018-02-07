@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "setup": "node ./setup.js",
-    "dev": "HOST=192.168.0.50 PORT=3000 ./node_modules/.bin/nuxt",
+    "dev": "./node_modules/.bin/nuxt",
     "start": "./node_modules/.bin/nuxt start",
     "build": "./node_modules/.bin/nuxt build",
     "build-check": "./node_modules/.bin/nuxt build --analyze"
@@ -17,7 +17,9 @@
     "@nuxtjs/axios": "^5.0.0-rc.2",
     "async": "^2.6.0",
     "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "moment": "^2.20.1",
     "nuxt": "^1.0.0",
     "query-string": "^5.0.1"

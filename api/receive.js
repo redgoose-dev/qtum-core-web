@@ -15,7 +15,7 @@ module.exports = function(req, res)
 		return;
 	}
 
-	qtumCore.action(`listaddressgroupings`, true, (result) => {
+	qtumCore.action(`listaddressgroupings`, !!req.headers.testnet, true, (result) => {
 		if (result.status === 'success' && !!result.data)
 		{
 			let index = [];

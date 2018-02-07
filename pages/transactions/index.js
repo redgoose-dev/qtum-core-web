@@ -57,6 +57,8 @@ export default {
 		ButtonMore
 	},
 
+	middleware: 'checkCore',
+
 	methods: {
 		more: async function(e)
 		{

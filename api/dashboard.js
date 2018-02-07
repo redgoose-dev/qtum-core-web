@@ -20,7 +20,7 @@ module.exports = function(req, res)
 	const tasks = {
 		info: function(cb)
 		{
-			qtumCore.action('getinfo', true, (result) => {
+			qtumCore.action('getinfo', !!req.headers.testnet, true, (result) => {
 				if (result.status === 'success' && !!result.data)
 				{
 					cb(null, result.data);
@@ -33,7 +33,7 @@ module.exports = function(req, res)
 		},
 		wallet: function(cb)
 		{
-			qtumCore.action('getwalletinfo', true, (result) => {
+			qtumCore.action('getwalletinfo', !!req.headers.testnet, true, (result) => {
 				if (result.status === 'success' && !!result.data)
 				{
 					cb(null, result.data);
@@ -46,7 +46,7 @@ module.exports = function(req, res)
 		},
 		staking: function(cb)
 		{
-			qtumCore.action('getstakinginfo', true, (result) => {
+			qtumCore.action('getstakinginfo', !!req.headers.testnet, true, (result) => {
 				if (result.status === 'success' && !!result.data)
 				{
 					cb(null, result.data);
@@ -61,7 +61,7 @@ module.exports = function(req, res)
 		{
 			const start = 0;
 			const size = params.count_recent || 8;
-			qtumCore.action(`listtransactions "*" ${size} ${start}`, true, (result) => {
+			qtumCore.action(`listtransactions "*" ${size} ${start}`, !!req.headers.testnet, true, (result) => {
 				if (result.status === 'success' && !!result.data)
 				{
 					let arr = result.data;

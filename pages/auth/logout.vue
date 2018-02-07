@@ -15,10 +15,11 @@ export default {
 			location.href = '/';
 		}
 
-		let data = JSON.stringify({
+		let data = {
 			hash: $store.state.system.hash,
-		});
+		};
 
+		// request api
 		let res = await $axios.$post(`/api/logout`, data);
 
 		if (res.status === 'success')

@@ -51,6 +51,8 @@ export default {
 		title: lib.util.makeTitle('Receive')
 	},
 
+	middleware: 'checkCore',
+
 	async asyncData(cox)
 	{
 		const { params, error, store, $axios } = cox;

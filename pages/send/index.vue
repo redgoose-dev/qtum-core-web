@@ -24,6 +24,9 @@ export default {
 	head: {
 		title: lib.util.makeTitle('Send')
 	},
+
+	middleware: 'checkCore',
+
 	methods: {
 		back: function(e)
 		{

@@ -1,86 +1,65 @@
 const password = require('../modules/password');
-const cookie = require('./lib/cookie');
 const env = require('../modules/env');
 const authorization = require('./lib/authorization');
+
+const hour = 3600000;
+const rememberDay = 7;
 
 
 module.exports = function(req, res)
 {
 	if (!authorization(req.headers))
 	{
-		res.json({
+		return res.json({
 			status: 'error',
 			message: 'Error authorization'
 		});
 	}
 
 	const pref = require(`../${env.resource.file}`);
-	let body = '';
-
-	/**
-	 * login
-	 *
-	 * @param {Object} data
-	 */
-	function login(data)
-	{
-		const confirm = password.compare(data.password, pref.HASH);
-
-		if (confirm)
-		{
-			// write cookie
-			cookie.set(res, 'hash', pref.HASH, data.remember ? 7 : null);
-		}
-
-		// print result
-		res.json({
-			status: 'success',
-			data: {
-				is_login: confirm ? 1 : 0,
-				hash: pref.HASH,
-			}
-		});
-	}
-
-	/**
-	 * logout
-	 *
-	 * @param {Object} data
-	 */
-	function logout(data)
-	{
-		if (data.hash !== pref.HASH)
-		{
-			res.json({
-				status: 'error',
-				message: 'Invalid hash value.',
-			});
-			return;
-		}
-
-		// remove cookie
-		cookie.remove(res, 'hash');
-
-		// print result
-		res.json({ status: 'success' });
-	}
 
 	switch (req.route.path)
 	{
 		case '/login':
-			body = '';
-			req.on('data', function(chunk) { body += chunk; });
-			req.on('end', () => login(JSON.parse(body)));
-			break;
+			const confirm = password.compare(req.body.password, pref.HASH);
+
+			if (confirm)
+			{
+				if (req.body.remember)
+				{
+					req.session.cookie.maxAge = hour * 24 * rememberDay;
+				}
+				else
+				{
+					req.session.cookie.expires = false;
+				}
+
+				// write hash
+				req.session.auth = { hash: pref.HASH };
+
+				return res.json({
+					status: 'success',
+					data: { hash: pref.HASH },
+				});
+			}
+			else
+			{
+				return res.json({ status: 'error' });
+			}
 
 		case '/logout':
-			body = '';
-			req.on('data', function(chunk) { body += chunk; });
-			req.on('end', () => logout(JSON.parse(body)));
-			break;
+			if (req.body.hash !== pref.HASH)
+			{
+				return res.json({ status: 'error' });
+			}
+
+			// remove session
+			delete req.session.auth;
+
+			// print result
+			return res.json({ status: 'success' });
 
 		default:
-			res.json({ status: 'error' });
-			break;
+			return res.json({ status: 'error' });
 	}
 };

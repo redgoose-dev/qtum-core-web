@@ -1,29 +1,6 @@
 import * as lib from '../lib';
 
 
-/**
- * Get lock information
- *
- * @param {Number} unlocked_until
- * @return {String}
- */
-function getLockInformation(unlocked_until=null)
-{
-	if (unlocked_until === 0)
-	{
-		return 'encrypted'; // 잠겨있음
-	}
-	else if (unlocked_until > 0)
-	{
-		return 'unLock'; // 잠김해제되어있음
-	}
-	else
-	{
-		return 'notEncrypted'; // 잠금설정되어있지 않음
-	}
-}
-
-
 // state
 export const state = () => ({
 	status: {
@@ -43,8 +20,6 @@ export const state = () => ({
 		url_explorer: '',
 		testnet: false,
 		lang: '',
-		useAuth: false,
-		notAllow: [],
 		hash: null,
 		token: null,
 	},
@@ -63,19 +38,14 @@ export const actions = {
 			url_explorer: pref.TESTNET ? 'https://testnet.qtum.org' : 'https://explorer.qtum.org',
 			testnet: pref.TESTNET || false,
 			lang: pref.LANGUAGE || 'en',
-			useAuth: pref.USE_AUTH || false,
-			notAllow: pref.NOT_ALLOW || [],
 			hash: null,
 		};
 		// set hash
-		if (req.headers.cookie)
+		if (req.session.auth && req.session.auth.hash)
 		{
-			let hash = lib.cookie.get(req.headers.cookie, 'hash');
-			// 쿠키에 있는 `hash`값 검사
+			let hash = req.session.auth.hash;
 			if (hash && typeof hash === 'string')
 			{
-				// 쿠키에 있는 `hash`와 `env.HASH`에 있는 값을 대조해본다.
-				hash = decodeURIComponent(hash);
 				system.hash = (hash === pref.HASH) ? hash : null;
 			}
 		}
@@ -84,10 +54,8 @@ export const actions = {
 		// update status
 		try
 		{
-			let result = {};
-
 			// get api data
-			result = await app.$axios.$get(`/api`);
+			let result = await app.$axios.$get(`/api`);
 
 			if (result.status === 'error') throw result;
 
@@ -99,22 +67,21 @@ export const actions = {
 				core: true,
 				coreVersion: result.version,
 				staking: result.staking.staking,
-				lock: getLockInformation(result.wallet.unlocked_until),
+				lock: lib.string.getLockInformation(result.wallet.unlocked_until),
 				...((result.info.balance && typeof result.info.balance === 'number') ? { balance: result.info.balance } : null)
 			});
 		}
 		catch(e)
 		{
-			console.error('[Store error]', e);
+			console.error('[STORE ERROR]', e);
 			commit('updateStatus', {
 				error: true,
 				errorCode: e.code,
 				errorMessage: e.message
 			});
-			return;
 		}
 
-		// store recovery from layout
+		// recovery store from layout
 		if (req.headers.cookie)
 		{
 			let layout = lib.cookie.get(req.headers.cookie, 'layout');

@@ -30,16 +30,6 @@ https://github.com/qtumproject/qtum/releases
 - `TESTNET`
 - `CORE_ADDRESS`
 - `LANGUAGE`
-- `USE_AUTH`
-- `NOT_ALLOW` : 허용하지 않는 페이지를 설정합니다.
-  - `all` : all pages
-  - `index` : dashboard
-  - `transactions`
-  - `receive`
-  - `send`
-  - `settings`
-  - `unlock-wallet`
-  - `layout` : 레이아웃 상단의 정보를 노출할지 결정
 - `HASH`
 
 

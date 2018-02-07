@@ -1,3 +1,5 @@
+const bodyParser = require('body-parser');
+const session = require('express-session');
 const pref = require('./.env');
 
 
@@ -56,6 +58,15 @@ module.exports = {
 	},
 
 	serverMiddleware: [
+		// body-parser middleware
+		bodyParser.json(),
+		// session middleware
+		session({
+			secret: 'super-secret-key',
+			resave: false,
+			saveUninitialized: false,
+			cookie: { maxAge: 60000 }
+		}),
 		'~/api',
 	],
 
