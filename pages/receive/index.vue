@@ -23,17 +23,24 @@
 					</tr>
 					</thead>
 					<tbody>
-					<tr v-for="o in index">
-						<td>
-							<strong class="text-brackets-quotes">{{ o.label }}</strong>
-						</td>
-						<td>{{ o.address }}</td>
-						<td class="text-center">{{ o.amount }}</td>
-						<td class="text-center">
-							<button type="button">Edit</button>
-							<button type="button">QR Code</button>
-						</td>
-					</tr>
+					<template v-if="index.length">
+						<tr v-for="o in index">
+							<td>
+								<strong class="text-brackets-quotes">{{ o.label }}</strong>
+							</td>
+							<td>{{ o.address }}</td>
+							<td class="text-center">{{ o.amount }}</td>
+							<td class="text-center">
+								<button type="button">Edit</button>
+								<button type="button">QR Code</button>
+							</td>
+						</tr>
+					</template>
+					<template v-else>
+						<tr class="table__empty">
+							<td colspan="6">not found article</td>
+						</tr>
+					</template>
 					</tbody>
 				</table>
 			</div>

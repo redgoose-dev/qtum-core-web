@@ -32,16 +32,23 @@
 					</tr>
 					</thead>
 					<tbody>
-					<tr v-for="o in transactions">
-						<td class="text-center">{{ o.time }}</td>
-						<td class="text-center">{{ o.type }}</td>
-						<td class="text-center overflow">
-							<a v-bind:href="o.txUrl" target="_blank">{{ o.txid }}</a>
-						</td>
-						<td class="text-center">{{ o.amount }}</td>
-						<td class="text-center">{{ o.fee }}</td>
-						<td class="text-center">{{ o.confirm }}</td>
-					</tr>
+					<template v-if="transactions.length">
+						<tr v-for="o in transactions">
+							<td class="text-center">{{ o.time }}</td>
+							<td class="text-center">{{ o.type }}</td>
+							<td class="text-center overflow">
+								<a v-bind:href="o.txUrl" target="_blank">{{ o.txid }}</a>
+							</td>
+							<td class="text-center">{{ o.amount }}</td>
+							<td class="text-center">{{ o.fee }}</td>
+							<td class="text-center">{{ o.confirm }}</td>
+						</tr>
+					</template>
+					<template v-else>
+						<tr class="table__empty">
+							<td colspan="6">not found article</td>
+						</tr>
+					</template>
 					</tbody>
 				</table>
 			</div>

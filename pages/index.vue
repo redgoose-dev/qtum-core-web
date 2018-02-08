@@ -84,7 +84,7 @@
 						</nav>
 					</header>
 					<div class="section__body">
-						<ul class="index">
+						<ul class="index" v-if="transactions.length">
 							<li v-for="o in transactions" class="index__item index__item-row">
 								<div class="index__col index__col-flex index__col-body index__col-overflow">
 									<p class="index__date">{{ o.time }}</p>
@@ -111,6 +111,7 @@
 								</div>
 							</li>
 						</ul>
+						<p class="empty-index" v-else>not found article</p>
 					</div>
 				</article>
 			</div>
