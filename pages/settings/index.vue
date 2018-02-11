@@ -15,10 +15,15 @@
 					<dt>Power ON/OFF</dt>
 					<dd>
 						<div>
-							// TODO: switch component
+							<form-switch
+								title="core power on/off"
+								name="core_power"
+								:value="qtum.power"
+								@change="onChangeQtumCore"
+							/>
 						</div>
 						<p class="form-kit__description">
-							Warning message
+							Please be careful about changing this option.
 						</p>
 					</dd>
 				</dl>
@@ -35,15 +40,22 @@
 					<dt>Theme</dt>
 					<dd>
 						<div>
-							// TODO: radio component
+							<form-radios
+								name="theme"
+								v-model="general.theme"
+								:items="[
+									{ label: 'Light', value: 'light' },
+									{ label: 'Dark', value: 'dark' },
+								]"/>
 						</div>
 					</dd>
 				</dl>
-				<nav class="form-kit__nav">
+				<nav class="form-kit__nav text-center">
 					<button-basic
 						type="submit"
-						:label="false ? 'Processing..' : 'APPLY'"
-						:disabled="false"
+						:label="(false ? 'Processing..' : 'APPLY')"
+						:disabled="!true"
+						@click="onSubmitGeneral"
 						className="button-key button-inline"/>
 				</nav>
 			</form>
@@ -52,22 +64,58 @@
 </article>
 </template>
 
-
 <script>
 import * as lib from '~/lib';
 import ButtonBasic from '~/components/button/button-basic';
+import FormSwitch from '~/components/forms/form-switch';
+import FormRadios from '~/components/forms/form-radios';
 
 export default {
 	components: {
 		ButtonBasic,
+		FormSwitch,
+		FormRadios,
 	},
 
 	head: {
 		title: lib.util.makeTitle('Settings')
 	},
 
-	methods: {
+	async asyncData(cox) {
+		const { store, $axios } = cox;
 
+		return {
+			qtum: {
+				power: store.state.status.core,
+			},
+			general: {
+				theme: 'light',
+			},
+		};
+	},
+
+	methods: {
+		onChangeQtumCore: async function(sw=false)
+		{
+			// TODO: core를 껏다켜기 요청을 하고 결과를 받아서 `store`와 `qtumPower`의 상태를 변경한다.
+			if (this.qtum.power)
+			{
+				if (confirm('Do you really want to turn off the Qtum-core?'))
+				{
+					this.qtum.power = sw;
+				}
+			}
+			else
+			{
+				this.qtum.power = sw;
+			}
+		},
+		onSubmitGeneral: async function(e)
+		{
+			e.preventDefault();
+			console.log('qtum:', this.qtum);
+			console.log('general:', this.general);
+		},
 	},
 }
 </script>

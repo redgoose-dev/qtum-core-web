@@ -11,10 +11,11 @@
 }
 
 
-// checkbox & radio
+// check
 .form-checkbox, .form-radio {
 	position: relative;
-	display: block;
+	display: inline-block;
+	vertical-align: middle;
 	padding: 0;
 	margin: 0;
 	font-size: 0;
@@ -56,10 +57,11 @@
 		}
 	}
 	&-label {
-		display: block;
+		display: inline-block;
+		vertical-align: middle;
 		cursor: pointer;
 		font-size: 0;
-		padding: 5px 0;
+		padding: 5px 2px;
 		> * {
 			display: inline-block;
 			vertical-align: middle;
@@ -69,7 +71,7 @@
 		}
 		> em {
 			font-style: normal;
-			margin: 0 0 0 8px;
+			margin: 0 12px 0 8px;
 			font-size: 14px;
 		}
 	}
@@ -92,11 +94,71 @@
 		}
 	}
 }
+.form-checks {
+	> * {
+		padding-right: 15px;
+		&:last-child {
+			padding-right: 2px;
+		}
+	}
+	&-block {
+		> * {
+			display: block;
+			padding-right: 2px;
+		}
+	}
+}
+// switch
+.form-switch {
+	$width: 50px;
+	$height: 24px;
+	$margin: 8px;
+	margin: 0;
+	padding: 0;
+	background: none;
+	border: none;
+	cursor: pointer;
+	&:focus {
+		outline: $border-focus;
+	}
+	&__icon {
+		position: relative;
+		display: inline-block;
+		margin: 0;
+		width: $width;
+		height: $height;
+		vertical-align: middle;
+		border: 1px solid $color-medium-gray;
+		background: #fff;
+		border-radius: $height * .5;
+		font-size: 0;
+		&:after {
+			content: '';
+			display: inline-block;
+			position: absolute;
+			vertical-align: top;
+			left: $margin * .5;
+			top: 50%;
+			margin-top: 0 - (($height - $margin) * .5);
+			width: $height - $margin;
+			height: $height - $margin;
+			background: $color-error;
+			border-radius: 50%;
+			transform: translateX(0);
+			transition: transform .15s ease-out, background .15s ease-out;
+		}
+		&-on {
+			&:after {
+				background: $color-complete;
+				transform: translateX($width - $height - 2px);
+			}
+		}
+	}
+}
 
 
 // form kit
 .form-kit {
-
 	&__horizontal {
 		display: flex;
 		align-items: center;
@@ -112,11 +174,25 @@
 			flex: 1;
 			margin: 0;
 		}
+
+		@media (max-width: $size-mobile) {
+			display: block;
+			> dt {
+				width: auto;
+			}
+			> dd {
+				margin: 10px 0 0;
+			}
+		}
 	}
 
 	&__description {
-		margin: 4px 0 0;
+		margin: 8px 0 0;
 		font-size: 12px;
 		color: $color-weak-dark;
+	}
+	&__nav {
+		border-top: 1px solid $color-medium-gray;
+		padding: 15px 0 0;
 	}
 }

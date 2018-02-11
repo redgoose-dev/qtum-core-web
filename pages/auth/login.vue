@@ -29,7 +29,7 @@
 					</span>
 				</fieldset>
 
-				<form-checkbox
+				<form-check
 					label="Remember me"
 					v-model="rememberAuth"
 					className="login__rememberMe"/>
@@ -50,12 +50,12 @@
 
 <script>
 import * as lib from '~/lib';
-import FormCheckbox from '~/components/forms/form-checkbox';
+import FormCheck from '~/components/forms/form-check';
 import ButtonBasic from '~/components/button/button-basic';
 
 export default {
 	components: {
-		FormCheckbox,
+		FormCheck,
 		ButtonBasic,
 	},
 	layout: 'blank',
