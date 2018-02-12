@@ -1,28 +1,44 @@
 <template>
-	<span>
-		<strong>{{ message }}</strong><br/>
-		<input
-			type="text"
-			placeholder="dsnfgoisdngmpksdg"
-			v-model="message"
-		>
-	</span>
+<span class="form-text" :class="className">
+	<input
+		:type="type"
+		:name="name"
+		:id="id"
+		:placeholder="placeholder"
+		:value="value"
+		:size="size"
+		:maxlength="maxlength"
+		@input="changeText"
+		class="form-text__input"
+		:class="classNameInput"
+	/>
+</span>
 </template>
-
 
 <script>
 export default {
-	props: [
-		'message'
-	],
-	model: {
-		prop: 'message'
+	props: {
+		type: { type: String, default: 'text' },
+		name: { type: String, default: '' },
+		id: { type: String, default: '' },
+		value: { type: String, default: '', required: true },
+		placeholder: { type: String, default: '' },
+		size: {},
+		maxlength: {},
+		className: { type: String },
+		classNameInput: { type: String },
 	},
-	// methods: {
-	// 	updateValue: function(value)
-	// 	{
-	// 		this.$emit('update', `::${value}`);
-	// 	}
-	// },
+
+	model: {
+		prop: 'value',
+		event: 'change',
+	},
+
+	methods: {
+		changeText: function(e)
+		{
+			this.$emit('change', e.target.value);
+		}
+	},
 }
 </script>

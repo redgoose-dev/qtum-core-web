@@ -85,6 +85,7 @@ export default {
 		const { store, $axios } = cox;
 
 		return {
+			processing: false,
 			qtum: {
 				power: store.state.status.core,
 			},
@@ -97,22 +98,50 @@ export default {
 	methods: {
 		onChangeQtumCore: async function(sw=false)
 		{
+			const { qtum, $store, $axios, processing } = this;
+
+			// if (processing) return;
+			// this.processing = true;
+
 			// TODO: core를 껏다켜기 요청을 하고 결과를 받아서 `store`와 `qtumPower`의 상태를 변경한다.
-			if (this.qtum.power)
+			if (qtum.power)
 			{
+				return; // TODO
 				if (confirm('Do you really want to turn off the Qtum-core?'))
 				{
-					this.qtum.power = sw;
+					let response = await $axios.$post('/api/core-power', {
+						hash: $store.state.system.hash,
+						power: false,
+					});
+					console.log('off:', response);
+					qtum.power = sw;
+					this.processing = false;
 				}
 			}
 			else
 			{
-				this.qtum.power = sw;
+				try
+				{
+					console.log('start');
+					let response = await $axios.$post('/api/core-power', {
+						hash: $store.state.system.hash,
+						power: true,
+					});
+					console.log('end');
+				}
+				catch(e)
+				{
+					console.error(e);
+				}
+				// qtum.power = sw;
+				// this.processing = false;
 			}
 		},
 		onSubmitGeneral: async function(e)
 		{
 			e.preventDefault();
+
+			// TODO: 설정을 변경하는 API 요청
 			console.log('qtum:', this.qtum);
 			console.log('general:', this.general);
 		},

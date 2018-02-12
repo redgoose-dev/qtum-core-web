@@ -146,7 +146,7 @@ exports.action = function(cmd, testnet, json=true, cb)
  * @param {Boolean} testnet
  * @param {Function} cb
  */
-exports.check = function(testnet=null, cb)
+exports.check = function(testnet=false, cb)
 {
 	cli('qtum-cli', testnet, 'getinfo', true, function(res) {
 		if (res.status === 'error')
@@ -158,4 +158,30 @@ exports.check = function(testnet=null, cb)
 			cb(!!(res && res.status === 'success' && res.data && !!res.data.version));
 		}
 	});
+};
+
+/**
+ * control power
+ *
+ * @param {Boolean} sw
+ * @param {Boolean} testnet
+ * @param {Function} cb
+ */
+exports.power = function(sw=true, testnet=false, cb)
+{
+	if (sw)
+	{
+		const cmd = checkExec('qtumd');
+
+		console.log(cmd);
+		// on
+		// cli('qtumd', testnet, '&', false, (result) => {
+		// 	console.log('onnnnn: ', result);
+		// });
+	}
+	else
+	{
+		// off
+		cli('qtum-cli', testnet, 'stop', false, cb);
+	}
 };

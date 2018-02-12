@@ -11,7 +11,8 @@
 	}
 
 	&__sectionHeader {
-		margin: 0 0 20px;
+		padding: 0 0 15px;
+		border-bottom: 1px solid $color-medium-gray;
 		h1 {
 			margin: 0;
 			font-size: 20px;

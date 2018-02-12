@@ -43,6 +43,12 @@ router.get('/receive', require('./receive'));
 router.post('/login', require('./auth'));
 router.post('/logout', require('./auth'));
 
+/**
+ * core
+ */
+router.post('/core-power', require('./core'));
+
+
 
 // export
 module.exports = {
