@@ -113,6 +113,14 @@ function cli(file='qtum-cli', testnet=null, params='', json=true, callback)
 				message: 'stderr'
 			});
 		}
+
+		if (!error)
+		{
+			callback({
+				status: 'success',
+				data: null
+			});
+		}
 	}
 
 	// run
@@ -171,13 +179,8 @@ exports.power = function(sw=true, testnet=false, cb)
 {
 	if (sw)
 	{
-		const cmd = checkExec('qtumd');
-
-		console.log(cmd);
 		// on
-		// cli('qtumd', testnet, '&', false, (result) => {
-		// 	console.log('onnnnn: ', result);
-		// });
+		cli('qtumd', testnet, '-daemon', false, cb);
 	}
 	else
 	{

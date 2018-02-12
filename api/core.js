@@ -28,32 +28,35 @@ module.exports = function(req, res)
 	switch (req.route.path)
 	{
 		case '/core-power':
-
-			console.log('offfff');
-			// TODO: 코어 켜는것 시도중...
-			return res.json({ foo: 'bar' });
-
 			if (req.body.power)
 			{
 				// power on
-				// qtumCore.power(true, !!req.headers.testnet, (result) => {
-				// 	console.log('TODO: on qtum-core', result);
-				// 	return res.json({ power: true, result });
-				// });
+				qtumCore.power(true, !!req.headers.testnet, (result) => {
+					// TODO: 명령을 내렸다고 바로 켜지지 않는것을 확인했다.
+					// TODO: `getinfo`명령을 지속적으로 날려서 값이 나오면 켜졌다고 확신을 할 수 있을때 `res.json()`을 출력하는것을 시도해봐야겠다.
+					return res.json(result);
+				});
 			}
 			else
 			{
-				// qtumCore.power(true, !!req.headers.testnet, (result) => {
-				// 	console.log('TEST:::', result);
-				// 	return res.json({ power: false, result });
-				// });
-
 				// power off
-				// qtumCore.power(false, !!req.headers.testnet, (result) => {
-				// 	// `Qtum server stopping`
-				// 	console.log('TODO: off qtum-core', result);
-				// 	return res.json({ power: false, result });
-				// });
+				qtumCore.power(false, !!req.headers.testnet, (response) => {
+					if (response.status === 'success' && !!response.data)
+					{
+						if (response.data.search('stopping') > -1)
+						{
+							return res.json({ status: 'success' });
+						}
+						else
+						{
+							return res.json({ status: 'error' });
+						}
+					}
+					else
+					{
+						return res.json({ status: 'error' });
+					}
+				});
 			}
 	}
 };

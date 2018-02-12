@@ -11,6 +11,7 @@
 				type="submit"
 				:label="processing ? 'Processing..' : 'TURN ON CORE'"
 				:disabled="processing"
+				@click="onTurnOnCore"
 				className="button-key button-inline"/>
 		</nav>
 	</div>
@@ -26,6 +27,7 @@
 
 
 <script>
+import * as lib from '~/lib';
 import ButtonBasic from '~/components/button/button-basic';
 
 export default {
@@ -38,6 +40,29 @@ export default {
 		return {
 			processing: false,
 		};
-	}
+	},
+	methods: {
+		onTurnOnCore: async function ()
+		{
+			const { $store, $axios } = this;
+
+			let response = await $axios.$post('/api/core-power', {
+				hash: $store.state.system.hash,
+				power: true,
+			});
+
+			switch(response.status)
+			{
+				case 'success':
+					await lib.util.sleep(1000);
+					alert('Turn on qtum-core');
+					// TODO: 새로고침하는것으로는 소용이 없고 직접 스토어를 업데이트 해줘야할거 같다...
+					break;
+				default:
+					console.error('error on core', response);
+					break;
+			}
+		}
+	},
 };
 </script>

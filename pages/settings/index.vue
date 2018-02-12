@@ -100,41 +100,64 @@ export default {
 		{
 			const { qtum, $store, $axios, processing } = this;
 
-			// if (processing) return;
-			// this.processing = true;
+			if (processing) return;
+			this.processing = true;
 
 			// TODO: core를 껏다켜기 요청을 하고 결과를 받아서 `store`와 `qtumPower`의 상태를 변경한다.
 			if (qtum.power)
 			{
-				return; // TODO
 				if (confirm('Do you really want to turn off the Qtum-core?'))
 				{
-					let response = await $axios.$post('/api/core-power', {
-						hash: $store.state.system.hash,
-						power: false,
-					});
-					console.log('off:', response);
-					qtum.power = sw;
-					this.processing = false;
+					try
+					{
+						let response = await $axios.$post('/api/core-power', {
+							hash: $store.state.system.hash,
+							power: false,
+						});
+						if (response.status === 'success')
+						{
+							qtum.power = sw;
+							this.processing = false;
+							// TODO: 스토어에서 core 끄기
+						}
+						else
+						{
+							throw 'error turn off qtum-core';
+						}
+					}
+					catch(e)
+					{
+						alert('Failed turn off qtum-core');
+						console.error(e);
+						this.processing = false;
+					}
 				}
 			}
 			else
 			{
 				try
 				{
-					console.log('start');
 					let response = await $axios.$post('/api/core-power', {
 						hash: $store.state.system.hash,
 						power: true,
 					});
-					console.log('end');
+					if (response.status === 'success')
+					{
+						// TODO: 스토어에서 core 켜기
+						qtum.power = sw;
+						this.processing = false;
+					}
+					else
+					{
+						throw 'error turn on qtum-core';
+					}
 				}
 				catch(e)
 				{
+					alert('Failed turn on qtum-core');
 					console.error(e);
+					this.processing = false;
 				}
-				// qtum.power = sw;
-				// this.processing = false;
 			}
 		},
 		onSubmitGeneral: async function(e)
