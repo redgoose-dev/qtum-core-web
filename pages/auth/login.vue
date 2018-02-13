@@ -66,7 +66,8 @@ export default {
 		system() { return this.$store.state.system; },
 	},
 	middleware: 'login',
-	async asyncData(cox) {
+	async asyncData(cox)
+	{
 		const { store, $axios } = cox;
 
 		return {
@@ -115,5 +116,9 @@ export default {
 			this.processing = false;
 		},
 	},
+	mounted: function()
+	{
+		this.$refs.form_password.focus();
+	}
 }
 </script>

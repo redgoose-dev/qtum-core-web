@@ -177,10 +177,52 @@ exports.check = function(testnet=false, cb)
  */
 exports.power = function(sw=true, testnet=false, cb)
 {
+	const maxTry = 20;
+	let count = 0;
+
+	/**
+	 * try check core
+	 * 코어를 켜고나면 결과값이 없기 때문에 켜졌는지 알수가 없다.
+	 * 그래서 `qtum-cli getinfo`명령을 실행해서 결과값이 나오면 탈출, 아니면 아직 꺼져있다고 간주하고 다시 호출하여 1초후에 다시 명령실행을 반복.
+	 * 무한대로 반복되는 부분이다보니 일정횟수를 넘기면 오류상태를 남기고 탈출시킴
+	 */
+	function tryCheckCore()
+	{
+		setTimeout(function() {
+			cli('qtum-cli', testnet, 'getinfo', true, function(res) {
+				if (res.status === 'success')
+				{
+					cb({ status: 'success' });
+				}
+				else
+				{
+					if (count < maxTry)
+					{
+						count++;
+						tryCheckCore();
+					}
+					else
+					{
+						cb({ status: 'error' });
+					}
+				}
+			});
+		}, 1000);
+	}
+
 	if (sw)
 	{
 		// on
-		cli('qtumd', testnet, '-daemon', false, cb);
+		cli('qtumd', testnet, '-daemon', false, function(res) {
+			if (res.status === 'success')
+			{
+				tryCheckCore();
+			}
+			else
+			{
+				cb(res)
+			}
+		});
 	}
 	else
 	{
