@@ -39,7 +39,7 @@
 						type="submit"
 						:label="processing ? 'Processing..' : 'LOGIN'"
 						:disabled="processing"
-						className="button-key"/>
+						className="button-color-key"/>
 				</nav>
 			</form>
 		</div>

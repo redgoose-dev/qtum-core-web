@@ -6,6 +6,7 @@ const authorization = require('./lib/authorization');
 module.exports = function(req, res)
 {
 	const pref = require(`../${env.resource.file}`);
+	let cmd = null;
 
 	// check authorization
 	if (!authorization(req.headers))
@@ -32,8 +33,7 @@ module.exports = function(req, res)
 			{
 				// power on
 				qtumCore.power(true, !!req.headers.testnet, (result) => {
-					// TODO: 명령을 내렸다고 바로 켜지지 않는것을 확인했다.
-					// TODO: `getinfo`명령을 지속적으로 날려서 값이 나오면 켜졌다고 확신을 할 수 있을때 `res.json()`을 출력하는것을 시도해봐야겠다.
+					console.log(result);
 					return res.json(result);
 				});
 			}
@@ -58,5 +58,20 @@ module.exports = function(req, res)
 					}
 				});
 			}
+			break;
+
+		case '/core-unlock':
+			cmd = `walletpassphrase "${req.body.password}" 9999999999 ${req.body.staking}`;
+			qtumCore.action(cmd, !!req.headers.testnet, false, (result) => {
+				return res.json(result);
+			});
+			break;
+
+		case '/core-lock':
+			cmd = `walletlock`;
+			qtumCore.action(`walletlock`, !!req.headers.testnet, false, (result) => {
+				return res.json(result);
+			});
+			break;
 	}
 };

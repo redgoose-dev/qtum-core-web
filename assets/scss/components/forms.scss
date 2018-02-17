@@ -184,7 +184,7 @@
 		display: flex;
 		align-items: center;
 		margin: 0;
-		padding: 10px 0;
+		padding: 12px 0;
 		border-top: 1px solid $color-medium-gray;
 		&:first-child {
 			border-top: none;
@@ -210,6 +210,10 @@
 		}
 	}
 
+	&__basic {
+		margin: 2px 0;
+		font-size: 14px;
+	}
 	&__description {
 		margin: 8px 0 0;
 		font-size: 12px;

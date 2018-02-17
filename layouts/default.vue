@@ -24,7 +24,7 @@
 						<i class="sp-ico ico-status-power-off" v-else></i>
 					</span>
 					<span :title="`${status.lock} wallet`" v-if="status.core && useLock">
-						<i class="sp-ico ico-status-unlock" v-if="status.lock === 'unLock'"></i>
+						<i class="sp-ico ico-status-unlock" v-if="unLock"></i>
 						<i class="sp-ico ico-status-lock" v-else></i>
 					</span>
 					<span :title="status.staking ? 'Staking' : 'Not staking'" v-if="status.core">
@@ -45,14 +45,6 @@
 								<li>
 									<nuxt-link to="/settings">Settings</nuxt-link>
 								</li>
-								<template v-if="status.core && useLock">
-									<li v-if="status.lock === 'unLock'">
-										<button type="button" @click="lockWallet">Lock wallet</button>
-									</li>
-									<li v-else>
-										<nuxt-link to="/unlock-wallet">Unlock wallet</nuxt-link>
-									</li>
-								</template>
 								<li>
 									<nuxt-link to="/auth/logout">Logout</nuxt-link>
 								</li>
@@ -126,14 +118,14 @@
 </main>
 </template>
 
-
 <script>
 import * as lib from '../lib';
 
 export default {
 	computed: {
 		status() { return this.$store.state.status; },
-		useLock() { return this.$store.state.status.lock !== 'notEncrypted'; },
+		useLock() { return this.$store.state.status.lock !== lib.constant.lock.notEncrypted; },
+		unLock() { return this.$store.state.status.lock === lib.constant.lock.unLock },
 		layout() { return this.$store.state.layout; },
 		system() { return this.$store.state.system; },
 		balance() { return this.$store.state.status.balance.toFixed(2); },
@@ -169,18 +161,13 @@ export default {
 				document.addEventListener('click', close);
 			}
 		},
-		lockWallet: function()
-		{
-			// TODO
-			console.log('call lock wallet');
-		},
 	},
 	beforeMount()
 	{
 		const { $store } = this;
 
 		// set theme class name
-		document.querySelector('body').classList.add(`theme-${$store.state.layout.theme || 'light'}`);
+		document.querySelector('body').classList.add(`theme-${$store.state.layout.theme || lib.constant.theme.light}`);
 
 		// set class name for touch device
 		if (lib.util.detectTouch())

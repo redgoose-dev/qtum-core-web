@@ -177,7 +177,7 @@ exports.check = function(testnet=false, cb)
  */
 exports.power = function(sw=true, testnet=false, cb)
 {
-	const maxTry = 20;
+	const maxTry = 20; // sec
 	let count = 0;
 
 	/**

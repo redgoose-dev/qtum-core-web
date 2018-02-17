@@ -1,36 +1,41 @@
 <template>
 	<button
 		:type="type"
-		:class="[ 'button', className ]"
+		:class="[
+			'button',
+			loading && 'button-loading',
+			className
+		]"
 		@click="onClick"
 		:disabled="disabled"
 		v-if="type === 'button' || type === 'submit'">
-		{{ label }}
+		<span>{{ label }}</span>
+		<loading-mini color="white" class="button__loader" v-if="loading"/>
 	</button>
 	<a
 		:href="href"
 		:target="target"
 		@click="onClick"
 		v-else>
-		{{ label }}
+		<span>{{ label }}</span>
 	</a>
 </template>
 
 <script>
+import LoadingMini from '~/components/loading/loading-mini';
+
 export default {
-	props: [
-		'type',
-		'href',
-		'target',
-		'label',
-		'disabled',
-		'className'
-	],
-	computed: {
-		isButton() {
-			// TODO: 이 부분 테스트 해보기
-			return true;
-		}
+	components: {
+		LoadingMini,
+	},
+	props: {
+		type: {},
+		href: {},
+		target: {},
+		label: {},
+		disabled: { type: Boolean, default: false },
+		loading: { type: Boolean, default: false },
+		className: {},
 	},
 	methods: {
 		onClick: function(e)

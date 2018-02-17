@@ -1,24 +1,27 @@
 <template>
 <article class="error">
 	<div class="error__wrap" v-if="error.statusCode === 600">
-		<h1>
+		<h1 class="error_symbol">
 			<img src="~static/images/ico-off-core.svg" alt="off core">
 		</h1>
-		<h2>The core is now turned off.</h2>
-		<p>To turn on core, please push the following button</p>
-		<nav>
+		<h2 class="error__heading">The core is now turned off.</h2>
+		<p class="error__description">
+			To turn on core, please push the following button
+		</p>
+		<nav class="error__nav">
 			<button-basic
 				type="submit"
 				:label="processing ? 'Processing..' : 'TURN ON CORE'"
 				:disabled="processing"
+				:loading="processing"
 				@click="onTurnOnCore"
-				className="button-key button-inline"/>
+				className="button-color-key button-inline"/>
 		</nav>
 	</div>
 	<div class="error__wrap" v-else>
-		<h1>Sorry</h1>
+		<h1 class="error__title">Sorry</h1>
 		<h2>{{ error.message }}</h2>
-		<p>
+		<p class="error__description">
 			Go back to <nuxt-link to="/">Home</nuxt-link> or let me know the problem <a href="https://github.com/RedgooseDev/qtum-core-web/issues" target="_blank">here</a>.
 		</p>
 	</div>
@@ -27,7 +30,6 @@
 
 
 <script>
-import * as lib from '~/lib';
 import ButtonBasic from '~/components/button/button-basic';
 
 export default {
@@ -46,6 +48,8 @@ export default {
 		{
 			const { $store, $axios } = this;
 
+			this.processing = true;
+
 			let response = await $axios.$post('/api/core-power', {
 				hash: $store.state.system.hash,
 				power: true,
@@ -54,12 +58,12 @@ export default {
 			switch(response.status)
 			{
 				case 'success':
-					await lib.util.sleep(1000);
-					alert('Turn on qtum-core');
-					// TODO: 새로고침하는것으로는 소용이 없고 직접 스토어를 업데이트 해줘야할거 같다...
+					location.reload();
 					break;
 				default:
-					console.error('error on core', response);
+					alert('Failed to turn on power.');
+					console.error('ERROR:', response);
+					this.processing = false;
 					break;
 			}
 		}

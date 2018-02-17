@@ -8,6 +8,7 @@
 		:value="value"
 		:size="size"
 		:maxlength="maxlength"
+		:required="required"
 		@input="changeText"
 		class="form-text__input"
 		:class="classNameInput"
@@ -21,10 +22,11 @@ export default {
 		type: { type: String, default: 'text' },
 		name: { type: String, default: '' },
 		id: { type: String, default: '' },
-		value: { type: String, default: '', required: true },
+		value: { type: String, default: '' },
 		placeholder: { type: String, default: '' },
 		size: {},
 		maxlength: {},
+		required: { type: Boolean, default: false },
 		className: { type: String },
 		classNameInput: { type: String },
 	},

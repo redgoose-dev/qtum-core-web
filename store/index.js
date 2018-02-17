@@ -12,7 +12,7 @@ export const state = () => ({
 	},
 	layout: {
 		openSidebar: true,
-		theme: 'light',
+		theme: lib.constant.theme.light,
 		dashboard__count_recent: 5,
 	},
 	system: {
@@ -22,7 +22,6 @@ export const state = () => ({
 		testnet: false,
 		lang: '',
 		hash: null,
-		token: null,
 	},
 });
 
@@ -102,6 +101,9 @@ export const actions = {
 export const mutations = {
 	/**
 	 * Update system
+	 *
+	 * @param {Object} state
+	 * @param {Object} value
 	 */
 	updateSystem(state, value={})
 	{
@@ -114,8 +116,11 @@ export const mutations = {
 	/**
 	 * Update status
 	 * 현재의 상태를 업데이트 한다.
+	 *
+	 * @param {Object} state
+	 * @param {Object} value
 	 */
-	updateStatus(state, value=false)
+	updateStatus(state, value={})
 	{
 		state.status = {
 			...state.status,
@@ -126,6 +131,9 @@ export const mutations = {
 	/**
 	 * Update layout
 	 * 레이아웃에 관한 상태를 업데이트 한다.
+	 *
+	 * @param {Object} state
+	 * @param {Object} value
 	 */
 	updateLayout(state, value={})
 	{
@@ -139,5 +147,26 @@ export const mutations = {
 
 		// update
 		state.layout = newState;
+	},
+
+	/**
+	 * remove key
+	 * 스토어의 키를 삭제한다.
+	 *
+	 * @param {Object} state
+	 * @param {Array} value `value[0]`은 부모값(status, system, layout)을 지칭하고, `value[1]`은 부모값 속에 들어있는 자식값의 key를 지칭한다.
+	 */
+	removeKey(state, value=[])
+	{
+		// check values
+		if (!(value[0] && value[1]) && !(typeof value[0] === 'string' && typeof value[1] === 'string'))
+		{
+			return;
+		}
+
+		if (state[value[0]])
+		{
+			delete state[value[0]][value[1]];
+		}
 	},
 };
