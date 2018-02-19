@@ -46,10 +46,14 @@
 		</div>
 	</div>
 
-	<layout-popup>
-		<p>smdgipsd</p>
-		sdmgposmdpgo
-		<h1 slot="foo">msdipgmspdgmspdgmp</h1>
+	<layout-popup
+		title="Add address"
+		:visible="true"
+		@close="onClosePopup"
+	>
+		<p style="margin: 0;">
+			bodmipsdgmpsdmgpsdmgsdgkjospdkgpsdgkpsdkogpdkg sdkgosdfg,dog kdsgksdog ksd[ogksdgko sdkgopsdkg opsdkgops dkogpsdmpgm sdpgmsdy
+		</p>
 	</layout-popup>
 </article>
 </template>
@@ -57,10 +61,12 @@
 
 <script>
 import * as lib from '../../lib';
-import LayoutPopup from '../../components/layout/layout-popup';
+import ButtonBasic from '~/components/button/button-basic';
+import LayoutPopup from '~/components/layout/layout-popup';
 
 export default {
 	components: {
+		ButtonBasic,
 		LayoutPopup,
 	},
 	head: {
@@ -90,6 +96,12 @@ export default {
 				message: 'Failed to import API',
 			});
 		}
-	}
+	},
+	methods: {
+		onClosePopup: function()
+		{
+			console.log('call on close 111')
+		}
+	},
 }
 </script>

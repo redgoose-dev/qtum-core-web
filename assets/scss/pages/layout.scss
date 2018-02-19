@@ -353,17 +353,3 @@ $width-side-mini: 47px;
 		}
 	}
 }
-
-
-// theme (dark)
-.theme-dark {
-	.layout-header {
-		&__wrap {
-			background: mix(#000, $color-dark, 30%);
-		}
-	}
-	.layout-side {
-		background: mix(#fff, $color-dark, 4%);
-		border-right: none;
-	}
-}

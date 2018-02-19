@@ -1,0 +1,34 @@
+@import "../variables";
+
+
+html.theme-dark {
+
+	body {
+		background: $color-dark;
+		color: $color-light-gray;
+	}
+
+	// contents
+	.contents {
+		h1 {}
+	}
+
+	// header
+	.layout-header {
+		&__wrap {
+			background: mix(#000, $color-dark, 30%);
+		}
+	}
+
+	// side
+	.layout-side {
+		background: mix(#fff, $color-dark, 4%);
+		border-right: none;
+	}
+
+	// popup component
+	.popup {
+		background: rgba(0,0,0,.3);
+	}
+
+}
