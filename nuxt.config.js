@@ -20,6 +20,10 @@ module.exports = {
 		'~assets/scss/app.scss'
 	],
 
+	build: {
+		extractCSS: true,
+	},
+
 	modules: [
 		'@nuxtjs/axios',
 	],
