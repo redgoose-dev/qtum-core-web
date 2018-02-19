@@ -23,7 +23,7 @@
 							<loading-mini
 								color="key"
 								className="core__prosessing"
-								v-if="core__power__processing"/>
+								v-if="processing.core__power"/>
 						</div>
 						<p class="form-kit__description">
 							Please be careful about changing this option.
@@ -50,9 +50,9 @@
 							<div class="unlock__button">
 								<button-basic
 									type="submit"
-									:label="core__unlock__processing ? `Processing..` : `Unlock wallet`"
-									:loading="core__unlock__processing"
-									:disabled="core__unlock__processing"
+									:label="processing.core__unlock ? `Processing..` : `Unlock wallet`"
+									:loading="processing.core__unlock"
+									:disabled="processing.core__unlock"
 									className="button-color-key button-inline button-size-small"/>
 							</div>
 						</dd>
@@ -62,9 +62,9 @@
 						<dd>
 							<button-basic
 								type="button"
-								:label="core__unlock__processing ? `Processing..` : `Lock wallet`"
-								:loading="core__unlock__processing"
-								:disabled="core__unlock__processing"
+								:label="processing.core__unlock ? `Processing..` : `Lock wallet`"
+								:loading="processing.core__unlock"
+								:disabled="processing.core__unlock"
 								@click="onChangeLock"
 								className="button-color-key button-inline button-size-small button-color-key"/>
 						</dd>
@@ -74,29 +74,61 @@
 		</section>
 		<section class="settings__section">
 			<header class="settings__sectionHeader">
-				<h1>General</h1>
-				<p>Basic setting area</p>
+				<h1>Layout</h1>
+				<p>Layout setting area</p>
 			</header>
-			<form class="form-kit settings__form" @submit="onSubmitGeneral">
+			<form class="form-kit settings__form" @submit="onSubmitLayout">
 				<dl class="form-kit__horizontal">
 					<dt>Theme</dt>
 					<dd>
+						<form-radios
+							name="theme"
+							v-model="layout.theme"
+							:items="[
+								{ label: 'Light', value: constant.theme.light },
+								{ label: 'Dark', value: constant.theme.dark },
+							]"/>
+					</dd>
+				</dl>
+				<dl class="form-kit__horizontal">
+					<dt>Count</dt>
+					<dd class="fields">
 						<div>
-							<form-radios
-								name="theme"
-								v-model="general.theme"
-								:items="[
-									{ label: 'Light', value: constant.theme.light },
-									{ label: 'Dark', value: constant.theme.dark },
-								]"/>
+							<label>
+								<form-text
+									type="text"
+									name="count__recent_transactions"
+									:value="layout.count__recentTransactions"
+									size="4"
+									maxlength="2"
+									placeholder="Please input number."
+									className="form-text-size-small"/>
+							</label>
+							<p class="form-kit__description">
+								Set count from "Recent transactions".
+							</p>
+						</div>
+						<div>
+							<form-text
+								type="text"
+								name="count__transactions"
+								:value="layout.count__transactions"
+								size="4"
+								maxlength="2"
+								placeholder="Please input number."
+								className="form-text-size-small"/>
+							<p class="form-kit__description">
+								Set count from "Transaction".
+							</p>
 						</div>
 					</dd>
 				</dl>
 				<nav class="form-kit__nav text-center">
 					<button-basic
 						type="submit"
-						:label="(false ? 'Processing..' : 'APPLY')"
-						:disabled="!true"
+						:label="processing.layout ? 'Processing..' : 'Update layout'"
+						:disabled="processing.layout"
+						:loading="processing.layout"
 						className="button-color-key button-inline"/>
 				</nav>
 			</form>
@@ -134,18 +166,25 @@ export default {
 		constant() { return lib.constant; }
 	},
 
-	async asyncData(cox) {
+	async asyncData(cox)
+	{
 		const { store, $axios } = cox;
+		const { status, layout } = store.state;
 
 		return {
-			core__power__processing: false,
-			core__unlock__processing: false,
-			qtum: {
-				power: store.state.status.core,
-				unLock: store.state.status.lock === lib.constant.lock.unLock,
+			processing: {
+				core__power: false,
+				core__unlock: false,
+				layout: false,
 			},
-			general: {
-				theme: lib.constant.theme.light,
+			qtum: {
+				power: status.core,
+				unLock: status.lock === lib.constant.lock.unLock,
+			},
+			layout: {
+				theme: layout.theme || lib.constant.theme.light,
+				count__recentTransactions: layout.count__recentTransactions || lib.constant.count.recent_transactions,
+				count__transactions: layout.count__transactions || lib.constant.count.transactions,
 			},
 		};
 	},
@@ -158,9 +197,9 @@ export default {
 		 */
 		onChangeQtumCorePower: async function(sw=false)
 		{
-			const { qtum, $store, $axios, core__power__processing } = this;
+			const { qtum, $store, $axios, processing } = this;
 
-			if (core__power__processing) return;
+			if (processing.core__power) return;
 
 			if (qtum.power)
 			{
@@ -169,7 +208,7 @@ export default {
 				if (confirm('Do you really want to turn off the Qtum-core?'))
 				{
 					// on processing
-					this.core__power__processing = true;
+					this.processing.core__power = true;
 
 					try
 					{
@@ -185,7 +224,7 @@ export default {
 							// turn off switch
 							qtum.power = sw;
 							// off processing
-							this.core__power__processing = false;
+							this.processing.core__power = false;
 						}
 						else
 						{
@@ -196,7 +235,7 @@ export default {
 					{
 						alert('Failed turn off qtum-core');
 						console.error(e);
-						this.core__power__processing = false;
+						this.processing.core__power = false;
 					}
 				}
 			}
@@ -205,7 +244,7 @@ export default {
 				// turn on qtum core
 
 				// on processing
-				this.core__power__processing = true;
+				this.processing.core__power = true;
 
 				try
 				{
@@ -228,7 +267,7 @@ export default {
 						// turn on switch
 						qtum.power = sw;
 						// off processing
-						this.core__power__processing = false;
+						this.processing.core__power = false;
 					}
 					else
 					{
@@ -239,27 +278,41 @@ export default {
 				{
 					alert('Failed turn on qtum-core');
 					console.error(e);
-					this.core__power__processing = false;
+					this.processing.core__power = false;
 				}
 			}
 		},
 		/**
-		 * on submit general
+		 * on submit layout
 		 *
 		 * @param {Event} e
 		 * @return {Promise}
 		 */
-		onSubmitGeneral: async function(e)
+		onSubmitLayout: async function(e)
 		{
+			const { $store, $axios, processing } = this;
+
 			e.preventDefault();
 
-			// TODO: 설정을 변경하는 API 요청
-			console.log('qtum:', this.qtum);
-			console.log('general:', this.general);
+			this.processing.layout = true;
+
+			let response = await $axios.$post('/api/update-layout', {
+				theme: e.target.theme.value,
+				count__recentTransactions: parseInt(e.target.count__recent_transactions.value),
+				count__transactions: parseInt(e.target.count__transactions.value),
+			});
+			await lib.util.sleep(1000);
+
+			this.processing.layout = false;
+
+			if (response.status === 'error')
+			{
+				alert('Failed to update layout.');
+			}
 		},
 		onSubmitUnlock: async function(e)
 		{
-			const { $store, $axios, core__unlock__processing, qtum } = this;
+			const { $store, $axios, processing, qtum } = this;
 
 			e.preventDefault();
 
@@ -273,7 +326,7 @@ export default {
 				return;
 			}
 
-			this.core__unlock__processing = true;
+			this.processing.core__unlock = true;
 
 			// call api
 			try
@@ -295,15 +348,15 @@ export default {
 				alert('Failed unlock wallet.');
 				console.error(e);
 			}
-			this.core__unlock__processing = false;
+			this.processing.core__unlock = false;
 		},
 		onChangeLock: async function(e)
 		{
-			const { $store, $axios, core__unlock__processing } = this;
+			const { $store, $axios, processing } = this;
 
 			if (confirm('Do you really want to lock it?'))
 			{
-				this.core__unlock__processing = true;
+				this.processing.core__unlock = true;
 				try
 				{
 					let response = await $axios.$post('/api/core-lock', {
@@ -321,7 +374,7 @@ export default {
 					alert('Failed lock wallet.');
 					console.log(e);
 				}
-				this.core__unlock__processing = false;
+				this.processing.core__unlock = false;
 			}
 		}
 	},
@@ -343,6 +396,14 @@ export default {
 	}
 	&__button {
 		margin: 8px 0 0;
+	}
+}
+.fields {
+	> div {
+		margin-top: 12px;
+		&:first-child {
+			margin-top: 0;
+		}
 	}
 }
 </style>

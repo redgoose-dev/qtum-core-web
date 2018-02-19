@@ -50,6 +50,11 @@ router.post('/core-power', require('./core'));
 router.post('/core-unlock', require('./core'));
 router.post('/core-lock', require('./core'));
 
+/**
+ * etc
+ */
+router.post('/update-layout', require('./update-layout'));
+
 
 
 // export

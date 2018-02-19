@@ -3,9 +3,6 @@ import * as lib from '~/lib';
 import ButtonMore from '~/components/button/button-more';
 
 
-const SIZE = 12;
-
-
 /**
  * get transactions
  *
@@ -15,7 +12,7 @@ const SIZE = 12;
  * @param {Number} size
  * @return {Promise}
  */
-async function getTransactions($axios, store, page=1, size=SIZE)
+async function getTransactions($axios, store, page=1, size=12)
 {
 	try
 	{
@@ -65,7 +62,7 @@ export default {
 			this.loading_more = true;
 			try
 			{
-				let transactions = await getTransactions(this.$axios, this.$store.state, this.page + 1);
+				let transactions = await getTransactions(this.$axios, this.$store.state, this.page + 1, this.size);
 				if (transactions.status === 'error') throw transactions.message;
 				if (transactions.data && transactions.data.length)
 				{
@@ -75,7 +72,7 @@ export default {
 					];
 					this.page += 1;
 				}
-				if (transactions.data && transactions.data.length < SIZE)
+				if (transactions.data && transactions.data.length < this.size)
 				{
 					this.noMore = true;
 				}
@@ -93,18 +90,19 @@ export default {
 		const { error, store } = cox;
 		let result = {
 			page: 1,
+			size: store.state.layout.count__transactions,
 			loading_more: false,
 			noMore: false,
 			transactions: [],
 		};
 		try
 		{
-			let transactions = await getTransactions(cox.$axios, store.state);
+			let transactions = await getTransactions(cox.$axios, store.state, 1, result.size);
 			if (transactions.status === 'error') throw transactions.message;
 			return {
 				...result,
 				transactions: transactions.data,
-				noMore: (transactions.data && transactions.data.length < SIZE),
+				noMore: (transactions.data && transactions.data.length < result.size),
 			};
 		}
 		catch(e)

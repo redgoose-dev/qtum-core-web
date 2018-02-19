@@ -4,7 +4,7 @@
   "TESTNET": false,
   "CORE_ADDRESS": "{ADDRESS}/qtum/bin",
   "LANGUAGE": "en",
-  "THEME": "light",
+  "LAYOUT": null,
   "HASH": "",
   "TOKEN": ""
 }

@@ -11,9 +11,9 @@ export const state = () => ({
 		balance: 0,
 	},
 	layout: {
-		openSidebar: true,
-		theme: lib.constant.theme.light,
-		dashboard__count_recent: 5,
+		theme: lib.constant.theme.dark,
+		count__recentTransactions: lib.constant.count.recent_transactions,
+		count__transactions: lib.constant.count.transactions,
 	},
 	system: {
 		title: '',
@@ -23,6 +23,7 @@ export const state = () => ({
 		lang: '',
 		hash: null,
 	},
+	openSidebar: true,
 });
 
 // action
@@ -70,6 +71,12 @@ export const actions = {
 				lock: lib.string.getLockInformation(result.wallet.unlocked_until),
 				...((result.info.balance && typeof result.info.balance === 'number') ? { balance: result.info.balance } : null)
 			});
+
+			// update layout
+			if (result.layout)
+			{
+				commit('updateLayout', result.layout);
+			}
 		}
 		catch(e)
 		{
@@ -81,17 +88,14 @@ export const actions = {
 			});
 		}
 
-		// recovery store from layout
+		// recovery store from cookie
 		if (req.headers.cookie)
 		{
-			let layout = lib.cookie.get(req.headers.cookie, 'layout');
-			if (layout && typeof layout === 'string')
+			// set sidebar
+			let openSidebar = lib.cookie.get(req.headers.cookie, 'openSidebar');
+			if (!!openSidebar)
 			{
-				layout = JSON.parse(layout);
-				commit('updateLayout', {
-					...state.layout,
-					...layout
-				});
+				commit('updateSidebar', openSidebar === '1');
 			}
 		}
 	}
@@ -142,9 +146,6 @@ export const mutations = {
 			...value,
 		};
 
-		// set cookie
-		lib.cookie.set('layout', JSON.stringify(newState), 7);
-
 		// update
 		state.layout = newState;
 	},
@@ -168,5 +169,16 @@ export const mutations = {
 		{
 			delete state[value[0]][value[1]];
 		}
+	},
+
+	/**
+	 * update sidebar
+	 *
+	 * @param {Object} state
+	 * @param {Boolean} value
+	 */
+	updateSidebar(state, value=false)
+	{
+		state.openSidebar = value;
 	},
 };

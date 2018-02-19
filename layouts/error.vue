@@ -30,11 +30,22 @@
 
 
 <script>
+import * as lib from '../lib';
 import ButtonBasic from '~/components/button/button-basic';
 
 export default {
 	components: {
 		ButtonBasic,
+	},
+	head() {
+		const { $store } = this;
+		let class_theme = $store.state.layout.theme || lib.constant.theme.light;
+		return {
+			htmlAttrs: {
+				lang: $store.state.system.lang || 'en',
+				class: !!class_theme ? `theme-${class_theme}` : null,
+			}
+		}
 	},
 	props: ['error'],
 	data(cox)

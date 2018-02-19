@@ -15,28 +15,10 @@ module.exports = function(req, res)
 		return;
 	}
 
-	qtumCore.action(`listaddressgroupings`, !!req.headers.testnet, true, (result) => {
+	qtumCore.action(`listreceivedbyaddress`, !!req.headers.testnet, true, (result) => {
 		if (result.status === 'success' && !!result.data)
 		{
-			let index = [];
-
-			// convert index
-			result.data.forEach((o, k) => {
-				o.forEach((item) => {
-					index.push({
-						address: item[0],
-						amount: item[1],
-						label: item[2] || ''
-					});
-				});
-			});
-
-			res.json({
-				status: 'success',
-				data: {
-					index,
-				},
-			});
+			res.json(result);
 		}
 		else
 		{

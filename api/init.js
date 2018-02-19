@@ -2,6 +2,7 @@ const async = require('async');
 const qtumCore = require('../modules/qtumCore');
 const authorization = require('./lib/authorization');
 const error = require('./lib/error');
+const env = require('../modules/env');
 
 
 module.exports = function(req, res)
@@ -69,6 +70,10 @@ module.exports = function(req, res)
 					cb(result.message, null);
 				}
 			});
+		},
+		layout: function(cb)
+		{
+			cb(null, env.get().LAYOUT);
 		}
 	};
 

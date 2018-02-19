@@ -5,8 +5,9 @@
 .form-text {
 	$self: '.form-text';
 	display: inline-block;
+	vertical-align: middle;
 	font-size: 0;
-	height: 40px;
+	height: 42px;
 	border: 1px solid $color-form-border;
 	border-radius: 2px;
 	&__input {
@@ -20,6 +21,7 @@
 		border-radius: 2px;
 		&:focus {
 			outline: none;
+			background: $color-light-gray;
 		}
 		&::placeholder {
 			color: $color-form-border;
@@ -29,6 +31,12 @@
 		display: block;
 		#{$self}__input {
 			width: 100%;
+		}
+	}
+	&-size-small {
+		height: 34px;
+		#{$self}__input {
+			font-size: 13px;
 		}
 	}
 }
@@ -215,7 +223,7 @@
 		font-size: 14px;
 	}
 	&__description {
-		margin: 8px 0 0;
+		margin: 7px 0 0;
 		font-size: 12px;
 		color: $color-weak-dark;
 	}

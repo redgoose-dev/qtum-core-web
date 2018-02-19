@@ -22,7 +22,7 @@ export default {
 		type: { type: String, default: 'text' },
 		name: { type: String, default: '' },
 		id: { type: String, default: '' },
-		value: { type: String, default: '' },
+		value: { type: [String,Number], default: '' },
 		placeholder: { type: String, default: '' },
 		size: {},
 		maxlength: {},

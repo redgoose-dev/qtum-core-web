@@ -60,7 +60,7 @@
 	<!-- Container -->
 	<div :class="[
 		'layout-container',
-		!layout.openSidebar && 'layout-container-minimum-side',
+		!openSidebar && 'layout-container-minimum-side',
 	]">
 		<!-- Side bar -->
 		<div class="layout-container__sideWrap">
@@ -122,6 +122,16 @@
 import * as lib from '../lib';
 
 export default {
+	head() {
+		const { $store } = this;
+		let class_theme = $store.state.layout.theme || lib.constant.theme.light;
+		return {
+			htmlAttrs: {
+				lang: $store.state.system.lang || 'en',
+				class: !!class_theme ? `theme-${class_theme}` : null,
+			}
+		}
+	},
 	computed: {
 		status() { return this.$store.state.status; },
 		useLock() { return this.$store.state.status.lock !== lib.constant.lock.notEncrypted; },
@@ -129,14 +139,15 @@ export default {
 		layout() { return this.$store.state.layout; },
 		system() { return this.$store.state.system; },
 		balance() { return this.$store.state.status.balance.toFixed(2); },
+		openSidebar() { return this.$store.state.openSidebar; }
 	},
-
 	methods: {
 		toggleSideBar: function()
 		{
-			this.$store.commit('updateLayout', {
-				openSidebar: !this.$store.state.layout.openSidebar,
-			});
+			// set cookie
+			lib.cookie.set('openSidebar', !this.$store.state.openSidebar ? '1' : '0', 7);
+			// update store
+			this.$store.commit('updateSidebar', !this.$store.state.openSidebar);
 		},
 		toggleDropDown: function(e)
 		{
@@ -164,15 +175,21 @@ export default {
 	},
 	beforeMount()
 	{
-		const { $store } = this;
-
-		// set theme class name
-		document.querySelector('body').classList.add(`theme-${$store.state.layout.theme || lib.constant.theme.light}`);
-
 		// set class name for touch device
 		if (lib.util.detectTouch())
 		{
 			document.querySelector('html').classList.add('touch');
+		}
+	},
+	mounted()
+	{
+		const { $store } = this;
+
+		// 쿠기가 없으면 새로 설정한다.
+		if (!document.cookie)
+		{
+			lib.cookie.set('openSidebar', '1', 7);
+			lib.cookie.set('layout', JSON.stringify($store.state.layout), 7);
 		}
 	},
 	data()

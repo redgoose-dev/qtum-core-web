@@ -1,6 +1,3 @@
-/**
- * Receive
- */
 <template>
 <article class="contents receive">
 	<header class="contents__header">
@@ -16,20 +13,22 @@
 				<table class="table">
 					<thead>
 					<tr>
-						<th scope="col" width="30%">Label</th>
+						<th scope="col">Label</th>
 						<th scope="col">Address</th>
-						<th scope="col" width="15%">Amount</th>
+						<th scope="col">Amount</th>
+						<th scope="col">Confirm</th>
 						<th scope="col"></th>
 					</tr>
 					</thead>
 					<tbody>
 					<template v-if="index.length">
 						<tr v-for="o in index">
-							<td>
+							<td class="text-center">
 								<strong class="text-brackets-quotes">{{ o.label }}</strong>
 							</td>
 							<td>{{ o.address }}</td>
 							<td class="text-center">{{ o.amount }}</td>
+							<td class="text-center">{{ o.confirmations }}</td>
 							<td class="text-center">
 								<button type="button">Edit</button>
 								<button type="button">QR Code</button>
@@ -46,20 +45,28 @@
 			</div>
 		</div>
 	</div>
+
+	<layout-popup>
+		<p>smdgipsd</p>
+		sdmgposmdpgo
+		<h1 slot="foo">msdipgmspdgmspdgmp</h1>
+	</layout-popup>
 </article>
 </template>
 
 
 <script>
 import * as lib from '../../lib';
+import LayoutPopup from '../../components/layout/layout-popup';
 
 export default {
+	components: {
+		LayoutPopup,
+	},
 	head: {
 		title: lib.util.makeTitle('Receive')
 	},
-
 	middleware: 'checkCore',
-
 	async asyncData(cox)
 	{
 		const { params, error, store, $axios } = cox;
@@ -72,7 +79,7 @@ export default {
 			if (!(res.status === 'success' && !!res.data)) throw 'API import failed.';
 			return {
 				...result,
-				index: res.data.index,
+				index: res.data,
 			};
 		}
 		catch(e)

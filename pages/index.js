@@ -82,7 +82,7 @@ export default {
 
 		try
 		{
-			const count = store.state.layout.dashboard__count_recent;
+			const count = store.state.layout.count__recentTransactions;
 			let res = await $axios.$get(`/api/dashboard/?count_recent=${count}`);
 			if (!res.info) throw 'API import failed.';
 			return {
