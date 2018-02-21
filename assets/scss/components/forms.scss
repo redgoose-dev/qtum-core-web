@@ -23,6 +23,11 @@
 			outline: none;
 			background: mix(#fff, $color-key, 90%);
 		}
+		&:disabled {
+			background: $color-light-gray;
+			cursor: not-allowed;
+			color: $color-weak-dark;
+		}
 		&::placeholder {
 			color: $color-form-border;
 		}
@@ -215,6 +220,25 @@
 			> dd {
 				margin: 10px 0 0;
 			}
+		}
+	}
+	&__vertical {
+		display: block;
+		margin: 0;
+		padding: 15px 0 18px;
+		border-top: 1px solid $color-medium-gray;
+		> dt {
+			font-weight: 600;
+			font-size: 14px;
+		}
+		> dd {
+			margin: 8px 0 0;
+		}
+		&-noline {
+			border-top: none;
+		}
+		&:first-child {
+			margin-top: 0;
 		}
 	}
 

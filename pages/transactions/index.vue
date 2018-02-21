@@ -9,15 +9,6 @@
 	</header>
 
 	<div class="contents__body">
-		<form action="#" method="get" class="search" v-if="false">
-			<fieldset>
-				<legend class="blind">filter and search form</legend>
-				<div>
-					TODO: filter form
-				</div>
-			</fieldset>
-		</form>
-
 		<div class="contents__box">
 			<div class="table__responsive table__responsive-border">
 				<table class="table table-fixed">
@@ -35,7 +26,13 @@
 					<template v-if="transactions.length">
 						<tr v-for="o in transactions">
 							<td class="text-center">{{ o.time }}</td>
-							<td class="text-center">{{ o.type }}</td>
+							<td :class="[
+								'text-center',
+								o.type === 'send' && 'text-error',
+								o.type === 'receive' && 'text-success'
+							]">
+								{{ o.type }}
+							</td>
 							<td class="text-center overflow">
 								<a v-bind:href="o.txUrl" target="_blank">{{ o.txid }}</a>
 							</td>

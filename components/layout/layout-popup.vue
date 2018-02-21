@@ -53,7 +53,7 @@ export default {
 		border-radius: 3px;
 		box-shadow: 0 2px 8px rgba(0,0,0,.2);
 		min-width: 300px;
-		max-width: 550px;
+		//max-width: 550px;
 	}
 	&__header {
 		background: $color-dark;
