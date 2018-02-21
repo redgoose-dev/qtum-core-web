@@ -9,6 +9,7 @@
 		:size="size"
 		:maxlength="maxlength"
 		:required="required"
+		:disabled="disabled"
 		@input="changeText"
 		class="form-text__input"
 		:class="classNameInput"
@@ -27,6 +28,7 @@ export default {
 		size: {},
 		maxlength: {},
 		required: { type: Boolean, default: false },
+		disabled: { type: Boolean, default: false },
 		className: { type: String },
 		classNameInput: { type: String },
 	},

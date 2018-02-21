@@ -88,7 +88,7 @@
 								<span>RECEIVE</span>
 							</nuxt-link>
 						</li>
-						<li class="gnb__item">
+						<li class="gnb__item" v-if="false">
 							<nuxt-link to="/send" title="Send to">
 								<em><i class="sp-ico ico-gnb-post"></i></em>
 								<span>SEND</span>

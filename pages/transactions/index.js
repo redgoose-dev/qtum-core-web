@@ -1,4 +1,3 @@
-import moment from 'moment';
 import * as lib from '~/lib';
 import ButtonMore from '~/components/button/button-more';
 
@@ -24,7 +23,7 @@ async function getTransactions($axios, store, page=1, size=12)
 				return {
 					address: o.address,
 					amount: o.amount.toFixed(6),
-					time: moment.unix(o.time).format('YYYY-MM-DD HH:mm'),
+					time: lib.date.getFormatDate(lib.date.unixToDate(o.time)),
 					type: o.category,
 					confirm: o.confirmations,
 					txid: o.txid,

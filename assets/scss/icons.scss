@@ -2,9 +2,9 @@
 
 
 %sp-ico {
-	background: transparent url('../images/sp-ico.png') no-repeat;
+	background: transparent url('/images/sp-ico.png') no-repeat;
 	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 1.33dppx) {
-		background-image: url('../images/sp-ico@2x.png');
+		background-image: url('/images/sp-ico@2x.png');
 		background-size: 300px 200px;
 	}
 }
@@ -43,6 +43,10 @@
 .ico-lock {
 	background-position: -93px 0;
 	@include sp-size(13px, 17px);
+}
+.ico-close {
+	background-position: -116px 0;
+	@include sp-size(14px, 14px);
 }
 
 // sidebar icons

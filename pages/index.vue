@@ -87,8 +87,11 @@
 						<ul class="index" v-if="transactions.length">
 							<li v-for="o in transactions" class="index__item index__item-row">
 								<div class="index__col index__col-flex index__col-body index__col-overflow">
-									<p class="index__date">{{ o.time }}</p>
 									<p class="index__metas">
+										<span>
+											<b>Date</b>
+											<em>{{ o.time }}</em>
+										</span>
 										<span>
 											<b>Amount</b>
 											<em>{{ o.amount }}</em>
@@ -107,7 +110,13 @@
 									</p>
 								</div>
 								<div class="index__col index__col-type">
-									<p class="index__type">{{ o.type }}</p>
+									<p :class="[
+										'index__type',
+										o.type === 'send' && 'text-error',
+										o.type === 'receive' && 'text-success'
+									]">
+										{{ o.type }}
+									</p>
 								</div>
 							</li>
 						</ul>
