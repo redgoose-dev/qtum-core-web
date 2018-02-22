@@ -139,13 +139,26 @@ export default {
 
 			this.processing__addAddress = true;
 
-			// TODO: 주소가 계속 나오기 때문에 개발 테스트는 주석으로 두고 통과시키는게 좋아 보인다.
-			//let response = await $axios.$post('/api/receive/add-address', { label: e.target.label.value });
+			try
+			{
+				// add address
+				let response = await $axios.$post('/api/receive/add-address', { label: e.target.label.value });
+				if (response.status !== 'success') throw 'Failed add address';
 
-			// TODO: 주소 목록 다시 가져오기.
-			// TODO: 목록 업데이트
+				// get index
+				let index = await $axios.$get(`/api/receive`);
+				if (!(index.status === 'success' && !!index.data)) throw 'API import failed.';
+				this.index = index.data;
 
-			//console.log(response);
+				// false processing and hide popup
+				this.processing__addAddress = false;
+				this.show__addAddress = false;
+			}
+			catch(e)
+			{
+				alert('Service error');
+				console.error(e);
+			}
 		},
 	},
 }
