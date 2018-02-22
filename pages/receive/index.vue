@@ -5,6 +5,13 @@
 	</header>
 
 	<div class="contents__body">
+		<nav class="text-right">
+			<button-basic
+				type="button"
+				label="Add address"
+				@click="onShowAddAddress"
+				className="button-color-key button-inline button-size-small"/>
+		</nav>
 		<div class="contents__box">
 			<div class="table__responsive table__responsive-border">
 				<table class="table">
@@ -40,9 +47,9 @@
 
 	<layout-popup
 		title="Add address"
-		:visible="false"
+		v-if="show__addAddress"
 		@close="onCloseAddAddress">
-		<form class="form-kit popup-form">
+		<form class="form-kit popup-form" @submit="onSubmitAddAddress">
 			<dl class="form-kit__vertical">
 				<dt>Label name</dt>
 				<dd>
@@ -52,7 +59,6 @@
 						id="form_label"
 						value=""
 						maxlength="20"
-						:required="true"
 						placeholder="Please input label"
 						className="form-text-block"/>
 					<p class="form-kit__description">
@@ -63,7 +69,9 @@
 			<nav class="form-kit__nav text-center">
 				<button-basic
 					type="submit"
-					label="Add address"
+					:label="processing__addAddress ? `Processing..` : `Add address`"
+					:disabled="processing__addAddress"
+					:loading="processing__addAddress"
 					className="button-color-key button-inline"/>
 			</nav>
 		</form>
@@ -93,6 +101,8 @@ export default {
 		const { params, error, store, $axios } = cox;
 		let result = {
 			index: [],
+			show__addAddress: false,
+			processing__addAddress: false,
 		};
 		try
 		{
@@ -113,9 +123,29 @@ export default {
 		}
 	},
 	methods: {
+		onShowAddAddress: function()
+		{
+			this.show__addAddress = true;
+		},
 		onCloseAddAddress: function()
 		{
-			console.log('call on close 111');
+			this.show__addAddress = false;
+		},
+		onSubmitAddAddress: async function(e)
+		{
+			e.preventDefault();
+
+			const { $axios } = this;
+
+			this.processing__addAddress = true;
+
+			// TODO: 주소가 계속 나오기 때문에 개발 테스트는 주석으로 두고 통과시키는게 좋아 보인다.
+			//let response = await $axios.$post('/api/receive/add-address', { label: e.target.label.value });
+
+			// TODO: 주소 목록 다시 가져오기.
+			// TODO: 목록 업데이트
+
+			//console.log(response);
 		},
 	},
 }

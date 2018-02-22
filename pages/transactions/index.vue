@@ -1,7 +1,3 @@
-/**
- * Transactions
- */
-
 <template>
 <article class="contents transactions">
 	<header class="contents__header">
@@ -26,12 +22,13 @@
 					<template v-if="transactions.length">
 						<tr v-for="o in transactions">
 							<td class="text-center">{{ o.time }}</td>
-							<td :class="[
-								'text-center',
-								o.type === 'send' && 'text-error',
-								o.type === 'receive' && 'text-success'
-							]">
-								{{ o.type }}
+							<td class="text-center">
+								<strong :class="[
+									o.type === 'send' && 'text-error',
+									o.type === 'receive' && 'text-success'
+								]">
+									{{ o.type }}
+								</strong>
 							</td>
 							<td class="text-center overflow">
 								<a v-bind:href="o.txUrl" target="_blank">{{ o.txid }}</a>

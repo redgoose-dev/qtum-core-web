@@ -1,5 +1,6 @@
 <template>
 <article class="popup" :class="className" v-if="visible">
+	<span @click="onClose" class="popup__bg"></span>
 	<div class="popup__wrap">
 		<header class="popup__header">
 			<h1>{{title}}</h1>
@@ -19,7 +20,7 @@
 <script>
 export default {
 	props: {
-		visible: { type: Boolean, default: false },
+		visible: { type: Boolean, default: true },
 		title: { type: String, default: 'untitled' },
 		useClose: { type: Boolean, default: true },
 		className: { type: String, default: null },
@@ -27,9 +28,16 @@ export default {
 	methods: {
 		onClose: function()
 		{
-			console.log('call on close 2222');
 			this.$emit('close');
 		}
+	},
+	beforeMount()
+	{
+		document.querySelector('html').classList.add('mode-popup');
+	},
+	beforeDestroy()
+	{
+		document.querySelector('html').classList.remove('mode-popup');
 	},
 };
 </script>
@@ -48,12 +56,20 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	&__bg {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		background: transparent;
+	}
 	&__wrap {
+		position: relative;
 		background: #fff;
 		border-radius: 3px;
 		box-shadow: 0 2px 8px rgba(0,0,0,.2);
 		min-width: 300px;
-		//max-width: 550px;
 	}
 	&__header {
 		background: $color-dark;
