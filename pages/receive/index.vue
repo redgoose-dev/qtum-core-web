@@ -98,7 +98,7 @@ export default {
 	middleware: 'checkCore',
 	async asyncData(cox)
 	{
-		const { params, error, store, $axios } = cox;
+		const { error, $axios } = cox;
 		let result = {
 			index: [],
 			show__addAddress: false,

@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const ask = require('./modules/ask');
 const env = require('./modules/env');
 const password = require('./modules/password');
@@ -19,6 +19,7 @@ function setup()
 			{
 				case 'y':
 					fs.unlinkSync(env.resource.file);
+					fs.removeSync('.log');
 					setup();
 					break;
 				default:
@@ -31,10 +32,21 @@ function setup()
 	{
 		// if not found `.env.json`
 		env.create(null, function(err, message) {
-			completeMakeEnvFile(err, message);
+			printConsole(!!err, message);
 			if (!err)
 			{
 				inputPassword(function() {
+					// make .log directory
+					try {
+						fs.mkdirSync('.log');
+						printConsole(false, 'Make ".log" directory');
+					} catch(err) {
+						printConsole(true, 'Failed make ".log" directory');
+						if (err.code !== 'EEXIST')
+						{
+							throw err;
+						}
+					}
 					exit();
 				});
 			}
@@ -56,7 +68,7 @@ function inputPassword(cb)
 		nextEnv.TOKEN = password.create(String(Date.now()), 5);
 		let str = JSON.stringify(nextEnv, null, 2);
 		env.create(str, function(err, message) {
-			completeMakeEnvFile(err, message);
+			printConsole(!!err, message);
 			if (cb) cb();
 		});
 
@@ -64,12 +76,12 @@ function inputPassword(cb)
 }
 
 /**
- * complete make env file
+ * print console
  *
  * @param {Boolean} err
  * @param {String} message
  */
-function completeMakeEnvFile(err, message)
+function printConsole(err, message)
 {
 	if (err)
 	{
