@@ -301,15 +301,26 @@ export default {
 				count__recentTransactions: parseInt(e.target.count__recent_transactions.value),
 				count__transactions: parseInt(e.target.count__transactions.value),
 			});
-			await lib.util.sleep(1000);
+			await lib.util.sleep(300);
 
 			this.processing.layout = false;
 
 			if (response.status === 'error')
 			{
 				alert('Failed to update layout.');
+				return;
+			}
+			if (response.data)
+			{
+				$store.commit('updateLayout', response.data);
 			}
 		},
+		/**
+		 * on submit unlock
+		 *
+		 * @param {Event} e
+		 * @return {Promise}
+		 */
 		onSubmitUnlock: async function(e)
 		{
 			const { $store, $axios, processing, qtum } = this;
@@ -350,6 +361,12 @@ export default {
 			}
 			this.processing.core__unlock = false;
 		},
+		/**
+		 * on change lock
+		 *
+		 * @param {Event} e
+		 * @return {Promise}
+		 */
 		onChangeLock: async function(e)
 		{
 			const { $store, $axios, processing } = this;
@@ -372,7 +389,7 @@ export default {
 				catch(e)
 				{
 					alert('Failed lock wallet.');
-					console.log(e);
+					console.error(e);
 				}
 				this.processing.core__unlock = false;
 			}

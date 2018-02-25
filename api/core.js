@@ -33,7 +33,6 @@ module.exports = function(req, res)
 			{
 				// power on
 				qtumCore.power(true, !!req.headers.testnet, (result) => {
-					console.log(result);
 					return res.json(result);
 				});
 			}

@@ -21,7 +21,10 @@ module.exports = function(req, res)
 				}
 				else
 				{
-					return res.json({ status: 'success' });
+					return res.json({
+						status: 'success',
+						data: newEnv.LAYOUT,
+					});
 				}
 			}
 		);

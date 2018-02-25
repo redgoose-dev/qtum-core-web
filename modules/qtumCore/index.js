@@ -145,7 +145,9 @@ function cli(file='qtum-cli', testnet=null, params='', json=true, callback)
  */
 exports.action = function(cmd, testnet, json=true, cb)
 {
-	cli('qtum-cli', testnet, cmd, json, cb);
+	cli('qtum-cli', testnet, cmd, json, function(res) {
+		cb(res);
+	});
 };
 
 /**
@@ -227,6 +229,8 @@ exports.power = function(sw=true, testnet=false, cb)
 	else
 	{
 		// off
-		cli('qtum-cli', testnet, 'stop', false, cb);
+		cli('qtum-cli', testnet, 'stop', false, function(res) {
+			cb(res);
+		});
 	}
 };

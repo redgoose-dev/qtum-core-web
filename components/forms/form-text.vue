@@ -21,10 +21,10 @@
 export default {
 	props: {
 		type: { type: String, default: 'text' },
-		name: { type: String, default: '' },
-		id: { type: String, default: '' },
-		value: { type: [String,Number], default: '' },
-		placeholder: { type: String, default: '' },
+		name: { type: String, default: null },
+		id: { type: String, default: null },
+		value: { type: [String,Number], default: null },
+		placeholder: { type: String, default: null },
 		size: {},
 		maxlength: {},
 		required: { type: Boolean, default: false },

@@ -58,6 +58,12 @@ export const actions = {
 			// get api data
 			let result = await app.$axios.$get(`/api`);
 
+			// update layout (레이아웃은 결과 상태에 관계없이 가져올 수 있으므로 먼저 업데이트)
+			if (result.layout)
+			{
+				commit('updateLayout', result.layout);
+			}
+
 			if (result.status === 'error') throw result;
 
 			// check server
@@ -71,12 +77,6 @@ export const actions = {
 				lock: lib.string.getLockInformation(result.wallet.unlocked_until),
 				...((result.info.balance && typeof result.info.balance === 'number') ? { balance: result.info.balance } : null)
 			});
-
-			// update layout
-			if (result.layout)
-			{
-				commit('updateLayout', result.layout);
-			}
 		}
 		catch(e)
 		{

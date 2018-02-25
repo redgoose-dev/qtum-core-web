@@ -85,6 +85,7 @@ module.exports = function(req, res)
 		else
 		{
 			res.json({
+				...result,
 				status: 'error',
 				...error.message(err),
 			});

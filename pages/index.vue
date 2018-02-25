@@ -24,11 +24,11 @@
 							<dd><strong>{{ stake }}</strong></dd>
 						</dl>
 						<dl class="description" v-if="immature_balance > 0">
-							<dt>immature</dt>
+							<dt>Immature</dt>
 							<dd><strong>{{ immature_balance }}</strong></dd>
 						</dl>
 						<dl class="description" v-if="unconfirmed_balance > 0">
-							<dt>unconfirmed</dt>
+							<dt>Unconfirmed</dt>
 							<dd><strong>{{ unconfirmed_balance }}</strong></dd>
 						</dl>
 					</div>
