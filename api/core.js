@@ -32,7 +32,6 @@ module.exports = function(req, res)
 			if (req.body.power)
 			{
 				// power on
-				console.log(req.headers.testnet);
 				qtumCore.power(true, !!req.headers.testnet, (result) => {
 					return res.json(result);
 				});
@@ -73,5 +72,16 @@ module.exports = function(req, res)
 				return res.json(result);
 			});
 			break;
+
+		case '/core-change-testnet':
+			if (req.session.auth)
+			{
+				req.session.auth.testnet = req.body.testnet ? 1 : 0;
+				return res.json({ status: 'success' });
+			}
+			else
+			{
+				return res.json({ status: 'error' });
+			}
 	}
 };

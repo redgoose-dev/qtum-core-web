@@ -5,19 +5,38 @@
 	</header>
 
 	<div class="contents__body">
-		<section class="settings__section">
+		<section class="settings__section core">
 			<header class="settings__sectionHeader">
 				<h1>qtum core</h1>
 				<p>The area that manages the core.</p>
 			</header>
-			<div class="form-kit">
+			<div class="form-kit core__body">
 				<dl class="form-kit__horizontal">
-					<dt>Power ON/OFF</dt>
+					<dt>Testnet</dt>
+					<dd>
+						<div>
+							<form-switch
+								title="Using testnet"
+								:value="qtum.testnet"
+								:disabled="processing.core__testnet"
+								@change="onChangeTestnet"/>
+							<loading-mini
+								color="key"
+								className="core__prosessing"
+								v-if="processing.core__testnet"/>
+						</div>
+						<p class="form-kit__description">
+							It will be changed to "Testnet".
+						</p>
+					</dd>
+				</dl>
+				<dl class="form-kit__horizontal">
+					<dt>{{status.testnet ? 'Testnet' : 'Mainnet'}} ON/OFF</dt>
 					<dd>
 						<div>
 							<form-switch
 								title="core power on/off"
-								name="core_power"
+								:disabled="processing.core__power"
 								:value="qtum.power"
 								@change="onChangeQtumCorePower"/>
 							<loading-mini
@@ -30,7 +49,7 @@
 						</p>
 					</dd>
 				</dl>
-				<form v-if="status.core && useLock" @submit="onSubmitUnlock">
+				<form v-if="qtum.useLock" @submit="onSubmitUnlock">
 					<dl class="form-kit__horizontal unlock" v-if="!qtum.unLock">
 						<dt>Unlock wallet</dt>
 						<dd>
@@ -70,25 +89,6 @@
 						</dd>
 					</dl>
 				</form>
-				<dl class="form-kit__horizontal">
-					<dt>Testnet</dt>
-					<dd>
-						<div>
-							<form-switch
-								title="core power on/off"
-								name="core_power"
-								:value="qtum.power"
-								@change="onChangeQtumCorePower"/>
-							<loading-mini
-								color="key"
-								className="core__prosessing"
-								v-if="processing.core__power"/>
-						</div>
-						<p class="form-kit__description">
-							Please be careful about changing this option.
-						</p>
-					</dd>
-				</dl>
 			</div>
 		</section>
 		<section class="settings__section">
@@ -157,7 +157,7 @@
 </template>
 
 <script>
-import * as lib from '~/lib';
+import * as lib from '../../lib';
 import ButtonBasic from '~/components/button/button-basic';
 import FormSwitch from '~/components/forms/form-switch';
 import FormRadios from '~/components/forms/form-radios';
@@ -179,7 +179,6 @@ export default {
 	},
 	computed: {
 		status() { return this.$store.state.status; },
-		useLock() { return this.$store.state.status.lock !== lib.constant.lock.notEncrypted; },
 		constant() { return lib.constant; }
 	},
 	async asyncData(cox)
@@ -191,10 +190,12 @@ export default {
 			processing: {
 				core__power: false,
 				core__unlock: false,
+				core__testnet: false,
 				layout: false,
 			},
 			qtum: {
 				power: status.core,
+				useLock: status.core && (status.lock !== lib.constant.lock.notEncrypted),
 				unLock: status.lock === lib.constant.lock.unLock,
 				testnet: status.testnet,
 			},
@@ -409,7 +410,39 @@ export default {
 				}
 				processing.core__unlock = false;
 			}
-		}
+		},
+		onChangeTestnet: async function(sw=false)
+		{
+			const { $store, $axios, processing } = this;
+
+			// on loading
+			processing.core__testnet = true;
+
+			// set header
+			$axios.setHeader('testnet', sw ? 1 : 0);
+
+			// request
+			let response = await $axios.$post('/api/core-change-testnet', {
+				hash: $store.state.system.hash,
+				testnet: sw,
+			});
+
+			if (response.status === 'success')
+			{
+				await lib.util.resetStatus($axios, $store, { testnet: sw });
+				const status = this.$store.state.status;
+				this.qtum = {
+					...this.qtum,
+					power: !!status.core,
+					testnet: sw,
+					useLock: status.core && (status.lock !== lib.constant.lock.notEncrypted),
+					unLock: status.lock === lib.constant.lock.unLock
+				}
+			}
+
+			// off loading
+			processing.core__testnet = false;
+		},
 	},
 }
 </script>
@@ -417,12 +450,16 @@ export default {
 <style lang="scss" scoped>
 @import "~assets/scss/variables";
 
-.core__prosessing {
-	margin-left: 10px;
+.core {
+	&__body {
+		margin-bottom: -10px;
+	}
+	&__prosessing {
+		margin-left: 10px;
+	}
 }
 .unlock {
 	border-top: 1px solid $color-medium-gray;
-	padding-bottom: 0;
 	&__password {}
 	&__check {
 		margin: 5px 0 0;
@@ -430,6 +467,9 @@ export default {
 	&__button {
 		margin: 8px 0 0;
 	}
+}
+.testnet {
+
 }
 .fields {
 	> div {

@@ -1,9 +1,10 @@
 <template>
 	<button
 		:title="title"
+		:disabled="disabled"
 		class="form-switch"
-		@click="onChange"
-		:class="className">
+		:class="className"
+		@click="onChange">
 		<i class="form-switch__icon" :class="statusClassName">
 			{{value}}
 		</i>
@@ -12,19 +13,17 @@
 
 <script>
 export default {
-	props: [
-		'title',
-		'name',
-		'value',
-		'change',
-		'className',
-	],
-
+	props: {
+		title: { default: 'switch' },
+		disabled: { default: false },
+		value: {},
+		change: { default: false },
+		className: {},
+	},
 	model: {
 		prop: 'value',
 		event: 'change'
 	},
-
 	computed: {
 		statusClassName: function()
 		{
@@ -33,7 +32,6 @@ export default {
 			};
 		}
 	},
-
 	methods: {
 		onChange: function(e)
 		{

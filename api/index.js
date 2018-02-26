@@ -50,6 +50,7 @@ router.post('/logout', require('./auth'));
 router.post('/core-power', require('./core'));
 router.post('/core-unlock', require('./core'));
 router.post('/core-lock', require('./core'));
+router.post('/core-change-testnet', require('./core'));
 
 /**
  * etc

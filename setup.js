@@ -6,62 +6,83 @@ const consoleColor = require('./modules/consoleColor');
 
 
 /**
- * setup
+ * ask text
+ *
+ * @param {String} message
+ * @param {Boolean} required
+ * @param {String} errorMessage
+ * @return {Promise}
  */
-function setup()
+function askText(message, required=false, errorMessage=null)
 {
-	// check `.env.json` file
-	if (fs.existsSync(env.resource.file))
-	{
-		// if exist `.env.json` file
-		ask(`exist "${env.resource.file}" file. reinstall? (y/N) : `, function(str) {
-			switch (str)
+	return new Promise(function(resolve) {
+		ask(`${message}${required ? '(required)' : ''}: `, function(str) {
+			if (!str && required)
 			{
-				case 'y':
-					fs.unlinkSync(env.resource.file);
-					setup();
-					break;
-				default:
-					exit();
-					break;
+				if (errorMessage) printConsole(true, errorMessage);
+				askText(message, required, errorMessage).then(resolve);
+			}
+			else
+			{
+				resolve(str);
 			}
 		});
-	}
-	else
-	{
-		// if not found `.env.json`
-		env.create(null, function(err, message) {
-			printConsole(!!err, message);
-			if (!err)
-			{
-				inputPassword(function() {
-					exit();
-				});
-			}
-		});
-	}
+	});
 }
 
 /**
- * input password
+ * ask Yes & No
  *
- * @param {Function} cb
+ * @param {String} message
+ * @param {Boolean} active
  */
-function inputPassword(cb)
+function askBoolean(message='Q: ', active=null)
 {
-	// input password
-	ask('input password: ', function(pw) {
-		let nextEnv = require(`./${env.resource.file}`);
-		nextEnv.HASH = password.create(pw, 10);
-		nextEnv.HASH_TESTNET = nextEnv.HASH;
-		nextEnv.TOKEN = password.create(String(Date.now()), 5);
-		let str = JSON.stringify(nextEnv, null, 2);
-		env.create(str, function(err, message) {
-			printConsole(!!err, message);
-			if (cb) cb();
-		});
+	return new Promise(function(resolve) {
+		ask(`${message} (${active === true ? 'Y' : 'y'}/${active === false ? 'N' : 'n'}) : `, function(str) {
+			if (str)
+			{
+				str = str.toLowerCase();
+			}
+			else
+			{
+				str = (active === null) ? null : (active ? 'y' : 'n');
+			}
+			switch(str)
+			{
+				case 'y':
+					resolve(true);
+					break;
+				case 'n':
+					resolve(false);
+					break;
+				default:
+					askBoolean(message, active).then(resolve);
+					break;
+			}
+		})
+	});
+
+}
+
+
+/**
+ * apply env
+ */
+function applyEnv(pw, cb)
+{
+	return new Promise(function(resolve) {
 
 	});
+	// let nextEnv = require(`./${env.resource.file}`);
+	// nextEnv.HASH = password.create(pw, 10);
+	// nextEnv.HASH_TESTNET = nextEnv.HASH;
+	// nextEnv.TOKEN = password.create(String(Date.now()), 5);
+	// let str = JSON.stringify(nextEnv, null, 2);
+	// env.create(str, function(err, message) {
+	// 	printConsole(!!err, message);
+	// 	if (cb) cb();
+	// });
 }
 
 /**
@@ -92,16 +113,61 @@ function exit()
 }
 
 
+/**
+ * setup
+ */
+async function setup()
+{
+	// check `.env.json` file
+	if (fs.existsSync(env.resource.file))
+	{
+		// if exist `.env.json` file
+		let reinstall = await askBoolean(`exist "${env.resource.file}" file. Reinstall?`, false);
+		if (reinstall)
+		{
+			fs.unlinkSync(env.resource.file);
+			setup().then();
+		}
+		else
+		{
+			exit();
+		}
+	}
+	else
+	{
+		// if not found `.env.json`
+		env.create(null, async function(err, message) {
+			printConsole(!!err, message);
+			if (!err)
+			{
+				let data = {};
+				data.passwordMainnet = await askText('MAINNET PASSWORD', true);
+				data.useTestnetnet = await askBoolean('Do you want to use "TESTNET"?', false);
+				if (data.useTestnetnet)
+				{
+					data.passwordTest = await askText('TESTNET PASSWORD', false);
+				}
+				console.log(data);
+				let result = await applyEnv(data);
+
+				exit();
+			}
+		});
+	}
+}
+
+
 // action
 switch(process.argv[2])
 {
 	case 'change-password':
-		inputPassword(function() {
-			console.log(consoleColor.green, 'Success change password', consoleColor.reset);
-			process.exit();
-		});
+		// TODO: 함수변경으로 좀 고칠 필요가 있음.
+		// inputPassword(function() {
+		// 	console.log(consoleColor.green, 'Success change password', consoleColor.reset);
+		// 	process.exit();
+		// });
 		break;
 	default:
-		setup();
+		setup().then();
 		break;
 }

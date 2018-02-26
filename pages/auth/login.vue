@@ -108,13 +108,11 @@ export default {
 			if (res.status === 'success' && !!res.data.hash)
 			{
 				// update store
-				this.$store.commit('updateSystem', {
-					hash: res.data.hash,
-				});
+				this.$store.commit('updateSystem', { hash: res.data.hash });
 				// set header
-				this.$axios.setHeader('testnet', data.testnet);
+				this.$axios.setHeader('testnet', data.testnet ? 1 : 0);
 				// reset status
-				await lib.util.resetStatus(this.$axios, this.$store);
+				await lib.util.resetStatus(this.$axios, this.$store, { testnet: data.testnet });
 				// redirect index
 				this.$router.replace('/');
 			}

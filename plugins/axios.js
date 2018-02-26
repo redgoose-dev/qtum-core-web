@@ -4,5 +4,5 @@ export default function(cox)
 	const pref = require('../.env');
 
 	$axios.setToken(pref.TOKEN);
-	$axios.setHeader('testnet', 0);
+	$axios.setHeader('testnet', store.state.status.testnet);
 }

@@ -30,7 +30,7 @@ export const actions = {
 	async nuxtServerInit(cox, { req, app }) {
 		const { state, commit } = cox;
 		const pref = require('../.env.json');
-		const testnet = (req.session && req.session.auth) ? req.session.auth.testnet : false;
+		const testnet = !!(req.session && req.session.auth && req.session.auth.testnet);
 
 		// update system
 		let system = {
@@ -94,7 +94,8 @@ export const actions = {
 			commit('changeStatus', {
 				error: true,
 				errorCode: e.code,
-				errorMessage: e.message
+				errorMessage: e.message,
+				testnet
 			});
 		}
 

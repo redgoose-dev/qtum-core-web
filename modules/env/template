@@ -4,6 +4,7 @@
   "CORE_ADDRESS": "{ADDRESS}/qtum/bin",
   "LANGUAGE": "en",
   "LAYOUT": null,
+  "USE_TESTNET": false,
   "HASH": "",
   "HASH_TESTNET": "",
   "TOKEN": ""
