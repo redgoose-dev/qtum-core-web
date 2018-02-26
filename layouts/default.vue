@@ -6,13 +6,13 @@
 			<h1 class="layout-header__logo">
 				<nuxt-link to="/" :title="title">
 					<img
-						:src="`/images/img-logo${system.testnet ? '-testnet' : ''}.png`"
-						:srcset="`/images/img-logo${system.testnet ? '-testnet' : ''}@2x.png 2x`"
+						:src="`/images/img-logo${status.testnet ? '-testnet' : ''}.png`"
+						:srcset="`/images/img-logo${status.testnet ? '-testnet' : ''}@2x.png 2x`"
 						alt="Qtum core web"
 						class="layout-header__logo-basic"/>
 					<img
-						:src="`/images/img-logo-mobile${system.testnet ? '-testnet' : ''}.png`"
-						:srcset="`/images/img-logo-mobile${system.testnet ? '-testnet' : ''}@2x.png 2x`"
+						:src="`/images/img-logo-mobile${status.testnet ? '-testnet' : ''}.png`"
+						:srcset="`/images/img-logo-mobile${status.testnet ? '-testnet' : ''}@2x.png 2x`"
 						alt="Qtum core web"
 						class="layout-header__logo-mobile"/>
 				</nuxt-link>
@@ -138,7 +138,7 @@ export default {
 		unLock() { return this.$store.state.status.lock === lib.constant.lock.unLock },
 		layout() { return this.$store.state.layout; },
 		system() { return this.$store.state.system; },
-		balance() { return this.$store.state.status.balance.toFixed(2); },
+		balance() { return (this.$store.state.status.balance || 0).toFixed(2); },
 		openSidebar() { return this.$store.state.openSidebar; }
 	},
 	methods: {

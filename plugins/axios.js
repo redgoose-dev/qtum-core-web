@@ -4,5 +4,5 @@ export default function(cox)
 	const pref = require('../.env');
 
 	$axios.setToken(pref.TOKEN);
-	$axios.setHeader('testnet', pref.TESTNET ? 1: 0);
+	$axios.setHeader('testnet', 0);
 }

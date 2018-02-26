@@ -10,11 +10,12 @@ import * as lib from '../lib';
  */
 function correction(src, store)
 {
+	let url_explorer = lib.constant.urlExplorer[store.status.testnet ? 'testnet': 'mainnet'];
 	let result = {
-		balance: src.info.balance.toFixed(6),
-		immature_balance: src.wallet.immature_balance.toFixed(6),
-		unconfirmed_balance: src.wallet.unconfirmed_balance.toFixed(6),
-		stake: src.info.stake.toFixed(6),
+		balance: (src.info.balance || 0).toFixed(6),
+		immature_balance: (src.wallet.immature_balance || 0).toFixed(6),
+		unconfirmed_balance: (src.wallet.unconfirmed_balance || 0).toFixed(6),
+		stake: (src.info.stake || 0).toFixed(6),
 		version: src.info.version,
 		blocks: lib.number.toLocaleNumber(src.info.blocks),
 		staking: src.staking.staking,
@@ -23,13 +24,13 @@ function correction(src, store)
 		transactions: src.transactions.map((o, k) => {
 			return {
 				address: o.address,
-				amount: o.amount.toFixed(6),
+				amount: (o.amount || 0).toFixed(6),
 				time: lib.date.getFormatDate(lib.date.unixToDate(o.time)),
 				type: o.category,
 				confirm: o.confirmations,
 				txid: o.txid,
 				fee: o.fee || 0,
-				txUrl: `${store.system.url_explorer}/tx/${o.txid}`,
+				txUrl: `${url_explorer}/tx/${o.txid}`,
 			};
 		})
 	};
@@ -72,7 +73,7 @@ export default {
 			staking: false,
 			networkWeight: 0,
 			connections: 0,
-			testnet: store.state.system.testnet,
+			testnet: store.state.status.testnet,
 			transactions: [],
 			walletStatus: 'Locked',
 		};

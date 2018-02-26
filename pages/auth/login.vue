@@ -4,8 +4,8 @@
 		<div class="login__body">
 			<h1 class="login__logo">
 				<img
-					:src="`/images/img-login-logo${system.testnet ? '-testnet' : ''}.png`"
-					:srcset="`/images/img-login-logo${system.testnet ? '-testnet' : ''}@2x.png`"
+					:src="`/images/img-login-logo${testnet ? '-testnet' : ''}.png`"
+					:srcset="`/images/img-login-logo${testnet ? '-testnet' : ''}@2x.png`"
 					:alt="title"
 					width="193"/>
 			</h1>
@@ -23,16 +23,23 @@
 							maxlength="24"
 							minlength="4"
 							v-model="password"
-							required
+							:required="!testnet"
 							placeholder="Please enter a password."/>
 						<i></i>
 					</span>
 				</fieldset>
 
-				<form-check
-					label="Remember me"
-					v-model="rememberAuth"
-					className="login__rememberMe"/>
+				<div class="login__options">
+					<form-check
+						label="Remember me"
+						v-model="rememberAuth"
+						className="login__rememberMe"/>
+					<br/>
+					<form-check
+						label="Using testnet"
+						v-model="testnet"
+						className="login__rememberMe"/>
+				</div>
 
 				<nav class="login__nav">
 					<button-basic
@@ -49,9 +56,9 @@
 
 
 <script>
-import * as lib from '~/lib';
-import FormCheck from '~/components/forms/form-check';
-import ButtonBasic from '~/components/button/button-basic';
+import * as lib from '../../lib';
+import FormCheck from '../../components/forms/form-check';
+import ButtonBasic from '../../components/button/button-basic';
 
 export default {
 	components: {
@@ -62,9 +69,6 @@ export default {
 	head: {
 		title: lib.util.makeTitle('login')
 	},
-	computed: {
-		system() { return this.$store.state.system; },
-	},
 	middleware: 'login',
 	async asyncData(cox)
 	{
@@ -74,6 +78,7 @@ export default {
 			title: store.state.system.title,
 			rememberAuth: false,
 			password: '',
+			testnet: false,
 			processing: false,
 		};
 	},
@@ -95,12 +100,21 @@ export default {
 			let data = {
 				remember: this.rememberAuth,
 				password: this.password,
+				testnet: this.testnet ? 1 : 0,
 			};
+
+			// request
 			let res = await this.$axios.$post(`/api/login`, data);
 			if (res.status === 'success' && !!res.data.hash)
 			{
 				// update store
-				this.$store.commit('updateSystem', { hash: res.data.hash });
+				this.$store.commit('updateSystem', {
+					hash: res.data.hash,
+				});
+				// set header
+				this.$axios.setHeader('testnet', data.testnet);
+				// reset status
+				await lib.util.resetStatus(this.$axios, this.$store);
 				// redirect index
 				this.$router.replace('/');
 			}
@@ -119,6 +133,6 @@ export default {
 	mounted: function()
 	{
 		this.$refs.form_password.focus();
-	}
+	},
 }
 </script>

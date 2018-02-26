@@ -16,12 +16,16 @@ module.exports = function(req, res)
 		});
 	}
 
+	// set env
 	const pref = require(`../${env.resource.file}`);
+	// set hash (testnet or mainnet)
+	const hash = req.body.testnet ? pref.HASH_TESTNET : pref.HASH;
 
 	switch (req.route.path)
 	{
+		// login
 		case '/login':
-			const confirm = password.compare(req.body.password, pref.HASH);
+			const confirm = password.compare(req.body.password, hash);
 
 			if (confirm)
 			{
@@ -35,11 +39,17 @@ module.exports = function(req, res)
 				}
 
 				// write hash
-				req.session.auth = { hash: pref.HASH };
+				req.session.auth = {
+					hash,
+					testnet: req.body.testnet,
+				};
 
 				return res.json({
 					status: 'success',
-					data: { hash: pref.HASH },
+					data: {
+						hash,
+						testnet: req.body.testnet,
+					},
 				});
 			}
 			else
@@ -47,8 +57,9 @@ module.exports = function(req, res)
 				return res.json({ status: 'error' });
 			}
 
+		// logout
 		case '/logout':
-			if (req.body.hash !== pref.HASH)
+			if (req.body.hash !== hash)
 			{
 				return res.json({ status: 'error' });
 			}

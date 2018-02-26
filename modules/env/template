@@ -1,10 +1,10 @@
 {
   "TITLE": "QTUM CORE",
   "API_URL": "http://localhost:3000",
-  "TESTNET": false,
   "CORE_ADDRESS": "{ADDRESS}/qtum/bin",
   "LANGUAGE": "en",
   "LAYOUT": null,
   "HASH": "",
+  "HASH_TESTNET": "",
   "TOKEN": ""
 }

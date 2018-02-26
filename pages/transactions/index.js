@@ -16,19 +16,21 @@ async function getTransactions($axios, store, page=1, size=12)
 	try
 	{
 		let res = await $axios.$get(`/api/transactions/?page=${page}&size=${size}`);
+		let url_explorer = lib.constant.urlExplorer[store.status.testnet ? 'testnet': 'mainnet'];
 		if (!(res.status === 'success' && res.data)) throw 'API import failed.';
 		return {
 			status: 'success',
 			data: res.data.map((o, k) => {
+
 				return {
 					address: o.address,
-					amount: o.amount.toFixed(6),
+					amount: (o.amount || 0).toFixed(6),
 					time: lib.date.getFormatDate(lib.date.unixToDate(o.time)),
 					type: o.category,
 					confirm: o.confirmations,
 					txid: o.txid,
 					fee: o.fee || 0,
-					txUrl: `${store.system.url_explorer}/tx/${o.txid}`,
+					txUrl: `${url_explorer}/tx/${o.txid}`,
 				};
 			})
 		};

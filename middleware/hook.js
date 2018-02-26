@@ -1,9 +1,6 @@
-import * as lib from '../lib';
-
-
 export default function(cox)
 {
-	const { store, redirect, route, isDev, error } = cox;
+	const { store, redirect, route, isDev } = cox;
 
 	// print current route
 	if (isDev)
@@ -16,14 +13,4 @@ export default function(cox)
 	{
 		redirect('/auth/login');
 	}
-
-	// if (store.state.status.error)
-	// {
-	// 	error({
-	// 		statusCode: store.state.status.errorCode || 500,
-	// 		title: 'error page',
-	// 		message: store.state.status.errorMessage || 'System error',
-	// 	});
-	// 	return;
-	// }
 }

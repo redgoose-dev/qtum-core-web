@@ -3,25 +3,24 @@ import * as lib from '../lib';
 
 // state
 export const state = () => ({
+	system: {
+		title: '',
+		url_api: '',
+		lang: '',
+		hash: null,
+	},
 	status: {
 		core: false,
 		staking: false,
 		lock: null,
 		unlockForStaking: false,
 		balance: 0,
+		testnet: false,
 	},
 	layout: {
-		theme: lib.constant.theme.dark,
+		theme: lib.constant.theme.light,
 		count__recentTransactions: lib.constant.count.recent_transactions,
 		count__transactions: lib.constant.count.transactions,
-	},
-	system: {
-		title: '',
-		url_api: '',
-		url_explorer: '',
-		testnet: false,
-		lang: '',
-		hash: null,
 	},
 	openSidebar: true,
 });
@@ -31,13 +30,12 @@ export const actions = {
 	async nuxtServerInit(cox, { req, app }) {
 		const { state, commit } = cox;
 		const pref = require('../.env.json');
+		const testnet = (req.session && req.session.auth) ? req.session.auth.testnet : false;
 
 		// update system
 		let system = {
 			title: pref.TITLE || 'QTUM CORE',
 			url_api: pref.API_URL || 'http://localhost:3000',
-			url_explorer: pref.TESTNET ? 'https://testnet.qtum.org' : 'https://explorer.qtum.org',
-			testnet: pref.TESTNET || false,
 			lang: pref.LANGUAGE || 'en',
 			hash: null,
 		};
@@ -47,14 +45,26 @@ export const actions = {
 			let hash = req.session.auth.hash;
 			if (hash && typeof hash === 'string')
 			{
-				system.hash = (hash === pref.HASH) ? hash : null;
+				if (testnet)
+				{
+					system.hash = (hash === pref.HASH_TESTNET) ? hash : null;
+				}
+				else
+				{
+					system.hash = (hash === pref.HASH) ? hash : null;
+				}
 			}
 		}
 		commit('updateSystem', system);
 
+		// set header
+		app.$axios.setHeader('testnet', testnet ? 1 : 0);
+
 		// update status
 		try
 		{
+			if (!system.hash) throw { code: 403, message: 'not logined' };
+
 			// get api data
 			let result = await app.$axios.$get(`/api`);
 
@@ -75,13 +85,13 @@ export const actions = {
 				coreVersion: result.version,
 				staking: result.staking.staking,
 				lock: lib.string.getLockInformation(result.wallet.unlocked_until),
-				...((result.info.balance && typeof result.info.balance === 'number') ? { balance: result.info.balance } : null)
+				...((result.info.balance && typeof result.info.balance === 'number') ? { balance: result.info.balance } : null),
+				testnet,
 			});
 		}
 		catch(e)
 		{
-			console.error('[STORE ERROR]', e);
-			commit('updateStatus', {
+			commit('changeStatus', {
 				error: true,
 				errorCode: e.code,
 				errorMessage: e.message
@@ -130,6 +140,10 @@ export const mutations = {
 			...state.status,
 			...value,
 		};
+	},
+	changeStatus(state, value={})
+	{
+		state.status = value;
 	},
 
 	/**

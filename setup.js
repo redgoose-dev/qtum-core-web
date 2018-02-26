@@ -19,7 +19,6 @@ function setup()
 			{
 				case 'y':
 					fs.unlinkSync(env.resource.file);
-					fs.removeSync('.log');
 					setup();
 					break;
 				default:
@@ -36,17 +35,6 @@ function setup()
 			if (!err)
 			{
 				inputPassword(function() {
-					// make .log directory
-					try {
-						fs.mkdirSync('.log');
-						printConsole(false, 'Make ".log" directory');
-					} catch(err) {
-						printConsole(true, 'Failed make ".log" directory');
-						if (err.code !== 'EEXIST')
-						{
-							throw err;
-						}
-					}
 					exit();
 				});
 			}
@@ -65,6 +53,7 @@ function inputPassword(cb)
 	ask('input password: ', function(pw) {
 		let nextEnv = require(`./${env.resource.file}`);
 		nextEnv.HASH = password.create(pw, 10);
+		nextEnv.HASH_TESTNET = nextEnv.HASH;
 		nextEnv.TOKEN = password.create(String(Date.now()), 5);
 		let str = JSON.stringify(nextEnv, null, 2);
 		env.create(str, function(err, message) {
