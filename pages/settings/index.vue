@@ -70,6 +70,25 @@
 						</dd>
 					</dl>
 				</form>
+				<dl class="form-kit__horizontal">
+					<dt>Testnet</dt>
+					<dd>
+						<div>
+							<form-switch
+								title="core power on/off"
+								name="core_power"
+								:value="qtum.power"
+								@change="onChangeQtumCorePower"/>
+							<loading-mini
+								color="key"
+								className="core__prosessing"
+								v-if="processing.core__power"/>
+						</div>
+						<p class="form-kit__description">
+							Please be careful about changing this option.
+						</p>
+					</dd>
+				</dl>
 			</div>
 		</section>
 		<section class="settings__section">
@@ -155,17 +174,14 @@ export default {
 		LoadingMini,
 		FormText,
 	},
-
 	head: {
 		title: lib.util.makeTitle('Settings')
 	},
-
 	computed: {
 		status() { return this.$store.state.status; },
 		useLock() { return this.$store.state.status.lock !== lib.constant.lock.notEncrypted; },
 		constant() { return lib.constant; }
 	},
-
 	async asyncData(cox)
 	{
 		const { store, $axios } = cox;
@@ -180,6 +196,7 @@ export default {
 			qtum: {
 				power: status.core,
 				unLock: status.lock === lib.constant.lock.unLock,
+				testnet: status.testnet,
 			},
 			layout: {
 				theme: layout.theme || lib.constant.theme.light,
@@ -188,7 +205,6 @@ export default {
 			},
 		};
 	},
-
 	methods: {
 		/**
 		 * on change power qtum core
@@ -208,7 +224,7 @@ export default {
 				if (confirm('Do you really want to turn off the Qtum-core?'))
 				{
 					// on processing
-					this.processing.core__power = true;
+					processing.core__power = true;
 
 					try
 					{
@@ -224,7 +240,7 @@ export default {
 							// turn off switch
 							qtum.power = sw;
 							// off processing
-							this.processing.core__power = false;
+							processing.core__power = false;
 						}
 						else
 						{
@@ -235,7 +251,7 @@ export default {
 					{
 						alert('Failed turn off qtum-core');
 						console.error(e);
-						this.processing.core__power = false;
+						processing.core__power = false;
 					}
 				}
 			}
@@ -244,7 +260,7 @@ export default {
 				// turn on qtum core
 
 				// on processing
-				this.processing.core__power = true;
+				processing.core__power = true;
 
 				try
 				{
@@ -267,7 +283,7 @@ export default {
 						// turn on switch
 						qtum.power = sw;
 						// off processing
-						this.processing.core__power = false;
+						processing.core__power = false;
 					}
 					else
 					{
@@ -278,7 +294,7 @@ export default {
 				{
 					alert('Failed turn on qtum-core');
 					console.error(e);
-					this.processing.core__power = false;
+					processing.core__power = false;
 				}
 			}
 		},
@@ -294,7 +310,7 @@ export default {
 
 			e.preventDefault();
 
-			this.processing.layout = true;
+			processing.layout = true;
 
 			let response = await $axios.$post('/api/update-layout', {
 				theme: e.target.theme.value,
@@ -303,7 +319,7 @@ export default {
 			});
 			await lib.util.sleep(300);
 
-			this.processing.layout = false;
+			processing.layout = false;
 
 			if (response.status === 'error')
 			{
@@ -337,7 +353,7 @@ export default {
 				return;
 			}
 
-			this.processing.core__unlock = true;
+			processing.core__unlock = true;
 
 			// call api
 			try
@@ -345,7 +361,7 @@ export default {
 				let response = await $axios.$post('/api/core-unlock', {
 					hash: $store.state.system.hash,
 					password: target.password.value,
-					staking: !!target.staking.checked ? 'true' : 'false',
+					staking: target.staking.checked ? 'true' : 'false',
 				});
 				if (response.status !== 'success') throw 'error';
 				// reset status
@@ -359,7 +375,7 @@ export default {
 				alert('Failed unlock wallet.');
 				console.error(e);
 			}
-			this.processing.core__unlock = false;
+			processing.core__unlock = false;
 		},
 		/**
 		 * on change lock
@@ -373,7 +389,7 @@ export default {
 
 			if (confirm('Do you really want to lock it?'))
 			{
-				this.processing.core__unlock = true;
+				processing.core__unlock = true;
 				try
 				{
 					let response = await $axios.$post('/api/core-lock', {
@@ -391,7 +407,7 @@ export default {
 					alert('Failed lock wallet.');
 					console.error(e);
 				}
-				this.processing.core__unlock = false;
+				processing.core__unlock = false;
 			}
 		}
 	},
