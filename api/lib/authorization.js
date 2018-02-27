@@ -9,9 +9,9 @@ module.exports = function(headers)
 	try
 	{
 		const env = require('../../.env');
-		if (!env.TOKEN) throw '';
+		if (!env.APPLICATION) throw '';
 		if (!headers.authorization) throw '';
-		if (env.TOKEN !== headers.authorization) throw '';
+		if (env.APPLICATION !== headers.authorization) throw '';
 		return true;
 	}
 	catch(e)

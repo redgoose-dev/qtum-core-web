@@ -29,14 +29,13 @@ function askText(message, required=false, errorMessage=null)
 		});
 	});
 }
-
 /**
  * ask Yes & No
  *
  * @param {String} message
  * @param {Boolean} active
  */
-function askBoolean(message='Q: ', active=null)
+function askBoolean(message='Question?', active=null)
 {
 	return new Promise(function(resolve) {
 		ask(`${message} (${active === true ? 'Y' : 'y'}/${active === false ? 'N' : 'n'}) : `, function(str) {
@@ -63,26 +62,6 @@ function askBoolean(message='Q: ', active=null)
 		})
 	});
 
-}
-
-
-/**
- * apply env
- */
-function applyEnv(pw, cb)
-{
-	return new Promise(function(resolve) {
-
-	});
-	// let nextEnv = require(`./${env.resource.file}`);
-	// nextEnv.HASH = password.create(pw, 10);
-	// nextEnv.HASH_TESTNET = nextEnv.HASH;
-	// nextEnv.TOKEN = password.create(String(Date.now()), 5);
-	// let str = JSON.stringify(nextEnv, null, 2);
-	// env.create(str, function(err, message) {
-	// 	printConsole(!!err, message);
-	// 	if (cb) cb();
-	// });
 }
 
 /**
@@ -112,9 +91,10 @@ function exit()
 	process.exit();
 }
 
-
 /**
  * setup
+ *
+ * @return {Promise}
  */
 async function setup()
 {
@@ -136,37 +116,107 @@ async function setup()
 	else
 	{
 		// if not found `.env.json`
-		env.create(null, async function(err, message) {
-			printConsole(!!err, message);
-			if (!err)
+		let result = await env.create(null);
+		printConsole(!!result.error, result.message);
+		if (!result.error)
+		{
+			let nextEnv = require(`./${env.resource.file}`);
+			let data = {};
+			data.passwordMainnet = await askText('Set mainnet password', true);
+			data.useTestnet = await askBoolean('Do you want to use "TESTNET"?', false);
+			if (data.useTestnet)
 			{
-				let data = {};
-				data.passwordMainnet = await askText('MAINNET PASSWORD', true);
-				data.useTestnetnet = await askBoolean('Do you want to use "TESTNET"?', false);
-				if (data.useTestnetnet)
-				{
-					data.passwordTest = await askText('TESTNET PASSWORD', false);
-				}
-				console.log(data);
-				let result = await applyEnv(data);
-
-				exit();
+				data.passwordTestnet = await askText('Set testnet password', false);
 			}
-		});
+
+			// write env
+			nextEnv.HASH_MAINNET = password.create(data.passwordMainnet, 10);
+			nextEnv.USE_TESTNET = data.useTestnet;
+			if (nextEnv.USE_TESTNET)
+			{
+				nextEnv.HASH_TESTNET = password.create(data.passwordTestnet, 10);
+			}
+			nextEnv.APPLICATION = password.create(String(Date.now()), 5);
+
+			// update env
+			let str = JSON.stringify(nextEnv, null, 2);
+			let result = await env.create(str);
+
+			// print console
+			printConsole(!!result.error, result.message);
+
+			// exit
+			exit();
+		}
 	}
+}
+
+/**
+ * change password
+ *
+ * @return {Promise}
+ */
+async function changePassword()
+{
+	let nextEnv = require(`./${env.resource.file}`);
+	let pw_testnet = '';
+	let pw_mainnet = '';
+
+	switch(process.argv[3])
+	{
+		case '-testnet':
+			pw_testnet = await askText('Change input testnet password', false);
+			nextEnv.USE_TESTNET = true;
+			nextEnv.HASH_TESTNET = password.create(pw_testnet, 10);
+			break;
+		case '-mainnet':
+		default:
+			pw_mainnet = await askText('Change input mainnet password', true);
+			nextEnv.HASH_MAINNET = password.create(pw_mainnet, 10);
+			break;
+	}
+
+	// update env
+	let str = JSON.stringify(nextEnv, null, 2);
+	let result = await env.create(str);
+
+	// print console
+	printConsole(!!result.error, result.message);
+
+	// exit
+	exit();
+}
+
+/**
+ * remake application key
+ */
+async function remakeApplication() {
+	let nextEnv = require(`./${env.resource.file}`);
+	nextEnv.APPLICATION = password.create(String(Date.now()), 5);
+
+	// update env
+	let str = JSON.stringify(nextEnv, null, 2);
+	let result = await env.create(str);
+
+	// print console
+	printConsole(!!result.error, result.message);
+
+	// exit
+	exit();
 }
 
 
 // action
 switch(process.argv[2])
 {
-	case 'change-password':
-		// TODO: 함수변경으로 좀 고칠 필요가 있음.
-		// inputPassword(function() {
-		// 	console.log(consoleColor.green, 'Success change password', consoleColor.reset);
-		// 	process.exit();
-		// });
+	case '-change-password':
+		changePassword().then();
 		break;
+
+	case '-remake-application':
+		remakeApplication().then();
+		break;
+
 	default:
 		setup().then();
 		break;

@@ -26,11 +26,8 @@ https://github.com/qtumproject/qtum/releases
 `yarn run setup` 명령을 실행하면 `.env.json`파일이 만들어지는데 여기서 `qtum-cli` 파일의 절대경로로 수정해줘야 합니다.
 
 - `TITLE` : 브라우저에 표시되는 제목
-- `API_URL`
-- `TESTNET`
-- `CORE_ADDRESS`
-- `LANGUAGE`
-- `HASH`
+- `API_URL` : API URL
+- `CORE_ADDRESS` : qtum core address
 
 
 ## development

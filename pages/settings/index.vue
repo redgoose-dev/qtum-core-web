@@ -12,25 +12,6 @@
 			</header>
 			<div class="form-kit core__body">
 				<dl class="form-kit__horizontal">
-					<dt>Testnet</dt>
-					<dd>
-						<div>
-							<form-switch
-								title="Using testnet"
-								:value="qtum.testnet"
-								:disabled="processing.core__testnet"
-								@change="onChangeTestnet"/>
-							<loading-mini
-								color="key"
-								className="core__prosessing"
-								v-if="processing.core__testnet"/>
-						</div>
-						<p class="form-kit__description">
-							It will be changed to "Testnet".
-						</p>
-					</dd>
-				</dl>
-				<dl class="form-kit__horizontal">
 					<dt>{{status.testnet ? 'Testnet' : 'Mainnet'}} ON/OFF</dt>
 					<dd>
 						<div>
@@ -411,44 +392,12 @@ export default {
 				processing.core__unlock = false;
 			}
 		},
-		onChangeTestnet: async function(sw=false)
-		{
-			const { $store, $axios, processing } = this;
-
-			// on loading
-			processing.core__testnet = true;
-
-			// set header
-			$axios.setHeader('testnet', sw ? 1 : 0);
-
-			// request
-			let response = await $axios.$post('/api/core-change-testnet', {
-				hash: $store.state.system.hash,
-				testnet: sw,
-			});
-
-			if (response.status === 'success')
-			{
-				await lib.util.resetStatus($axios, $store, { testnet: sw });
-				const status = this.$store.state.status;
-				this.qtum = {
-					...this.qtum,
-					power: !!status.core,
-					testnet: sw,
-					useLock: status.core && (status.lock !== lib.constant.lock.notEncrypted),
-					unLock: status.lock === lib.constant.lock.unLock
-				}
-			}
-
-			// off loading
-			processing.core__testnet = false;
-		},
 	},
 }
 </script>
 
 <style lang="scss" scoped>
-@import "~assets/scss/variables";
+@import "../../assets/scss/variables";
 
 .core {
 	&__body {

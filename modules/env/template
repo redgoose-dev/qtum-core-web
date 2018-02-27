@@ -5,7 +5,7 @@
   "LANGUAGE": "en",
   "LAYOUT": null,
   "USE_TESTNET": false,
-  "HASH": "",
+  "HASH_MAINNET": "",
   "HASH_TESTNET": "",
-  "TOKEN": ""
+  "APPLICATION": ""
 }

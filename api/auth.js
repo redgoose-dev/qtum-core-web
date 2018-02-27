@@ -19,7 +19,7 @@ module.exports = function(req, res)
 	// set env
 	const pref = require(`../${env.resource.file}`);
 	// set hash (testnet or mainnet)
-	const hash = req.body.testnet ? pref.HASH_TESTNET : pref.HASH;
+	const hash = req.body.testnet ? pref.HASH_TESTNET : pref.HASH_MAINNET;
 
 	switch (req.route.path)
 	{

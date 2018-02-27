@@ -18,7 +18,8 @@ module.exports = function(req, res)
 	}
 
 	// check hash
-	if (!(req.body.hash && req.body.hash === pref.HASH))
+	let hash = !!req.headers.testnet ? pref.HASH_TESTNET : pref.HASH_MAINNET;
+	if (!(req.body.hash && req.body.hash === hash))
 	{
 		return res.json({
 			status: 'error',

@@ -15,17 +15,26 @@ export default {
 			location.href = '/';
 		}
 
-		let data = {
-			hash: $store.state.system.hash,
-		};
-
-		// request api
-		let res = await $axios.$post(`/api/logout`, data);
-
-		if (res.status === 'success')
+		try
 		{
-			$store.commit('updateSystem', { hash: null });
-			location.href = '/';
+			let data = {
+				hash: $store.state.system.hash,
+				testnet: $store.state.status.testnet,
+			};
+
+			// request api
+			let res = await $axios.$post(`/api/logout`, data);
+
+			if (res.status === 'success')
+			{
+				$store.commit('updateSystem', { hash: null });
+				location.href = '/';
+			}
+		}
+		catch(e)
+		{
+			alert('Failed logout.');
+			this.$router.back();
 		}
 	}
 }

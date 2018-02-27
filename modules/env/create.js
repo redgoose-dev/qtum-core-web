@@ -41,32 +41,47 @@ function write(str, cb)
 /**
  * create env
  *
- * @param {String} str
- * @param {Function} callback
+ * @param {String} str 값이 없으면 새로 만든다.
+ * @return {Promise}
  */
-module.exports = function(str, callback)
+module.exports = function(str)
 {
-	function result(err, type='create')
-	{
-		if (err)
+	return new Promise(function(resolve) {
+		function result(err, type='create')
 		{
-			callback(true, `Can't ${type} '${resource.file}' file.`);
+			if (err)
+			{
+				resolve({
+					error: true,
+					message: `Can't ${type} '${resource.file}' file.`,
+				});
+			}
+			else
+			{
+				resolve({
+					error: false,
+					message: `Success ${type} '${resource.file}' file.`,
+				});
+			}
+		}
+
+		if (str)
+		{
+			write(str, (err) => result(err, 'update'));
 		}
 		else
 		{
-			callback(false, `Success ${type} '${resource.file}' file.`);
+			readTemplate(function(err, data) {
+				if (err)
+				{
+					resolve({
+						error: false,
+						message: 'Not found template file.',
+					});
+					return;
+				}
+				write(data, (err) => result(err, 'make'));
+			});
 		}
-	}
-
-	if (str)
-	{
-		write(str, (err) => result(err, 'update'));
-	}
-	else
-	{
-		readTemplate(function(err, data) {
-			if (err) callback(false, 'Not found template file.');
-			write(data, (err) => result(err, 'make'));
-		});
-	}
+	});
 };

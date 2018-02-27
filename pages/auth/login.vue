@@ -21,7 +21,6 @@
 							id="login_password"
 							name="password"
 							maxlength="24"
-							minlength="4"
 							v-model="password"
 							:required="!testnet"
 							placeholder="Please enter a password."/>
@@ -38,6 +37,7 @@
 					<form-check
 						label="Using testnet"
 						v-model="testnet"
+						v-if="useTestnet"
 						className="login__rememberMe"/>
 				</div>
 
@@ -78,6 +78,7 @@ export default {
 			title: store.state.system.title,
 			rememberAuth: false,
 			password: '',
+			useTestnet: store.state.system.useTestnet,
 			testnet: false,
 			processing: false,
 		};
@@ -86,15 +87,12 @@ export default {
 		onSubmit: async function(e)
 		{
 			e.preventDefault();
-			this.processing = true;
 
-			// check password
-			if (!(this.password && this.password.length >= 4))
-			{
-				alert('please input password');
-				this.$refs.form_password.focus();
-				return;
-			}
+			const { $refs, $axios, $store, $router, processing } = this;
+
+			if (processing) return;
+
+			this.processing = true;
 
 			// call api
 			let data = {
@@ -104,22 +102,22 @@ export default {
 			};
 
 			// request
-			let res = await this.$axios.$post(`/api/login`, data);
+			let res = await $axios.$post(`/api/login`, data);
 			if (res.status === 'success' && !!res.data.hash)
 			{
 				// update store
-				this.$store.commit('updateSystem', { hash: res.data.hash });
+				$store.commit('updateSystem', { hash: res.data.hash });
 				// set header
-				this.$axios.setHeader('testnet', data.testnet ? 1 : 0);
+				$axios.setHeader('testnet', data.testnet ? 1 : 0);
 				// reset status
-				await lib.util.resetStatus(this.$axios, this.$store, { testnet: data.testnet });
+				await lib.util.resetStatus(this.$axios, $store, { testnet: data.testnet });
 				// redirect index
-				this.$router.replace('/');
+				$router.replace('/');
 			}
 			else
 			{
 				alert('Login failed');
-				this.$refs.form_password.focus();
+				$refs.form_password.focus();
 			}
 
 			// reset form data

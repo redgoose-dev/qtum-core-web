@@ -37,6 +37,7 @@ export const actions = {
 			title: pref.TITLE || 'QTUM CORE',
 			url_api: pref.API_URL || 'http://localhost:3000',
 			lang: pref.LANGUAGE || 'en',
+			useTestnet: pref.USE_TESTNET,
 			hash: null,
 		};
 		// set hash
@@ -45,14 +46,8 @@ export const actions = {
 			let hash = req.session.auth.hash;
 			if (hash && typeof hash === 'string')
 			{
-				if (testnet)
-				{
-					system.hash = (hash === pref.HASH_TESTNET) ? hash : null;
-				}
-				else
-				{
-					system.hash = (hash === pref.HASH) ? hash : null;
-				}
+				let envHash = testnet ? pref.HASH_TESTNET : pref.HASH_MAINNET;
+				system.hash = (hash === envHash) ? hash : null;
 			}
 		}
 		commit('updateSystem', system);
