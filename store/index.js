@@ -28,6 +28,7 @@ export const state = () => ({
 // action
 export const actions = {
 	async nuxtServerInit(cox, { req, app }) {
+		console.log('call store')
 		const { state, commit } = cox;
 		const pref = require('../.env.json');
 		const testnet = !!(req.session && req.session.auth && req.session.auth.testnet);
@@ -58,10 +59,8 @@ export const actions = {
 		// update status
 		try
 		{
-			if (!system.hash) throw { code: 403, message: 'not logined' };
-
 			// get api data
-			let result = await app.$axios.$get(`/api`);
+			const result = await app.$axios.$get(`/api`);
 
 			// update layout (레이아웃은 결과 상태에 관계없이 가져올 수 있으므로 먼저 업데이트)
 			if (result.layout)
@@ -69,9 +68,9 @@ export const actions = {
 				commit('updateLayout', result.layout);
 			}
 
+			// checking
+			if (!system.hash) throw { code: 403, message: 'not logined' };
 			if (result.status === 'error') throw result;
-
-			// check server
 			if (!result.info) throw 'Server error';
 
 			// update status

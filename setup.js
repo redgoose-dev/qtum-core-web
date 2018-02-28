@@ -99,13 +99,17 @@ function exit()
 async function setup()
 {
 	// check `.env.json` file
-	if (fs.existsSync(env.resource.file))
+	if (fs.existsSync(env.resource.file_env) && fs.existsSync(env.resource.file_private))
 	{
 		// if exist `.env.json` file
-		let reinstall = await askBoolean(`exist "${env.resource.file}" file. Reinstall?`, false);
+		let reinstall = await askBoolean(`Exist setup file. Reinstall?`, false);
 		if (reinstall)
 		{
-			fs.unlinkSync(env.resource.file);
+			// delete files
+			try { fs.unlinkSync(env.resource.file_env); } catch(e) {}
+			try { fs.unlinkSync(env.resource.file_private); } catch(e) {}
+
+			// play setup
 			setup().then();
 		}
 		else
@@ -116,11 +120,12 @@ async function setup()
 	else
 	{
 		// if not found `.env.json`
+		// TODO: 여기서부터...
 		let result = await env.create(null);
 		printConsole(!!result.error, result.message);
 		if (!result.error)
 		{
-			let nextEnv = require(`./${env.resource.file}`);
+			let nextEnv = require(`./${env.resource.file_env}`);
 			let data = {};
 			data.passwordMainnet = await askText('Set mainnet password', true);
 			data.useTestnet = await askBoolean('Do you want to use "TESTNET"?', false);
@@ -158,7 +163,7 @@ async function setup()
  */
 async function changePassword()
 {
-	let nextEnv = require(`./${env.resource.file}`);
+	let nextEnv = require(`./${env.resource.file_env}`);
 	let pw_testnet = '';
 	let pw_mainnet = '';
 
@@ -190,8 +195,9 @@ async function changePassword()
 /**
  * remake application key
  */
-async function remakeApplication() {
-	let nextEnv = require(`./${env.resource.file}`);
+async function remakeApplication()
+{
+	let nextEnv = require(`./${env.resource.file_env}`);
 	nextEnv.APPLICATION = password.create(String(Date.now()), 5);
 
 	// update env

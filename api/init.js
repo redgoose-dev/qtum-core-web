@@ -7,6 +7,7 @@ const env = require('../modules/env');
 
 module.exports = function(req, res)
 {
+	console.log('wwwww')
 	if (!authorization(req.headers))
 	{
 		res.json({
@@ -73,7 +74,8 @@ module.exports = function(req, res)
 		},
 		layout: function(cb)
 		{
-			cb(null, env.get().LAYOUT);
+			const getEnv = require(`../${env.resource.file}`);
+			cb(null, getEnv.LAYOUT);
 		}
 	};
 

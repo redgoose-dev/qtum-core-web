@@ -21,8 +21,8 @@
 					<tbody>
 					<template v-if="transactions.length">
 						<tr v-for="o in transactions">
-							<td class="text-center">{{ o.time }}</td>
-							<td class="text-center">
+							<td class="text-center" data-name="Date">{{ o.time }}</td>
+							<td class="text-center" data-name="Type">
 								<strong :class="[
 									o.type === 'send' && 'text-error',
 									o.type === 'receive' && 'text-success'
@@ -40,7 +40,7 @@
 					</template>
 					<template v-else>
 						<tr class="table__empty">
-							<td colspan="6">not found article</td>
+							<td colspan="6">Not found item</td>
 						</tr>
 					</template>
 					</tbody>
@@ -48,13 +48,42 @@
 			</div>
 		</div>
 
-		<button-more
-			:show="!noMore"
-			:loading="!!loading_more"
-			@click="more"/>
+		<button-more :show="!noMore" :loading="!!loading_more" @click="more"/>
 	</div>
 </article>
 </template>
 
 
 <script src="./index.js"></script>
+
+<style lang="scss" scoped>
+@import "../../assets/scss/variables";
+.table {
+	/*[data-name='Date'] {*/
+		/*background: lime;*/
+		/*&:before {*/
+			/*content: attr(data-name)': ';*/
+		/*}*/
+	/*}*/
+	@media (max-width: $size-mobile) {
+		display: block;
+		width: auto;
+		thead {
+			display: none;
+		}
+		tbody {
+			display: block;
+			vertical-align: inherit;
+			tr {
+				display: block;
+			}
+		}
+		&__responsive {
+			overflow: inherit;
+			&-border {
+				border: none;
+			}
+		}
+	}
+}
+</style>

@@ -5,4 +5,5 @@ export default function(cox)
 
 	$axios.setToken(pref.APPLICATION);
 	$axios.setHeader('testnet', store.state.status.testnet);
+	console.log('call plugins');
 }

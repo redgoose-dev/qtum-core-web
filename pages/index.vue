@@ -120,7 +120,7 @@
 								</div>
 							</li>
 						</ul>
-						<p class="empty-index" v-else>not found article</p>
+						<p class="empty-index" v-else>Not found item</p>
 					</div>
 				</article>
 			</div>

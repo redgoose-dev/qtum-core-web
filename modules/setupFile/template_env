@@ -1,0 +1,6 @@
+{
+  "TITLE": "QTUM CORE",
+  "API_URL": "http://localhost:3000",
+  "USE_TESTNET": false,
+  "APPLICATION": ""
+}
