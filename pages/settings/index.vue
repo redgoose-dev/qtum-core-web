@@ -221,6 +221,8 @@ export default {
 							await lib.util.resetStatus($axios, $store);
 							// turn off switch
 							qtum.power = sw;
+							// change useLock
+							qtum.useLock = false;
 							// off processing
 							processing.core__power = false;
 						}
@@ -266,8 +268,12 @@ export default {
 					await lib.util.sleep(100);
 					await lib.util.resetStatus($axios, $store);
 
+					const status = $store.state.status;
+
 					// turn on switch
 					qtum.power = sw;
+					// change useLock
+					qtum.useLock = status.core && (status.lock !== lib.constant.lock.notEncrypted);
 					// off processing
 					processing.core__power = false;
 				}
