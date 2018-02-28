@@ -5,6 +5,8 @@
 const fs = require('fs');
 const resource = require('./resource');
 
+const loc = './modules/setupFile';
+
 
 /**
  * read template
@@ -21,24 +23,23 @@ function readTemplate(type='env')
 		switch(type)
 		{
 			case 'env':
-				file = './modules/env/template_env';
+				file = `${loc}/template_env`;
 				break;
 			case 'private':
-				file = './modules/env/template_private';
+				file = `${loc}/template_private`;
 				break;
 			default:
 				resolve({ status: 'error', message: 'Wrong type' });
 				return;
 		}
 
-		fs.readFile('./modules/env/template', 'utf8', function(err, data) {
+		fs.readFile(file, 'utf8', function(err, data) {
 			if (data)
 			{
 				resolve({ status: 'success', data });
 			}
 			else
 			{
-				console.error(`Not found 'template' file`);
 				resolve({ status: 'error', message: `Not found 'template' file` });
 			}
 		});
@@ -54,14 +55,14 @@ function readTemplate(type='env')
  */
 function write(file, str, cb)
 {
-	fs.writeFile(file, str, cb);
+	fs.writeFile(`${resource.dir}/${file}`, str, cb);
 }
 
 
 /**
  * create env
  *
- * @param {String} type
+ * @param {String} type (env|private)
  * @param {String} str 값이 없으면 새로 만든다.
  * @return {Promise}
  */
@@ -82,20 +83,20 @@ module.exports = function(type='', str)
 	}
 
 	return new Promise(function(resolve) {
-		function result(err, type='create')
+		function result(err, type='create', file)
 		{
 			if (err)
 			{
 				resolve({
 					error: true,
-					message: `Can't ${type} '${resource.file}' file.`,
+					message: `Can't ${type} '${file}' file.`,
 				});
 			}
 			else
 			{
 				resolve({
 					error: false,
-					message: `Success ${type} '${resource.file}' file.`,
+					message: `Success ${type} '${file}' file.`,
 				});
 			}
 		}
@@ -108,7 +109,15 @@ module.exports = function(type='', str)
 
 		if (str)
 		{
-			write(file, str, (err) => result(err, 'update'));
+			try
+			{
+				fs.writeFileSync(`${resource.dir}/${file}`, str);
+				result(false, 'update', file);
+			}
+			catch(err)
+			{
+				result(err, 'update', file);
+			}
 		}
 		else
 		{
@@ -121,7 +130,7 @@ module.exports = function(type='', str)
 					});
 					return;
 				}
-				write(file, data, (err) => result(err, 'make'));
+				write(file, res.data, (err) => result(err, 'make', file));
 			});
 		}
 	});

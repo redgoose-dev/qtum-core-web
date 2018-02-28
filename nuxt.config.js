@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const pref = require('./.env');
+const setupFile = require('./modules/setupFile');
+const env = setupFile.get('env');
 
 
 module.exports = {
@@ -33,13 +34,12 @@ module.exports = {
 	],
 
 	axios: {
-		baseURL: pref.API_URL,
+		baseURL: env.API_URL,
 	},
 
 	env: {
-		TITLE: pref.TITLE || 'Qtum core',
-		API_URL: pref.API_URL || 'http://localhost:3000',
-		CORE_ADDRESS: pref.CORE_ADDRESS || '',
+		TITLE: env.TITLE || 'Qtum core',
+		API_URL: env.API_URL || 'http://localhost:3000',
 	},
 
 	loading: {

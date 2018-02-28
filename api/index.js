@@ -20,7 +20,7 @@ router.use((req, res, next) => {
  * `getinfo` 파라메터로 기초 정보를 요청하고 가져온다.
  * 코어가 작동되는지 검사용으로 사용
  */
-router.get('/', require('./init'));
+router.post('/', require('./init'));
 
 /**
  * dashboard

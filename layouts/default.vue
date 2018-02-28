@@ -183,14 +183,16 @@ export default {
 	},
 	mounted()
 	{
-		const { $store } = this;
+		const { $store, $axios } = this;
 
 		// 쿠기가 없으면 새로 설정한다.
 		if (!document.cookie)
 		{
 			lib.cookie.set('openSidebar', '1', 7);
-			lib.cookie.set('layout', JSON.stringify($store.state.layout), 7);
 		}
+
+		// set header in axios
+		$axios.setHeader('testnet', $store.state.status.testnet ? 1 : 0);
 	},
 	data()
 	{

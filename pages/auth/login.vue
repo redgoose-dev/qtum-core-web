@@ -72,7 +72,7 @@ export default {
 	middleware: 'login',
 	async asyncData(cox)
 	{
-		const { store, $axios } = cox;
+		const { store } = cox;
 
 		return {
 			title: store.state.system.title,

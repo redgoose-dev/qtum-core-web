@@ -79,5 +79,12 @@ export default {
 			}
 		}
 	},
+	mounted()
+	{
+		const { $store, $axios } = this;
+
+		// set header in axios
+		$axios.setHeader('testnet', $store.state.status.testnet ? 1 : 0);
+	},
 };
 </script>

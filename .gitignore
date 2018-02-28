@@ -5,6 +5,6 @@ node_modules/
 dist/
 
 npm-debug.log
-.env.json
+.config
 .DS_Store
 0

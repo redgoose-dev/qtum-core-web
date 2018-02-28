@@ -2,12 +2,17 @@ const async = require('async');
 const qtumCore = require('../modules/qtumCore');
 const authorization = require('./lib/authorization');
 const error = require('./lib/error');
-const env = require('../modules/env');
+const setupFile = require('../modules/setupFile');
 
+
+/**
+ * initialize
+ *
+ * @formdata {String} req.body.hash
+ */
 
 module.exports = function(req, res)
 {
-	console.log('wwwww')
 	if (!authorization(req.headers))
 	{
 		res.json({
@@ -17,6 +22,7 @@ module.exports = function(req, res)
 		return;
 	}
 
+	// task
 	const tasks = {
 		info: function(cb)
 		{
@@ -74,12 +80,24 @@ module.exports = function(req, res)
 		},
 		layout: function(cb)
 		{
-			const getEnv = require(`../${env.resource.file}`);
-			cb(null, getEnv.LAYOUT);
+			cb(null, setupFile.get('all').private.LAYOUT);
 		}
 	};
 
 	async.parallel(tasks, function(err, result) {
+		// check hash
+		const config = setupFile.get('private');
+		const hash = req.headers.testnet ? config.HASH_TESTNET : config.HASH_MAINNET;
+		if (hash !== req.body.hash)
+		{
+			return res.json({
+				...result,
+				status: 'error',
+				code: 403,
+				message: 'Access denied',
+			});
+		}
+
 		if (result && result.info && result.staking)
 		{
 			res.json(result);

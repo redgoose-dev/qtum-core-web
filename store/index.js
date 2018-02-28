@@ -6,7 +6,7 @@ export const state = () => ({
 	system: {
 		title: '',
 		url_api: '',
-		lang: '',
+		language: 'en',
 		hash: null,
 	},
 	status: {
@@ -28,30 +28,17 @@ export const state = () => ({
 // action
 export const actions = {
 	async nuxtServerInit(cox, { req, app }) {
-		console.log('call store')
 		const { state, commit } = cox;
-		const pref = require('../.env.json');
+		const pref = require('../.config/env');
 		const testnet = !!(req.session && req.session.auth && req.session.auth.testnet);
 
 		// update system
-		let system = {
+		commit('updateSystem', {
 			title: pref.TITLE || 'QTUM CORE',
 			url_api: pref.API_URL || 'http://localhost:3000',
-			lang: pref.LANGUAGE || 'en',
 			useTestnet: pref.USE_TESTNET,
-			hash: null,
-		};
-		// set hash
-		if (req.session.auth && req.session.auth.hash)
-		{
-			let hash = req.session.auth.hash;
-			if (hash && typeof hash === 'string')
-			{
-				let envHash = testnet ? pref.HASH_TESTNET : pref.HASH_MAINNET;
-				system.hash = (hash === envHash) ? hash : null;
-			}
-		}
-		commit('updateSystem', system);
+			hash: (req.session.auth && req.session.auth.hash) ? req.session.auth.hash : null,
+		});
 
 		// set header
 		app.$axios.setHeader('testnet', testnet ? 1 : 0);
@@ -60,7 +47,9 @@ export const actions = {
 		try
 		{
 			// get api data
-			const result = await app.$axios.$get(`/api`);
+			const result = await app.$axios.$post(`/api`, {
+				hash: state.system.hash,
+			});
 
 			// update layout (레이아웃은 결과 상태에 관계없이 가져올 수 있으므로 먼저 업데이트)
 			if (result.layout)
@@ -69,7 +58,6 @@ export const actions = {
 			}
 
 			// checking
-			if (!system.hash) throw { code: 403, message: 'not logined' };
 			if (result.status === 'error') throw result;
 			if (!result.info) throw 'Server error';
 
@@ -150,13 +138,11 @@ export const mutations = {
 	 */
 	updateLayout(state, value={})
 	{
-		let newState = {
+		// update
+		state.layout = {
 			...state.layout,
 			...value,
 		};
-
-		// update
-		state.layout = newState;
 	},
 
 	/**

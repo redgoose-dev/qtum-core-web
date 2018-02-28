@@ -1,8 +1,14 @@
-const fs = require('fs-extra');
+const fs = require('fs');
 const ask = require('./modules/ask');
-const env = require('./modules/env');
+const setupFile = require('./modules/setupFile');
 const password = require('./modules/password');
 const consoleColor = require('./modules/consoleColor');
+
+
+const path = {
+	env: `${setupFile.resource.dir}/${setupFile.resource.file_env}`,
+	private: `${setupFile.resource.dir}/${setupFile.resource.file_private}`,
+};
 
 
 /**
@@ -16,7 +22,7 @@ const consoleColor = require('./modules/consoleColor');
 function askText(message, required=false, errorMessage=null)
 {
 	return new Promise(function(resolve) {
-		ask(`${message}${required ? '(required)' : ''}: `, function(str) {
+		ask(`${message}${required ? ' (required)' : ''}: `, function(str) {
 			if (!str && required)
 			{
 				if (errorMessage) printConsole(true, errorMessage);
@@ -92,22 +98,62 @@ function exit()
 }
 
 /**
+ * check config file
+ *
+ * @return {Boolean}
+ */
+function checkConfigFile()
+{
+	return (
+		fs.existsSync(path.env) &&
+		fs.existsSync(path.private)
+	);
+}
+
+/**
+ * write setup file
+ *
+ * @param {String} type
+ * @param {Object} data
+ * @return {Promise}
+ */
+async function writeConfigFile(type='env', data)
+{
+	try
+	{
+		let str = JSON.stringify(data, null, 2);
+		let result = await setupFile.create(type, str);
+		printConsole(!!result.error, result.message);
+	}
+	catch(e)
+	{
+		printConsole(true, `Error make "${path[type]}" file`);
+	}
+	return;
+}
+
+/**
  * setup
  *
  * @return {Promise}
  */
 async function setup()
 {
-	// check `.env.json` file
-	if (fs.existsSync(env.resource.file_env) && fs.existsSync(env.resource.file_private))
+	if (!fs.existsSync(setupFile.resource.dir))
+	{
+		fs.mkdirSync(setupFile.resource.dir);
+	}
+
+	if (checkConfigFile())
 	{
 		// if exist `.env.json` file
+
 		let reinstall = await askBoolean(`Exist setup file. Reinstall?`, false);
 		if (reinstall)
 		{
 			// delete files
-			try { fs.unlinkSync(env.resource.file_env); } catch(e) {}
-			try { fs.unlinkSync(env.resource.file_private); } catch(e) {}
+			try { fs.unlinkSync(path.env); } catch(e) {}
+			try { fs.unlinkSync(path.private); } catch(e) {}
 
 			// play setup
 			setup().then();
@@ -119,40 +165,50 @@ async function setup()
 	}
 	else
 	{
-		// if not found `.env.json`
-		// TODO: 여기서부터...
-		let result = await env.create(null);
-		printConsole(!!result.error, result.message);
-		if (!result.error)
+		// if not found config
+
+		let resultCreate = {};
+		let config = {};
+
+		// make config files
+		resultCreate.env = await setupFile.create('env', null);
+		resultCreate.private = await setupFile.create('private', null);
+
+		// print console
+		printConsole(!!resultCreate.env.error, resultCreate.env.message);
+		printConsole(!!resultCreate.private.error, resultCreate.private.message);
+
+		// get config
+		config.env = (!resultCreate.env.error) ? require(`./${path.env}`) : null;
+		config.private = (!resultCreate.private.error) ? require(`./${path.private}`) : null;
+
+		if (!(config.env && config.private)) exit();
+
+		// set application
+		config.env.APPLICATION = password.create(String(Date.now()), 5);
+
+		// set mainnet password
+		let passwordMainnet = await askText('Set mainnet password', true);
+		config.private.HASH_MAINNET = password.create(passwordMainnet, 10);
+
+		// set use testnet
+		config.env.USE_TESTNET = await askBoolean('Do you want to use "TESTNET"?', false);
+
+		// set testnet password
+		if (config.env.USE_TESTNET)
 		{
-			let nextEnv = require(`./${env.resource.file_env}`);
-			let data = {};
-			data.passwordMainnet = await askText('Set mainnet password', true);
-			data.useTestnet = await askBoolean('Do you want to use "TESTNET"?', false);
-			if (data.useTestnet)
-			{
-				data.passwordTestnet = await askText('Set testnet password', false);
-			}
-
-			// write env
-			nextEnv.HASH_MAINNET = password.create(data.passwordMainnet, 10);
-			nextEnv.USE_TESTNET = data.useTestnet;
-			if (nextEnv.USE_TESTNET)
-			{
-				nextEnv.HASH_TESTNET = password.create(data.passwordTestnet, 10);
-			}
-			nextEnv.APPLICATION = password.create(String(Date.now()), 5);
-
-			// update env
-			let str = JSON.stringify(nextEnv, null, 2);
-			let result = await env.create(str);
-
-			// print console
-			printConsole(!!result.error, result.message);
-
-			// exit
-			exit();
+			let passwordTestnet = await askText('Set testnet password', false);
+			config.private.HASH_TESTNET = password.create(passwordTestnet, 10);
 		}
+
+		// TODO: 나중에 자동으로 qtum-cli 찾아주는 기능 추가가 필요함.
+		config.private.CORE_ADDRESS = await askText('Qtum core address? ex:`/usr/local/bin/`', true);
+
+		// write setup files
+		writeConfigFile('env', config.env).then();
+		writeConfigFile('private', config.private).then();
+
+		exit();
 	}
 }
 
@@ -163,29 +219,34 @@ async function setup()
  */
 async function changePassword()
 {
-	let nextEnv = require(`./${env.resource.file_env}`);
+	let nextConfig = setupFile.get('all');
 	let pw_testnet = '';
 	let pw_mainnet = '';
+	let str = null;
+	let result = null;
 
 	switch(process.argv[3])
 	{
 		case '-testnet':
 			pw_testnet = await askText('Change input testnet password', false);
-			nextEnv.USE_TESTNET = true;
-			nextEnv.HASH_TESTNET = password.create(pw_testnet, 10);
+			nextConfig.env.USE_TESTNET = true;
+			nextConfig.private.HASH_TESTNET = password.create(pw_testnet, 10);
+
+			// update env file
+			str = JSON.stringify(nextConfig.env, null, 2);
+			result = await setupFile.create('env', str);
+			printConsole(!!result.error, result.message);
 			break;
 		case '-mainnet':
 		default:
 			pw_mainnet = await askText('Change input mainnet password', true);
-			nextEnv.HASH_MAINNET = password.create(pw_mainnet, 10);
+			nextConfig.private.HASH_MAINNET = password.create(pw_mainnet, 10);
 			break;
 	}
 
-	// update env
-	let str = JSON.stringify(nextEnv, null, 2);
-	let result = await env.create(str);
-
-	// print console
+	// update private file
+	str = JSON.stringify(nextConfig.private, null, 2);
+	result = await setupFile.create('private', str);
 	printConsole(!!result.error, result.message);
 
 	// exit
@@ -197,12 +258,12 @@ async function changePassword()
  */
 async function remakeApplication()
 {
-	let nextEnv = require(`./${env.resource.file_env}`);
+	let nextEnv = setupFile.get('env');
 	nextEnv.APPLICATION = password.create(String(Date.now()), 5);
 
 	// update env
 	let str = JSON.stringify(nextEnv, null, 2);
-	let result = await env.create(str);
+	let result = await setupFile.create('env', str);
 
 	// print console
 	printConsole(!!result.error, result.message);
@@ -218,11 +279,9 @@ switch(process.argv[2])
 	case '-change-password':
 		changePassword().then();
 		break;
-
 	case '-remake-application':
 		remakeApplication().then();
 		break;
-
 	default:
 		setup().then();
 		break;

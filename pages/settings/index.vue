@@ -250,27 +250,26 @@ export default {
 						hash: $store.state.system.hash,
 						power: true,
 					});
-					if (response.status === 'success')
-					{
-						response = await $axios.$get(`/api`);
-
-						// check
-						if (response.status === 'error') throw '';
-						if (!response.info) throw '';
-
-						// reset status
-						await lib.util.sleep(100);
-						await lib.util.resetStatus($axios, $store);
-
-						// turn on switch
-						qtum.power = sw;
-						// off processing
-						processing.core__power = false;
-					}
-					else
+					if (response.status !== 'success')
 					{
 						throw 'error turn on qtum-core';
 					}
+
+					// get initialize data
+					response = await $axios.$post(`/api`, { hash: $store.state.system.hash });
+
+					// check
+					if (response.status === 'error') throw '';
+					if (!response.info) throw '';
+
+					// reset status
+					await lib.util.sleep(100);
+					await lib.util.resetStatus($axios, $store);
+
+					// turn on switch
+					qtum.power = sw;
+					// off processing
+					processing.core__power = false;
 				}
 				catch(e)
 				{

@@ -1,11 +1,11 @@
 const qtumCore = require('../modules/qtumCore');
-const env = require('../modules/env');
+const setupFile = require('../modules/setupFile');
 const authorization = require('./lib/authorization');
 
 
 module.exports = function(req, res)
 {
-	const pref = require(`../${env.resource.file}`);
+	const config = setupFile.get('all');
 	let cmd = null;
 
 	// check authorization
@@ -18,7 +18,7 @@ module.exports = function(req, res)
 	}
 
 	// check hash
-	let hash = !!req.headers.testnet ? pref.HASH_TESTNET : pref.HASH_MAINNET;
+	let hash = !!req.headers.testnet ? config.private.HASH_TESTNET : config.private.HASH_MAINNET;
 	if (!(req.body.hash && req.body.hash === hash))
 	{
 		return res.json({

@@ -5,9 +5,9 @@
 
 const fs = require('fs');
 const childProcess = require('child_process');
-const env = require('../env');
+const setupFile = require('../../modules/setupFile');
 
-const config = env.get();
+const config = setupFile.get('all');
 let address = null;
 
 
@@ -18,7 +18,7 @@ let address = null;
  */
 function getAddress()
 {
-	address = config.CORE_ADDRESS || null;
+	address = config.private.CORE_ADDRESS || null;
 	return address;
 }
 
@@ -66,7 +66,7 @@ function checkExec(file='qtum-cli')
  * @param {Boolean} json
  * @param {Function} callback
  */
-function cli(file='qtum-cli', testnet=null, params='', json=true, callback)
+function cli(file='qtum-cli', testnet=false, params='', json=true, callback)
 {
 	if (!(callback && typeof callback === 'function')) callback({
 		status: 'error',
@@ -74,7 +74,6 @@ function cli(file='qtum-cli', testnet=null, params='', json=true, callback)
 	});
 
 	const cmd = checkExec(file);
-	testnet = (typeof testnet !== 'boolean') ? config.TESTNET : testnet;
 
 	function onChildProcess(error, stdout, stderr)
 	{

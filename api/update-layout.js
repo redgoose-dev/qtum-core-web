@@ -1,18 +1,18 @@
 const fs = require('fs');
-const env = require('../modules/env');
+const setupFile = require('../modules/setupFile');
 
 
 module.exports = function(req, res)
 {
 	try
 	{
-		let newEnv = env.get();
+		let newEnv = setupFile.get('private');
 		newEnv.LAYOUT = {
 			...(newEnv ? newEnv.LAYOUT : null),
 			...req.body,
 		};
 		fs.writeFile(
-			env.resource.file,
+			`${setupFile.resource.dir}/${setupFile.resource.file_private}`,
 			JSON.stringify(newEnv, null, 2),
 			function(err) {
 				if (err)

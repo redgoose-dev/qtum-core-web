@@ -1,3 +1,6 @@
+const setupFile = require('../../modules/setupFile');
+
+
 /**
  * check authorization
  *
@@ -8,10 +11,10 @@ module.exports = function(headers)
 {
 	try
 	{
-		const env = require('../../.env');
-		if (!env.APPLICATION) throw '';
+		const config = setupFile.get('all');
+		if (!config.env.APPLICATION) throw '';
 		if (!headers.authorization) throw '';
-		if (env.APPLICATION !== headers.authorization) throw '';
+		if (config.env.APPLICATION !== headers.authorization) throw '';
 		return true;
 	}
 	catch(e)

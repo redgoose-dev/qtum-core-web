@@ -1,5 +1,5 @@
 const password = require('../modules/password');
-const env = require('../modules/env');
+const setupFile = require('../modules/setupFile');
 const authorization = require('./lib/authorization');
 
 const hour = 3600000;
@@ -17,9 +17,9 @@ module.exports = function(req, res)
 	}
 
 	// set env
-	const pref = require(`../${env.resource.file}`);
+	const config = setupFile.get('all');
 	// set hash (testnet or mainnet)
-	const hash = req.body.testnet ? pref.HASH_TESTNET : pref.HASH_MAINNET;
+	const hash = req.body.testnet ? config.private.HASH_TESTNET : config.private.HASH_MAINNET;
 
 	switch (req.route.path)
 	{
