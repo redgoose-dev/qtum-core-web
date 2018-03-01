@@ -131,3 +131,104 @@
 
 
 <script src="./index.js"></script>
+
+<style lang="scss" scoped>
+@import "../assets/scss/variables";
+
+.row {
+	display: flex;
+	margin: 0 -10px;
+	padding: 10px 0;
+	&:first-child {
+		padding-top: 0;
+	}
+	&:last-child {
+		padding-bottom: 0;
+	}
+	.col {
+		flex: 1;
+		padding: 0 10px;
+		overflow: hidden;
+	}
+}
+.section {
+	$self: '.section';
+	border: 1px solid $color-medium-gray;
+	background: #fff;
+	&__head {
+		display: flex;
+		height: 40px;
+		align-items: center;
+		background: $color-medium-gray;
+		h1 {
+			flex: 1;
+			margin: 0;
+			padding: 0 0 0 15px;
+			font-size: 16px;
+		}
+		nav {
+			padding: 0 5px 0 0;
+			height: 100%;
+			a {
+				display: flex;
+				height: 100%;
+				width: 40px;
+				align-items: center;
+				justify-content: center;
+				&:focus {
+					outline: $border-focus;
+				}
+			}
+		}
+	}
+	&__body {
+		padding: 15px 15px;
+		.table {
+			margin: -5px 0;
+			font-size: 13px;
+			thead {
+				th {
+					padding: 12px 8px 12px 8px;
+				}
+			}
+			tbody {
+				td {
+					padding: 12px 8px;
+				}
+			}
+		}
+	}
+
+	&-transactions {
+		#{$self}__body {
+			padding: 0;
+		}
+	}
+}
+
+@media (max-width: $size-mobile) {
+	.row {
+		display: block;
+		margin: 0;
+		padding: 8px 0;
+		.col {
+			padding: 8px 0;
+			&:first-child {
+				padding-top: 0;
+			}
+			&:last-child {
+				padding-bottom: 0;
+			}
+		}
+	}
+	.section {
+		&__body {
+			.description {
+				&-hidden {
+					display: none;
+				}
+			}
+		}
+	}
+}
+</style>

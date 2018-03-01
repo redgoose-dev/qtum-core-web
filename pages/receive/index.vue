@@ -12,8 +12,6 @@
 					<tr>
 						<th scope="col">Address</th>
 						<th scope="col">Label</th>
-						<th scope="col">Amount</th>
-						<th scope="col">Confirm</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -23,8 +21,6 @@
 							<td class="text-center" data-name="Label">
 								<strong class="text-brackets-quotes">{{ o.label }}</strong>
 							</td>
-							<td class="text-center" data-name="Amount">{{ o.amount }}</td>
-							<td class="text-center" data-name="Confirm">{{ o.confirmations }}</td>
 						</tr>
 					</template>
 					<template v-else>
@@ -38,10 +34,10 @@
 		</div>
 		<nav class="text-center">
 			<button-basic
-					type="button"
-					label="Add address"
-					@click="onShowAddAddress"
-					className="button-color-key button-inline button-size-small"/>
+				type="button"
+				label="Add address"
+				@click="onShowAddAddress"
+				className="button-color-key button-inline button-size-small"/>
 		</nav>
 	</div>
 
@@ -184,6 +180,13 @@ export default {
 }
 
 @media (max-width: $size-mobile) {
+	.table {
+		tbody {
+			tr {
+				padding: 20px 15px;
+			}
+		}
+	}
 	.popup-form {
 		min-width: auto;
 		.form-kit__nav {

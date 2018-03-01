@@ -63,7 +63,7 @@
 	}
 	.table {
 		tr {
-			padding: 0 0 15px;
+			padding: 0 0 20px;
 			border-top: none;
 			&:hover {
 				> td {
@@ -83,7 +83,7 @@
 			text-transform: uppercase;
 			text-align: center;
 			padding: 8px 0 7px;
-			margin: 0 0 8px;
+			margin: 0 0 15px;
 			background: $color-light-gray;
 			&:before {
 				display: none;

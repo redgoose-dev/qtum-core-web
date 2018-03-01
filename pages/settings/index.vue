@@ -404,6 +404,32 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/scss/variables";
 
+.settings {
+	&__section {
+		margin: 30px 0 0;
+		padding: 20px;
+		background: #fff;
+		border: 1px solid $color-medium-gray;
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+
+	&__sectionHeader {
+		padding: 0 0 15px;
+		border-bottom: 1px solid $color-medium-gray;
+		h1 {
+			margin: 0;
+			font-size: 20px;
+			font-weight: 600;
+		}
+		p {
+			margin: 8px 0 0;
+			font-size: 14px;
+			color: $color-weak-dark;
+		}
+	}
+}
 .core {
 	&__body {
 		margin-bottom: -10px;
@@ -422,14 +448,19 @@ export default {
 		margin: 8px 0 0;
 	}
 }
-.testnet {
-
-}
 .fields {
 	> div {
 		margin-top: 12px;
 		&:first-child {
 			margin-top: 0;
+		}
+	}
+}
+
+@media (max-width: $size-mobile) {
+	.settings {
+		&__section {
+			padding: 15px;
 		}
 	}
 }
