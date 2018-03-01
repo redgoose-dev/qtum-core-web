@@ -206,6 +206,52 @@ a {
 	&-border {
 		border: 1px solid $color-medium-gray;
 	}
+
+	@media (max-width: $size-mobile) {
+		display: block;
+		width: auto;
+		thead {
+			display: none;
+		}
+		tbody {
+			display: block;
+			vertical-align: inherit;
+			border-bottom: 1px solid $color-light-gray;
+			tr {
+				display: flex;
+				flex-wrap: wrap;
+				flex-direction: column;
+				padding: 15px;
+				border-top: 1px solid $color-light-gray;
+				&:hover {
+					> td {
+						background: none;
+					}
+				}
+			}
+			td {
+				display: block;
+				padding: 8px 0 0;
+				text-align: left;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				&:first-child {
+					padding-top: 0;
+				}
+				&:before {
+					content: '- 'attr(data-name)': ';
+					color: mix($color-dark, #fff, 40%);
+				}
+			}
+		}
+		&__responsive {
+			overflow: inherit;
+			&-border {
+				border: none;
+			}
+		}
+	}
 }
 
 
@@ -237,6 +283,9 @@ a {
 		}
 		&-overflow {
 			overflow: hidden;
+		}
+		&-type {
+			text-transform: uppercase;
 		}
 	}
 	&__date {

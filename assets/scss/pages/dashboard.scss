@@ -3,8 +3,6 @@
 
 
 .dashboard {
-	&__header {}
-
 	.row {
 		display: flex;
 		margin: 0 -10px;
@@ -21,7 +19,6 @@
 			overflow: hidden;
 		}
 	}
-
 	.section {
 		$self: '.section';
 		border: 1px solid $color-medium-gray;

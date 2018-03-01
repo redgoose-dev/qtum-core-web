@@ -26,16 +26,14 @@
 								<strong :class="[
 									o.type === 'send' && 'text-error',
 									o.type === 'receive' && 'text-success'
-								]">
-									{{ o.type }}
-								</strong>
+								]">{{ o.type }}</strong>
 							</td>
-							<td class="text-center overflow">
+							<td class="text-center overflow" data-name="Transaction ID">
 								<a v-bind:href="o.txUrl" target="_blank">{{ o.txid }}</a>
 							</td>
-							<td class="text-center">{{ o.amount }}</td>
-							<td class="text-center">{{ o.fee }}</td>
-							<td class="text-center">{{ o.confirm }}</td>
+							<td class="text-center" data-name="Amount">{{ o.amount }}</td>
+							<td class="text-center" data-name="Fee">{{ o.fee }}</td>
+							<td class="text-center" data-name="Confirm">{{ o.confirm }}</td>
 						</tr>
 					</template>
 					<template v-else>
@@ -58,31 +56,54 @@
 
 <style lang="scss" scoped>
 @import "../../assets/scss/variables";
-.table {
-	/*[data-name='Date'] {*/
-		/*background: lime;*/
-		/*&:before {*/
-			/*content: attr(data-name)': ';*/
-		/*}*/
-	/*}*/
-	@media (max-width: $size-mobile) {
-		display: block;
-		width: auto;
-		thead {
-			display: none;
-		}
-		tbody {
-			display: block;
-			vertical-align: inherit;
-			tr {
-				display: block;
+
+@media (max-width: $size-mobile) {
+	.more-article {
+		margin: 20px 0 0;
+	}
+	.table {
+		tr {
+			padding: 0 0 15px;
+			border-top: none;
+			&:hover {
+				> td {
+					background: none;
+					&[data-name='Type'] {
+						background: $color-light-gray;
+					}
+				}
 			}
 		}
-		&__responsive {
-			overflow: inherit;
-			&-border {
-				border: none;
+		td {
+			padding: 8px 12px 0;
+		}
+		[data-name='Type'] {
+			order: 1;
+			font-size: 15px;
+			text-transform: uppercase;
+			text-align: center;
+			padding: 8px 0 7px;
+			margin: 0 0 8px;
+			background: $color-light-gray;
+			&:before {
+				display: none;
 			}
+		}
+		[data-name='Date'] {
+			order: 2;
+		}
+		[data-name='Amount'] {
+			order: 3;
+		}
+		[data-name='Fee'] {
+			order: 4;
+		}
+		[data-name='Confirm'] {
+			order: 5;
+		}
+		[data-name='Transaction ID'] {
+			order: 10;
+			padding-right: 12px;
 		}
 	}
 }

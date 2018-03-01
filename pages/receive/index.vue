@@ -5,13 +5,6 @@
 	</header>
 
 	<div class="contents__body">
-		<nav class="text-right">
-			<button-basic
-				type="button"
-				label="Add address"
-				@click="onShowAddAddress"
-				className="button-color-key button-inline button-size-small"/>
-		</nav>
 		<div class="contents__box">
 			<div class="table__responsive table__responsive-border">
 				<table class="table">
@@ -26,12 +19,12 @@
 					<tbody>
 					<template v-if="index.length">
 						<tr v-for="o in index">
-							<td class="text-center">{{ o.address }}</td>
-							<td class="text-center">
+							<td class="text-center" data-name="Address">{{ o.address }}</td>
+							<td class="text-center" data-name="Label">
 								<strong class="text-brackets-quotes">{{ o.label }}</strong>
 							</td>
-							<td class="text-center">{{ o.amount }}</td>
-							<td class="text-center">{{ o.confirmations }}</td>
+							<td class="text-center" data-name="Amount">{{ o.amount }}</td>
+							<td class="text-center" data-name="Confirm">{{ o.confirmations }}</td>
 						</tr>
 					</template>
 					<template v-else>
@@ -43,6 +36,13 @@
 				</table>
 			</div>
 		</div>
+		<nav class="text-center">
+			<button-basic
+					type="button"
+					label="Add address"
+					@click="onShowAddAddress"
+					className="button-color-key button-inline button-size-small"/>
+		</nav>
 	</div>
 
 	<layout-popup
@@ -165,6 +165,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../assets/scss/variables";
+
 .popup-form {
 	min-width: 420px;
 	.form-kit__vertical {
@@ -178,6 +180,15 @@ export default {
 	.form-kit__nav {
 		padding-top: 25px;
 		border-top: none;
+	}
+}
+
+@media (max-width: $size-mobile) {
+	.popup-form {
+		min-width: auto;
+		.form-kit__nav {
+			padding-top: 20px;
+		}
 	}
 }
 </style>

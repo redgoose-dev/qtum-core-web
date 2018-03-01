@@ -188,7 +188,7 @@ async function setup()
 		config.env.APPLICATION = password.create(String(Date.now()), 5);
 
 		// set mainnet password
-		let passwordMainnet = await askText('Set mainnet password', true);
+		let passwordMainnet = await askText('Set MAINNET password. [DO NOT INPUT QTUM CORE PASSWORD]', true);
 		config.private.HASH_MAINNET = password.create(passwordMainnet, 10);
 
 		// set use testnet
@@ -197,7 +197,7 @@ async function setup()
 		// set testnet password
 		if (config.env.USE_TESTNET)
 		{
-			let passwordTestnet = await askText('Set testnet password', false);
+			let passwordTestnet = await askText('Set TESTNET password. [DO NOT INPUT QTUM CORE PASSWORD]', false);
 			config.private.HASH_TESTNET = password.create(passwordTestnet, 10);
 		}
 
@@ -228,7 +228,7 @@ async function changePassword()
 	switch(process.argv[3])
 	{
 		case '-testnet':
-			pw_testnet = await askText('Change input testnet password', false);
+			pw_testnet = await askText('Change input TESTNET password. [DO NOT INPUT QTUM CORE PASSWORD]', false);
 			nextConfig.env.USE_TESTNET = true;
 			nextConfig.private.HASH_TESTNET = password.create(pw_testnet, 10);
 
@@ -239,7 +239,7 @@ async function changePassword()
 			break;
 		case '-mainnet':
 		default:
-			pw_mainnet = await askText('Change input mainnet password', true);
+			pw_mainnet = await askText('Change input MAINNET password. [DO NOT INPUT QTUM CORE PASSWORD]', true);
 			nextConfig.private.HASH_MAINNET = password.create(pw_mainnet, 10);
 			break;
 	}
