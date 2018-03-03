@@ -1,0 +1,66 @@
+@import "../variables";
+
+
+.transactions {
+	@media (max-width: $size-mobile) {
+		.contents__box {
+			background: none;
+		}
+		.table {
+			tbody {
+				border-bottom: none;
+			}
+			tr {
+				margin: 20px 0 0;
+				padding: 0 0 15px;
+				border-top: none;
+				background: #fff;
+				&:hover {
+					> td {
+						background: none;
+						&[data-name='Type'] {
+							background: $color-light-gray;
+						}
+					}
+				}
+				&:first-child {
+					margin-top: 0;
+				}
+			}
+			td {
+				padding: 8px 15px 0;
+			}
+			[data-name='Type'] {
+				order: 1;
+				font-size: 15px;
+				text-transform: uppercase;
+				text-align: center;
+				padding: 10px 0 9px;
+				margin: 0 0 15px;
+				background: $color-light-gray;
+				&:before {
+					display: none;
+				}
+			}
+			[data-name='Date'] {
+				order: 2;
+			}
+			[data-name='Amount'] {
+				order: 3;
+			}
+			[data-name='Fee'] {
+				order: 4;
+			}
+			[data-name='Confirm'] {
+				order: 5;
+			}
+			[data-name='Transaction ID'] {
+				order: 10;
+				padding-right: 12px;
+			}
+		}
+		.more-article {
+			margin: 20px 0 0;
+		}
+	}
+}

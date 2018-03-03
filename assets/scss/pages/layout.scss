@@ -103,6 +103,12 @@ $width-side-mini: 47px;
 				margin: 0 auto;
 				pointer-events: none;
 			}
+			&-active {
+				background: rgba(0,0,0,.2);
+				& + #{$self}__children {
+					display: block;
+				}
+			}
 		}
 		&__children {
 			position: relative;
@@ -148,16 +154,6 @@ $width-side-mini: 47px;
 				right: 0;
 			}
 		}
-
-		&__button {
-			&-active {
-				background: rgba(0,0,0,.2);
-				& + #{$self}__children {
-					display: block;
-				}
-			}
-		}
-
 	}
 
 	@media (max-width: $size-mobile) {
@@ -348,9 +344,6 @@ $width-side-mini: 47px;
 		margin: 0;
 		font-size: 11px;
 		color: #666;
-		a {
-			color: $color-key;
-		}
 	}
 
 	@media (max-width: $size-mobile) {

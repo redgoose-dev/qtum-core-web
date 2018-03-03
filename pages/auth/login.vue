@@ -54,7 +54,6 @@
 </main>
 </template>
 
-
 <script>
 import * as lib from '../../lib';
 import FormCheck from '../../components/forms/form-check';

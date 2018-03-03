@@ -6,7 +6,6 @@ export const state = () => ({
 	system: {
 		title: '',
 		url_api: '',
-		language: 'en',
 		hash: null,
 	},
 	status: {
@@ -21,6 +20,7 @@ export const state = () => ({
 		theme: lib.constant.theme.light,
 		count__recentTransactions: lib.constant.count.recent_transactions,
 		count__transactions: lib.constant.count.transactions,
+		language: 'en',
 	},
 	openSidebar: true,
 });

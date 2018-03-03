@@ -3,6 +3,10 @@
 
 html.theme-dark {
 
+	$theme-color-more-dark: mix(#000, $color-dark, 30%);
+	$theme-color-some-dark: mix(#fff, $color-dark, 4%);
+	$theme-color-link: #f5a623;
+
 	body {
 		background: $color-dark;
 		color: $color-light-gray;
@@ -10,25 +14,315 @@ html.theme-dark {
 
 	// contents
 	.contents {
-		h1 {}
-	}
-
-	// header
-	.layout-header {
-		&__wrap {
-			background: mix(#000, $color-dark, 30%);
+		&__header {
+			h1 {
+				color: $color-key;
+			}
+		}
+		&__box {
+			background: $theme-color-some-dark;
 		}
 	}
 
-	// side
+	// layout
+	.layout-header {
+		&__wrap {
+			background: $theme-color-more-dark;
+		}
+		.dropDown {
+			&__button {
+				&-active {
+					background: $color-key;
+				}
+			}
+			&__children {
+				ul {
+					background: $color-key;
+				}
+				li {
+					border-top-color: rgba(0,0,0,.3);
+				}
+				a, button {
+					color: $color-dark;
+					&:hover {
+						background: none;
+					}
+				}
+			}
+		}
+	}
+	.layout-footer {
+		border-top-color: $color-weak-dark;
+	}
 	.layout-side {
 		background: mix(#fff, $color-dark, 4%);
 		border-right: none;
+		.gnb {
+			a {
+				&.nuxt-link-exact-active {
+					background: $color-dark;
+				}
+			}
+			span {
+				color: $color-key;
+			}
+		}
 	}
 
-	// popup component
+	// login
+	.login {
+		&__body {
+			background: $theme-color-more-dark;
+			box-shadow: 0 0 0;
+		}
+		&__label {
+			color: $color-key;
+		}
+		&__input {
+			i {
+				background: $color-key;
+				&:after {
+					background: $color-complete;
+				}
+			}
+			input {
+				color: $color-key;
+				&::placeholder {
+					color: $color-key;
+					opacity: .4;
+				}
+			}
+		}
+	}
+
+	// button
+	.button {
+		color: $color-dark;
+		&[disabled] {
+			background: mix($color-dark, #000, 60%);
+			border-color: mix($color-dark, #000, 60%);
+			color: $color-key;
+		}
+	}
+	.buttonMore {
+		border: none;
+		background: $color-key;
+		> i {
+			&:before, &:after {
+				background: $color-dark;
+			}
+		}
+	}
+
+	// description
+	.description {
+		> dt {
+			color: $color-key;
+		}
+		> dd {
+			color: $color-key;
+		}
+
+		@media (max-width: $size-mini) {
+			border-top-color: $color-weak-dark;
+		}
+	}
+
+	// table
+	.table {
+		th, td {
+			color: $color-key;
+		}
+		thead {
+			th {
+				background: $theme-color-more-dark;
+			}
+		}
+		tbody {
+			tr {
+				border-top-color: $theme-color-more-dark;
+				&:hover {
+					> td {
+						background: rgba(0,0,0,.1);
+					}
+				}
+				&:first-child {
+					border-top: none;
+				}
+			}
+		}
+		&__responsive {
+			&-border {
+				border: none;
+			}
+		}
+		@media (max-width: $size-mobile) {
+			tbody {
+				border-bottom: none;
+				tr {
+					background: none;
+					&:hover {
+						> td {
+							background: none;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// index
+	.index {
+		&__item {
+			border-top-color: $theme-color-more-dark;
+			color: $color-key;
+		}
+		&__metas {
+			em {
+				color: $color-key;
+			}
+		}
+	}
+
+	// forms
+	.form-kit {
+		&__horizontal {
+			border-top-color: $theme-color-more-dark;
+			> dt {
+				color: $color-key;
+			}
+		}
+		&__vertical {
+			border-top-color: $theme-color-more-dark;
+			> dt {
+				color: $color-key;
+			}
+		}
+		&__nav {
+			border-top-color: $theme-color-more-dark;
+		}
+		&__description {
+			color: $color-key;
+		}
+	}
+	.form-text {
+		border-color: $color-key;
+		&__input {
+			color: $color-key;
+			background: none;
+			&:focus {
+				background: mix($color-dark, #000, 90%);
+			}
+		}
+	}
+	.form-checkbox, .form-radio {
+		> input {
+			&:checked + i {
+				border-color: $color-complete;
+				&:after {
+					background: $color-complete;
+				}
+			}
+		}
+		> i {
+			border-color: $color-key;
+		}
+		&__label {
+			color: $color-key;
+		}
+	}
+	.form-switch {
+		&__icon {
+			border-color: $color-key;
+			background: none;
+		}
+	}
+
+	// popup
 	.popup {
-		background: rgba(0,0,0,.3);
+		background: rgba(0,0,0,.4);
+		&__wrap {
+			background: $theme-color-some-dark;
+			box-shadow: 0 0 0;
+		}
+		&__header {
+			background: $color-key;
+		}
 	}
 
+	// dashboard
+	.dashboard {
+		.section {
+			border: none;
+			background: $theme-color-some-dark;
+			&__head {
+				background: $theme-color-more-dark;
+				h1 {
+					color: $color-key;
+				}
+			}
+		}
+	}
+
+	// transactions
+	.transactions {
+		@media (max-width: $size-mobile) {
+			.contents__box {
+				background: none;
+			}
+			.table {
+				tbody {
+					tr {
+						background: $theme-color-some-dark;
+						&:hover {
+							> td {
+								background: none;
+								&[data-name='Type'] {
+									background: $theme-color-more-dark;
+								}
+							}
+						}
+					}
+				}
+				[data-name='Type'] {
+					background: $theme-color-more-dark;
+				}
+			}
+		}
+	}
+
+	// setting
+	.settings {
+		&__section {
+			background: $theme-color-some-dark;
+			border: none;
+		}
+		&__sectionHeader {
+			border-bottom-color: $theme-color-more-dark;
+			h1 {
+				color: $color-key;
+			}
+			p {
+				color: $color-key;
+			}
+		}
+	}
+
+	// error
+	.error {
+		&__heading {
+			color: $color-key;
+		}
+		&__description {
+			color: $color-key;
+		}
+	}
+
+	// loader
+	.loader-mini {
+		&:after {
+			border-color: $color-weak-dark;
+			border-top-color: transparent;
+		}
+	}
 }

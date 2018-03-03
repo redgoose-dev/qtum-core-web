@@ -1,0 +1,36 @@
+@import "../variables";
+
+
+.receive {
+	.popup-form {
+		min-width: 420px;
+		.form-kit__vertical {
+			border-top: none;
+			margin: 20px 0 0;
+			padding: 0;
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+		.form-kit__nav {
+			padding-top: 25px;
+			border-top: none;
+		}
+	}
+
+	@media (max-width: $size-mobile) {
+		.table {
+			tbody {
+				tr {
+					padding: 20px 15px;
+				}
+			}
+		}
+		.popup-form {
+			min-width: calc(100vw - 100px);
+			.form-kit__nav {
+				padding-top: 20px;
+			}
+		}
+	}
+}

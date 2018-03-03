@@ -4,8 +4,13 @@
 @import "animation";
 @import "components/forms";
 @import "components/button";
-@import "components/loader";
+@import "components/popup";
+@import "components/loading";
 @import "pages/contents";
+@import "pages/dashbaord";
+@import "pages/transactions";
+@import "pages/receive";
+@import "pages/settings";
 @import "pages/layout";
 @import "pages/login";
 @import "pages/error";

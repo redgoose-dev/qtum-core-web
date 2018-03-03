@@ -85,6 +85,7 @@ export default {
 
 		// set header in axios
 		$axios.setHeader('testnet', $store.state.status.testnet ? 1 : 0);
+		$axios.setHeader('language', $store.state.layout.language || 'en');
 	},
 };
 </script>

@@ -32,7 +32,7 @@
 				</table>
 			</div>
 		</div>
-		<nav class="text-center">
+		<nav class="text-right">
 			<button-basic
 				type="button"
 				label="Add address"
@@ -159,39 +159,3 @@ export default {
 	},
 }
 </script>
-
-<style lang="scss" scoped>
-@import "../../assets/scss/variables";
-
-.popup-form {
-	min-width: 420px;
-	.form-kit__vertical {
-		border-top: none;
-		margin: 20px 0 0;
-		padding: 0;
-		&:first-child {
-			margin-top: 0;
-		}
-	}
-	.form-kit__nav {
-		padding-top: 25px;
-		border-top: none;
-	}
-}
-
-@media (max-width: $size-mobile) {
-	.table {
-		tbody {
-			tr {
-				padding: 20px 15px;
-			}
-		}
-	}
-	.popup-form {
-		min-width: auto;
-		.form-kit__nav {
-			padding-top: 20px;
-		}
-	}
-}
-</style>

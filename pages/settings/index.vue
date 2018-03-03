@@ -91,7 +91,19 @@
 					</dd>
 				</dl>
 				<dl class="form-kit__horizontal">
-					<dt>Count</dt>
+					<dt>Language</dt>
+					<dd>
+						<form-radios
+							name="language"
+							v-model="layout.language"
+							:items="[
+							{ label: 'English', value: 'en' },
+							{ label: '한국어', value: 'ko' },
+						]"/>
+					</dd>
+				</dl>
+				<dl class="form-kit__horizontal">
+					<dt>Items count</dt>
 					<dd class="fields">
 						<div>
 							<label>
@@ -184,6 +196,7 @@ export default {
 				theme: layout.theme || lib.constant.theme.light,
 				count__recentTransactions: layout.count__recentTransactions || lib.constant.count.recent_transactions,
 				count__transactions: layout.count__transactions || lib.constant.count.transactions,
+				language: layout.language || 'en',
 			},
 		};
 	},
@@ -303,6 +316,7 @@ export default {
 				theme: e.target.theme.value,
 				count__recentTransactions: parseInt(e.target.count__recent_transactions.value),
 				count__transactions: parseInt(e.target.count__transactions.value),
+				language: e.target.language.value,
 			});
 			await lib.util.sleep(300);
 
@@ -400,68 +414,3 @@ export default {
 	},
 }
 </script>
-
-<style lang="scss" scoped>
-@import "../../assets/scss/variables";
-
-.settings {
-	&__section {
-		margin: 30px 0 0;
-		padding: 20px;
-		background: #fff;
-		border: 1px solid $color-medium-gray;
-		&:first-child {
-			margin-top: 0;
-		}
-	}
-
-	&__sectionHeader {
-		padding: 0 0 15px;
-		border-bottom: 1px solid $color-medium-gray;
-		h1 {
-			margin: 0;
-			font-size: 20px;
-			font-weight: 600;
-		}
-		p {
-			margin: 8px 0 0;
-			font-size: 14px;
-			color: $color-weak-dark;
-		}
-	}
-}
-.core {
-	&__body {
-		margin-bottom: -10px;
-	}
-	&__prosessing {
-		margin-left: 10px;
-	}
-}
-.unlock {
-	border-top: 1px solid $color-medium-gray;
-	&__password {}
-	&__check {
-		margin: 5px 0 0;
-	}
-	&__button {
-		margin: 8px 0 0;
-	}
-}
-.fields {
-	> div {
-		margin-top: 12px;
-		&:first-child {
-			margin-top: 0;
-		}
-	}
-}
-
-@media (max-width: $size-mobile) {
-	.settings {
-		&__section {
-			padding: 15px;
-		}
-	}
-}
-</style>
