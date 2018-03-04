@@ -13,7 +13,9 @@
 			<form action="#" method="post" class="login__form" v-on:submit="onSubmit">
 				<fieldset>
 					<legend class="blind">login form</legend>
-					<label for="login_password" class="login__label">Password</label>
+					<label for="login_password" class="login__label">
+						{{ $lang.out('login.password.label') }}
+					</label>
 					<span class="login__input">
 						<input
 							ref="form_password"
@@ -23,19 +25,19 @@
 							maxlength="24"
 							v-model="password"
 							:required="!testnet"
-							placeholder="Please enter a password."/>
+							:placeholder="$lang.out('login.password.placeholder')"/>
 						<i></i>
 					</span>
 				</fieldset>
 
 				<div class="login__options">
 					<form-check
-						label="Remember me"
+						:label="$lang.out('login.rememberMe')"
 						v-model="rememberAuth"
 						className="login__rememberMe"/>
 					<br/>
 					<form-check
-						label="Using testnet"
+						:label="$lang.out('login.usingTestnet')"
 						v-model="testnet"
 						v-if="useTestnet"
 						className="login__rememberMe"/>
@@ -44,7 +46,7 @@
 				<nav class="login__nav">
 					<button-basic
 						type="submit"
-						:label="processing ? 'Processing..' : 'LOGIN'"
+						:label="processing ? `${$lang.out('global.processing_upper')}..` : $lang.out('global.login_upper')"
 						:disabled="processing"
 						className="button-color-key"/>
 				</nav>
@@ -87,7 +89,7 @@ export default {
 		{
 			e.preventDefault();
 
-			const { $refs, $axios, $store, $router, processing } = this;
+			const { $refs, $axios, $store, $router, $lang, processing } = this;
 
 			if (processing) return;
 
@@ -115,7 +117,7 @@ export default {
 			}
 			else
 			{
-				alert('Login failed');
+				alert($lang.out('login.message.failed'));
 				$refs.form_password.focus();
 			}
 
@@ -127,7 +129,10 @@ export default {
 	},
 	mounted: function()
 	{
-		this.$refs.form_password.focus();
+		const { $refs } = this;
+
+		// focus password form
+		$refs.form_password.focus();
 	},
 }
 </script>

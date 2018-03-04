@@ -42,7 +42,7 @@ export default {
 		let class_theme = $store.state.layout.theme || lib.constant.theme.light;
 		return {
 			htmlAttrs: {
-				lang: $store.state.system.lang || 'en',
+				lang: $store.state.layout.language || 'en',
 				class: !!class_theme ? `theme-${class_theme}` : null,
 			}
 		}
@@ -79,13 +79,14 @@ export default {
 			}
 		}
 	},
-	mounted()
+	beforeMount()
 	{
 		const { $store, $axios } = this;
 
+		lib.util.setBeforeLayout(this);
+
 		// set header in axios
 		$axios.setHeader('testnet', $store.state.status.testnet ? 1 : 0);
-		$axios.setHeader('language', $store.state.layout.language || 'en');
 	},
 };
 </script>

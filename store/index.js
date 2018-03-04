@@ -27,21 +27,32 @@ export const state = () => ({
 
 // action
 export const actions = {
-	async nuxtServerInit(cox, { req, app }) {
+	async nuxtServerInit(cox, box) {
 		const { state, commit } = cox;
-		const pref = require('../.config/env');
+		const { req, app } = box;
+		const env = require('../.config/env');
 		const testnet = !!(req.session && req.session.auth && req.session.auth.testnet);
 
 		// update system
 		commit('updateSystem', {
-			title: pref.TITLE || 'QTUM CORE',
-			url_api: pref.API_URL || 'http://localhost:3000',
-			useTestnet: pref.USE_TESTNET,
+			title: env.TITLE || 'QTUM CORE',
+			url_api: env.API_URL || 'http://localhost:3000',
+			useTestnet: env.USE_TESTNET,
 			hash: (req.session.auth && req.session.auth.hash) ? req.session.auth.hash : null,
 		});
 
+		// update layout
+		if (env.LAYOUT)
+		{
+			commit('updateLayout', env.LAYOUT);
+		}
+
 		// set header
 		app.$axios.setHeader('testnet', testnet ? 1 : 0);
+		app.$axios.setHeader('language', state.layout.language || 'en');
+
+		// set language
+		app.$lang.set(state.layout.language || 'en');
 
 		// update status
 		try
@@ -50,12 +61,6 @@ export const actions = {
 			const result = await app.$axios.$post(`/api`, {
 				hash: state.system.hash,
 			});
-
-			// update layout (레이아웃은 결과 상태에 관계없이 가져올 수 있으므로 먼저 업데이트)
-			if (result.layout)
-			{
-				commit('updateLayout', result.layout);
-			}
 
 			// checking
 			if (result.status === 'error') throw result;

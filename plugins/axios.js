@@ -1,4 +1,4 @@
-const env = require('../.config/env');
+import env from '../.config/env';
 
 
 export default function(cox)

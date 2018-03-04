@@ -1,6 +1,5 @@
 {
   "CORE_ADDRESS": "{ADDRESS}/qtum/bin",
-  "LAYOUT": null,
   "HASH_MAINNET": "",
   "HASH_TESTNET": ""
 }

@@ -80,7 +80,7 @@ module.exports = function(req, res)
 		},
 		layout: function(cb)
 		{
-			cb(null, setupFile.get('all').private.LAYOUT);
+			cb(null, setupFile.get('all').env.LAYOUT);
 		}
 	};
 

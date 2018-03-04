@@ -30,7 +30,8 @@ module.exports = {
 	],
 
 	plugins: [
-		'~/plugins/axios'
+		'~/plugins/axios',
+		'~/plugins/localization',
 	],
 
 	axios: {

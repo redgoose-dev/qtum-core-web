@@ -175,15 +175,9 @@ export default {
 	},
 	beforeMount()
 	{
-		// set class name for touch device
-		if (lib.util.detectTouch())
-		{
-			document.querySelector('html').classList.add('touch');
-		}
-	},
-	mounted()
-	{
 		const { $store, $axios } = this;
+
+		lib.util.setBeforeLayout(this);
 
 		// 쿠기가 없으면 새로 설정한다.
 		if (!document.cookie)
@@ -193,7 +187,6 @@ export default {
 
 		// set header in axios
 		$axios.setHeader('testnet', $store.state.status.testnet ? 1 : 0);
-		$axios.setHeader('language', $store.state.layout.language || 'en');
 	},
 	data()
 	{
