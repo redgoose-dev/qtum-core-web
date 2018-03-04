@@ -329,6 +329,7 @@ export default {
 			}
 			if (response.data)
 			{
+				// TODO: axios에 setheader 업데이트하기. language
 				$store.commit('updateLayout', response.data);
 			}
 		},
