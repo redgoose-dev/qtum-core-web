@@ -6,13 +6,13 @@ module.exports = function(req, res)
 {
 	try
 	{
-		let newEnv = setupFile.get('private');
+		let newEnv = setupFile.get('env');
 		newEnv.LAYOUT = {
 			...(newEnv ? newEnv.LAYOUT : null),
 			...req.body,
 		};
 		fs.writeFile(
-			`${setupFile.resource.dir}/${setupFile.resource.file_private}`,
+			`${setupFile.resource.dir}/${setupFile.resource.file_env}`,
 			JSON.stringify(newEnv, null, 2),
 			function(err) {
 				if (err)
