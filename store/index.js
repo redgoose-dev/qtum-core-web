@@ -30,6 +30,7 @@ export const actions = {
 	async nuxtServerInit(cox, box) {
 		const { state, commit } = cox;
 		const { req, app } = box;
+		// TODO: 이부분은 비동기로 따로 가져와야겠음. 이런식으로 가져오면 변경이 되더라도 변한 부분이 적용이 안됨.
 		const env = require('../.config/env');
 		const testnet = !!(req.session && req.session.auth && req.session.auth.testnet);
 
@@ -49,9 +50,7 @@ export const actions = {
 
 		// set header
 		app.$axios.setHeader('testnet', testnet ? 1 : 0);
-		app.$axios.setHeader('language', state.layout.language || 'en');
-
-		// set language
+		// TODO: 변한 언어로 적용이 안되고 en만 계속나올것임. 빌드 되었을 당시에는 en이라면..
 		app.$lang.set(state.layout.language || 'en');
 
 		// update status
