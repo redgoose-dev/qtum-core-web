@@ -77,10 +77,6 @@ module.exports = function(req, res)
 					cb(result.message, null);
 				}
 			});
-		},
-		layout: function(cb)
-		{
-			cb(null, setupFile.get('all').env.LAYOUT);
 		}
 	};
 

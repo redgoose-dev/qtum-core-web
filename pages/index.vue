@@ -1,6 +1,3 @@
-/**
- * Dashboard
- */
 <template>
 <article class="contents dashboard">
 	<header class="contents__header dashboard__header">
@@ -12,23 +9,23 @@
 			<div class="col">
 				<article class="section section-balance">
 					<header class="section__head">
-						<h1>Balance</h1>
+						<h1>{{$lang.out('global.balance')}}</h1>
 					</header>
 					<div class="section__body">
 						<dl class="description">
-							<dt><strong>Balance</strong></dt>
+							<dt><strong>{{$lang.out('dashboard.totalBalance')}}</strong></dt>
 							<dd class="size-large"><strong class="text-key">{{ balance }} QTUM</strong></dd>
 						</dl>
 						<dl class="description" v-if="stake > 0">
-							<dt>Staked</dt>
+							<dt>{{$lang.out('dashboard.staked')}}</dt>
 							<dd><strong>{{ stake }}</strong></dd>
 						</dl>
 						<dl class="description" v-if="immature_balance > 0">
-							<dt>Immature</dt>
+							<dt>{{$lang.out('dashboard.immature')}}</dt>
 							<dd><strong>{{ immature_balance }}</strong></dd>
 						</dl>
 						<dl class="description" v-if="unconfirmed_balance > 0">
-							<dt>Unconfirmed</dt>
+							<dt>{{$lang.out('dashboard.unconfirmed')}}</dt>
 							<dd><strong>{{ unconfirmed_balance }}</strong></dd>
 						</dl>
 					</div>
@@ -37,35 +34,35 @@
 			<div class="col">
 				<article class="section section-status">
 					<header class="section__head">
-						<h1>Status</h1>
+						<h1>{{$lang.out('global.status')}}</h1>
 					</header>
 					<div class="section__body">
 						<dl class="description">
-							<dt>Version</dt>
+							<dt>{{$lang.out('global.version')}}</dt>
 							<dd><strong>v{{ version }}</strong></dd>
 						</dl>
 						<dl class="description">
-							<dt>Current block</dt>
+							<dt>{{$lang.out('dashboard.currentBlock')}}</dt>
 							<dd><strong>{{ blocks }}</strong></dd>
 						</dl>
 						<dl class="description">
-							<dt>Staking</dt>
+							<dt>{{$lang.out('dashboard.staking')}}</dt>
 							<dd><strong v-bind:class="staking ? 'text-success' : 'text-error'">{{ staking }}</strong></dd>
 						</dl>
 						<dl class="description">
-							<dt>Wallet status</dt>
+							<dt>{{$lang.out('dashboard.walletStatus')}}</dt>
 							<dd><strong>{{ walletStatus }}</strong></dd>
 						</dl>
 						<dl class="description">
-							<dt>Network weight</dt>
+							<dt>{{$lang.out('dashboard.networkWeight')}}</dt>
 							<dd><strong>{{ networkWeight }}</strong></dd>
 						</dl>
 						<dl class="description">
-							<dt>Connections</dt>
+							<dt>{{$lang.out('dashboard.connections')}}</dt>
 							<dd><strong>{{ connections }}</strong></dd>
 						</dl>
 						<dl class="description" v-if="testnet">
-							<dt>Testnet</dt>
+							<dt>{{$lang.out('global.testnet')}}</dt>
 							<dd><strong>{{ testnet }}</strong></dd>
 						</dl>
 					</div>
@@ -76,7 +73,7 @@
 			<div class="col">
 				<article class="section section-transactions">
 					<header class="section__head">
-						<h1>Recent transactions</h1>
+						<h1>{{$lang.out('dashboard.recentTransactions')}}</h1>
 						<nav>
 							<nuxt-link to="/transactions" title="More transactions">
 								<i class="sp-ico ico-more-active"></i>
@@ -89,24 +86,24 @@
 								<div class="index__col index__col-flex index__col-body index__col-overflow">
 									<p class="index__metas">
 										<span>
-											<b>Date</b>
+											<b>{{$lang.out('global.date')}}</b>
 											<em>{{ o.time }}</em>
 										</span>
 										<span>
-											<b>Amount</b>
+											<b>{{$lang.out('global.amount')}}</b>
 											<em>{{ o.amount }}</em>
 										</span>
 										<span v-if="!!o.fee">
-											<b>Fee</b>
+											<b>{{$lang.out('global.fee')}}</b>
 											<em>{{ o.fee }}</em>
 										</span>
 										<span>
-											<b>Confirm</b>
+											<b>{{$lang.out('global.confirm')}}</b>
 											<em>{{ o.confirm }}</em>
 										</span>
 									</p>
 									<p class="index__description index__description-nowrap">
-										Transaction ID: <a v-bind:href="o.txUrl" target="_blank">{{ o.txid }}</a>
+										{{$lang.out('global.transactionId')}}: <a v-bind:href="o.txUrl" target="_blank">{{ o.txid }}</a>
 									</p>
 								</div>
 								<div class="index__col index__col-type">
@@ -115,7 +112,7 @@
 										o.type === 'send' && 'text-error',
 										o.type === 'receive' && 'text-success'
 									]">
-										{{ o.type }}
+										{{$lang.out(`global.${o.type}`)}}
 									</p>
 								</div>
 							</li>

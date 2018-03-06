@@ -10,8 +10,8 @@
 				<table class="table">
 					<thead>
 					<tr>
-						<th scope="col">Address</th>
-						<th scope="col">Label</th>
+						<th scope="col">{{$lang.out('global.address')}}</th>
+						<th scope="col">{{$lang.out('global.label')}}</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -25,7 +25,7 @@
 					</template>
 					<template v-else>
 						<tr class="table__empty">
-							<td colspan="6">not found article</td>
+							<td colspan="6">{{$lang.out('message.notFoundItem')}}</td>
 						</tr>
 					</template>
 					</tbody>
@@ -35,19 +35,19 @@
 		<nav class="text-right">
 			<button-basic
 				type="button"
-				label="Add address"
+				:label="$lang.out('receive.addAddress')"
 				@click="onShowAddAddress"
 				className="button-color-key button-inline button-size-small"/>
 		</nav>
 	</div>
 
 	<layout-popup
-		title="Add address"
+		:title="$lang.out('receive.addAddress')"
 		v-if="show__addAddress"
 		@close="onCloseAddAddress">
 		<form class="form-kit popup-form" @submit="onSubmitAddAddress">
 			<dl class="form-kit__vertical">
-				<dt>Label name</dt>
+				<dt>{{$lang.out('receive.labelName')}}</dt>
 				<dd>
 					<form-text
 						type="text"
@@ -55,17 +55,17 @@
 						id="form_label"
 						value=""
 						maxlength="20"
-						placeholder="Please input label"
+						:placeholder="$lang.out('receive.addAddress_placeholder')"
 						className="form-text-block"/>
 					<p class="form-kit__description">
-						Enter a name for the new address.
+						{{$lang.out('receive.addAddress_description')}}
 					</p>
 				</dd>
 			</dl>
 			<nav class="form-kit__nav text-center">
 				<button-basic
 					type="submit"
-					:label="processing__addAddress ? `Processing..` : `Add address`"
+					:label="processing__addAddress ? `${$lang.out('global.processing')}..` : $lang.out('receive.addAddress')"
 					:disabled="processing__addAddress"
 					:loading="processing__addAddress"
 					className="button-color-key button-inline"/>
@@ -94,7 +94,7 @@ export default {
 	middleware: 'checkCore',
 	async asyncData(cox)
 	{
-		const { error, $axios } = cox;
+		const { error, $axios, $lang } = cox;
 		let result = {
 			index: [],
 			show__addAddress: false,
@@ -103,7 +103,7 @@ export default {
 		try
 		{
 			let res = await $axios.$get(`/api/receive`);
-			if (!(res.status === 'success' && !!res.data)) throw 'API import failed.';
+			if (!(res.status === 'success' && !!res.data)) throw $lang.out('message.apiFailed');
 			return {
 				...result,
 				index: res.data,
@@ -114,7 +114,7 @@ export default {
 			error({
 				statusCode: 400,
 				title: 'Receive',
-				message: 'Failed to import API',
+				message: $lang.out('message.apiFailed'),
 			});
 		}
 	},

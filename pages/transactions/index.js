@@ -88,7 +88,7 @@ export default {
 
 	async asyncData(cox)
 	{
-		const { error, store } = cox;
+		const { error, store, $lang } = cox;
 		let result = {
 			page: 1,
 			size: store.state.layout.count__transactions,
@@ -111,7 +111,7 @@ export default {
 			error({
 				statusCode: 400,
 				title: 'Transactions',
-				message: 'Failed to import API',
+				message: $lang.out('message.apiFailed'),
 			});
 		}
 	},

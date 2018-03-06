@@ -1,22 +1,22 @@
 <template>
 <article class="contents settings">
 	<header class="contents__header">
-		<h1>Settings</h1>
+		<h1>{{$lang.out('layout.profileMenu.settings')}}</h1>
 	</header>
 
 	<div class="contents__body">
 		<section class="settings__section core">
 			<header class="settings__sectionHeader">
-				<h1>qtum core</h1>
-				<p>The area that manages the core.</p>
+				<h1>{{$lang.out('settings.qtum.title')}}</h1>
+				<p>{{$lang.out('settings.qtum.description')}}</p>
 			</header>
 			<div class="form-kit core__body">
 				<dl class="form-kit__horizontal">
-					<dt>{{status.testnet ? 'Testnet' : 'Mainnet'}} ON/OFF</dt>
+					<dt>{{status.testnet ? $lang.out('global.testnet') : $lang.out('global.mainnet')}} ON/OFF</dt>
 					<dd>
 						<div>
 							<form-switch
-								title="core power on/off"
+								:title="$lang.out('settings.qtum.changeCorePower')"
 								:disabled="processing.core__power"
 								:value="qtum.power"
 								@change="onChangeQtumCorePower"/>
@@ -26,31 +26,34 @@
 								v-if="processing.core__power"/>
 						</div>
 						<p class="form-kit__description">
-							Please be careful about changing this option.
+							{{$lang.out('settings.qtum.warning_changeValue')}}
 						</p>
 					</dd>
 				</dl>
 				<form v-if="qtum.useLock" @submit="onSubmitUnlock">
 					<dl class="form-kit__horizontal unlock" v-if="!qtum.unLock">
-						<dt>Unlock wallet</dt>
+						<dt>{{$lang.out('settings.qtum.lockWalletTitle')}}</dt>
 						<dd>
 							<div class="unlock__password">
 								<form-text
 									type="password"
 									name="password"
 									id="form_password"
-									placeholder="Please input password"
+									:placeholder="$lang.out('message.placeholder_password')"
 									maxlength="30"
 									:required="true"
 									className="form-text-block"/>
 							</div>
 							<div class="unlock__check">
-								<form-check label="For staking only" name="staking" value="1"/>
+								<form-check
+									:label="$lang.out('settings.qtum.forStakingOnly')"
+									name="staking"
+									value="1"/>
 							</div>
 							<div class="unlock__button">
 								<button-basic
 									type="submit"
-									:label="processing.core__unlock ? `Processing..` : `Unlock wallet`"
+									:label="processing.core__unlock ? `${$lang.out('global.processing')}..` : $lang.out('settings.qtum.unlockWallet')"
 									:loading="processing.core__unlock"
 									:disabled="processing.core__unlock"
 									className="button-color-key button-inline button-size-small"/>
@@ -58,11 +61,11 @@
 						</dd>
 					</dl>
 					<dl class="form-kit__horizontal unlock" v-else>
-						<dt>Unlock wallet</dt>
+						<dt>{{$lang.out('settings.qtum.lockWalletTitle')}}</dt>
 						<dd>
 							<button-basic
 								type="button"
-								:label="processing.core__unlock ? `Processing..` : `Lock wallet`"
+								:label="processing.core__unlock ? `${$lang.out('global.processing')}..` : $lang.out('settings.qtum.lockWallet')"
 								:loading="processing.core__unlock"
 								:disabled="processing.core__unlock"
 								@click="onChangeLock"
@@ -74,7 +77,7 @@
 		</section>
 		<section class="settings__section">
 			<header class="settings__sectionHeader">
-				<h1>Layout</h1>
+				<h1>{{$lang.out('global.layout')}}</h1>
 				<p>Layout setting area</p>
 			</header>
 			<form class="form-kit settings__form" @submit="onSubmitLayout">
@@ -329,8 +332,10 @@ export default {
 			}
 			if (response.data)
 			{
-				// TODO: axios에 setheader 업데이트하기. language
+				// update store
 				$store.commit('updateLayout', response.data);
+				// set header
+				$axios.setHeader('testnet', e.target.language.value || 'en');
 			}
 		},
 		/**

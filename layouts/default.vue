@@ -43,10 +43,10 @@
 						<div class="dropDown__children dropDown__children-profile">
 							<ul>
 								<li>
-									<nuxt-link to="/settings">Settings</nuxt-link>
+									<nuxt-link to="/settings">{{$lang.out('layout.profileMenu.settings')}}</nuxt-link>
 								</li>
 								<li>
-									<nuxt-link to="/auth/logout">Logout</nuxt-link>
+									<nuxt-link to="/auth/logout">{{$lang.out('layout.profileMenu.logout')}}</nuxt-link>
 								</li>
 							</ul>
 						</div>

@@ -56,7 +56,7 @@ router.post('/core-change-testnet', require('./core'));
  * etc
  */
 router.post('/update-layout', require('./update-layout'));
-
+router.get('/get-env', require('./get-env'));
 
 
 // export
