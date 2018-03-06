@@ -24,6 +24,7 @@
 							<td class="text-center" data-name="Date">{{ o.time }}</td>
 							<td class="text-center" data-name="Type">
 								<strong :class="[
+									'text-uppercase',
 									o.type === 'send' && 'text-error',
 									o.type === 'receive' && 'text-success'
 								]">{{$lang.out(`global.${o.type}`)}}</strong>

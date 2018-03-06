@@ -100,6 +100,13 @@ a {
 			&:before, &:after { content: '"'; }
 		}
 	}
+	// transform
+	&-uppercase {
+		text-transform: uppercase;
+	}
+	&-lowercase {
+		text-transform: lowercase;
+	}
 }
 
 
