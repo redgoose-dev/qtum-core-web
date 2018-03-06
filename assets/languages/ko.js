@@ -25,6 +25,8 @@ const tree = {
 		notFoundItem: '항목이 없습니다.',
 		apiFailed: 'API 가져오기 실패했습니다.',
 		placeholder_password: '비밀번호를 입력해주세요.',
+		logined: '로그인이 되어있지 않습니다.',
+		failedLogout: '로그아웃 실패했습니다.',
 	},
 	login: {
 		password: {
@@ -44,6 +46,7 @@ const tree = {
 		},
 	},
 	dashboard: {
+		title: '대시보드',
 		totalBalance: '총 수량',
 		staked: '스테이크된 수량',
 		immature: '미성숙된 수량',
@@ -56,10 +59,14 @@ const tree = {
 		recentTransactions: '최근 거래',
 	},
 	receive: {
+		title: '지갑목록',
 		addAddress: '주소추가',
 		labelName: '꼬리표 이름',
 		addAddress_description: '새 주소의 꼬리표 이름을 입력하세요.',
 		addAddress_placeholder: '꼬리표 이름을 입력하세요.',
+	},
+	transactions: {
+		title: '거래내역',
 	},
 	settings: {
 		qtum: {
@@ -71,7 +78,25 @@ const tree = {
 			forStakingOnly: '스테이킹을 위한 잠금해제',
 			unlockWallet: '지갑 잠금해제',
 			lockWallet: '지갑 잠그기',
+			turnOffCore: '정말로 퀀텀코어를 끄시겠습니까?',
+			failedOffCore: '퀀텀코어 끄기 실패했습니다.',
+			failedOnCore: '퀀텀코어 켜기 실패했습니다.',
+			failedUnlockWallet: '잠금해제 실패했습니다.',
+			questionLockWallet: '정말로 지갑을 잠그시겠습니까?',
+			failedLockWallet: '지갑 잠그기 실패했습니다.',
 		},
+		layout: {
+			description: '레이아웃을 설정하는 영역입니다.',
+			theme: '테마',
+			language: '언어',
+			itemsCount: '아이템 갯수',
+			light: '밝은',
+			dark: '어두운',
+			updateLayout: '레이아웃 업데이트',
+			msg_setCountRecentTransactions: `"최근 거래"에 표시되는 요소 갯수를 설정하세요.`,
+			msg_setCountTransactions: `"Transaction"에 표시되는 요소 갯수를 설정하세요.`,
+			failedUpdateLayout: '레이아웃 업데이트 실패',
+		}
 	},
 };
 

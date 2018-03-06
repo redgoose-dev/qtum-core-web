@@ -1,7 +1,7 @@
 <template>
 <article class="contents transactions">
 	<header class="contents__header">
-		<h1>Transactions</h1>
+		<h1>{{$lang.out('transactions.title')}}</h1>
 	</header>
 
 	<div class="contents__body">

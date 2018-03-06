@@ -1,7 +1,7 @@
 <template>
 <article class="contents dashboard">
 	<header class="contents__header dashboard__header">
-		<h1>Dashboard</h1>
+		<h1>{{$lang.out('dashboard.title')}}</h1>
 	</header>
 
 	<div class="contents__body">

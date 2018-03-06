@@ -24,10 +24,7 @@ function tryGetString(tree, address)
 const localization = {
 
 	selected: 'en',
-	tree: {
-		en: require('../assets/languages/en'),
-		ko: require('../assets/languages/ko'),
-	},
+	tree: require('../assets/languages'),
 
 	set: function(code)
 	{

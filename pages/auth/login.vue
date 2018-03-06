@@ -67,8 +67,13 @@ export default {
 		ButtonBasic,
 	},
 	layout: 'blank',
-	head: {
-		title: lib.util.makeTitle('login')
+	head()
+	{
+		const { $lang } = this;
+
+		return {
+			title: lib.util.makeTitle($lang.out('global.login'))
+		};
 	},
 	middleware: 'login',
 	async asyncData(cox)

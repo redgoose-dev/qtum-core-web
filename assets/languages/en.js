@@ -25,6 +25,8 @@ const tree = {
 		notFoundItem: 'Not found item',
 		apiFailed: 'Failed to import API.',
 		placeholder_password: 'Please input password',
+		logined: 'You are not logged in.',
+		failedLogout: 'Failed logout.',
 	},
 	login: {
 		password: {
@@ -44,6 +46,7 @@ const tree = {
 		},
 	},
 	dashboard: {
+		title: 'Dashboard',
 		totalBalance: 'Total balance',
 		staked: 'Staked',
 		immature: 'Immature',
@@ -56,10 +59,14 @@ const tree = {
 		recentTransactions: 'Recent transactions',
 	},
 	receive: {
+		title: 'Receive',
 		addAddress: 'Add address',
 		labelName: 'Label name',
 		addAddress_description: 'Enter a label for the new address.',
 		addAddress_placeholder: 'Please input label',
+	},
+	transactions: {
+		title: 'Transactions',
 	},
 	settings: {
 		qtum: {
@@ -71,7 +78,25 @@ const tree = {
 			forStakingOnly: 'For staking only',
 			unlockWallet: 'Unlock wallet',
 			lockWallet: 'Lock wallet',
+			turnOffCore: 'Do you really want to turn off the Qtum-core?',
+			failedOffCore: 'Failed turn off qtum-core.',
+			failedOnCore: 'Failed turn on qtum-core.',
+			failedUnlockWallet: 'Failed unlock wallet.',
+			questionLockWallet: 'Do you really want to lock it?',
+			failedLockWallet: 'Failed lock wallet.',
 		},
+		layout: {
+			description: 'Layout setting area',
+			theme: 'Theme',
+			language: 'Language',
+			itemsCount: 'Items count',
+			light: 'Light',
+			dark: 'Dark',
+			updateLayout: 'Update layout',
+			msg_setCountRecentTransactions: `Set count from "Recent transactions".`,
+			msg_setCountTransactions: `Set count from "Transaction".`,
+			failedUpdateLayout: 'Failed to update layout.',
+		}
 	},
 };
 

@@ -73,25 +73,25 @@
 						<li class="gnb__item">
 							<nuxt-link to="/" title="Dashboard">
 								<em><i class="sp-ico ico-gnb-home"></i></em>
-								<span>DASHBOARD</span>
+								<span>{{$lang.out('dashboard.title')}}</span>
 							</nuxt-link>
 						</li>
 						<li class="gnb__item">
 							<nuxt-link to="/transactions" title="Transactions">
 								<em><i class="sp-ico ico-gnb-switch"></i></em>
-								<span>TRANSACTIONS</span>
+								<span>{{$lang.out('transactions.title')}}</span>
 							</nuxt-link>
 						</li>
 						<li class="gnb__item">
 							<nuxt-link to="/receive" title="Receive">
 								<em><i class="sp-ico ico-gnb-receive"></i></em>
-								<span>RECEIVE</span>
+								<span>{{$lang.out('receive.title')}}</span>
 							</nuxt-link>
 						</li>
 						<li class="gnb__item" v-if="false">
 							<nuxt-link to="/send" title="Send to">
 								<em><i class="sp-ico ico-gnb-post"></i></em>
-								<span>SEND</span>
+								<span>{{$lang.out('send.title')}}</span>
 							</nuxt-link>
 						</li>
 					</ul>

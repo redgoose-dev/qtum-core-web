@@ -1,7 +1,7 @@
 <template>
 <article class="contents receive">
 	<header class="contents__header">
-		<h1>Receive</h1>
+		<h1>{{$lang.out('receive.title')}}</h1>
 	</header>
 
 	<div class="contents__body">
@@ -88,8 +88,13 @@ export default {
 		FormText,
 		LayoutPopup,
 	},
-	head: {
-		title: lib.util.makeTitle('Receive')
+	head()
+	{
+		const { $lang } = this;
+
+		return {
+			title: lib.util.makeTitle($lang.out('receive.title'))
+		};
 	},
 	middleware: 'checkCore',
 	async asyncData(cox)

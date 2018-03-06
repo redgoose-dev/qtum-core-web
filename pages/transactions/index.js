@@ -47,16 +47,18 @@ async function getTransactions($axios, store, page=1, size=12)
 
 
 export default {
-	head: {
-		title: lib.util.makeTitle('Transactions')
-	},
+	head()
+	{
+		const { $lang } = this;
 
+		return {
+			title: lib.util.makeTitle($lang.out('transactions.title'))
+		};
+	},
 	components: {
 		ButtonMore
 	},
-
 	middleware: 'checkCore',
-
 	methods: {
 		more: async function(e)
 		{
@@ -85,7 +87,6 @@ export default {
 			this.loading_more = false;
 		}
 	},
-
 	async asyncData(cox)
 	{
 		const { error, store, $lang } = cox;

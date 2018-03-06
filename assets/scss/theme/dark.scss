@@ -117,7 +117,8 @@ html.theme-dark {
 	// description
 	.description {
 		> dt {
-			color: $color-key;
+			//color: $color-key;
+			color: $color-form-border;
 		}
 		> dd {
 			color: $color-key;
@@ -136,6 +137,7 @@ html.theme-dark {
 		thead {
 			th {
 				background: $theme-color-more-dark;
+				color: $color-form-border;
 			}
 		}
 		tbody {
@@ -178,9 +180,17 @@ html.theme-dark {
 			color: $color-key;
 		}
 		&__metas {
+			> span {
+				> b {
+					color: $color-form-border;
+				}
+			}
 			em {
 				color: $color-key;
 			}
+		}
+		&__description {
+			color: $color-form-border;
 		}
 	}
 
@@ -189,7 +199,7 @@ html.theme-dark {
 		&__horizontal {
 			border-top-color: $theme-color-more-dark;
 			> dt {
-				color: $color-key;
+				color: $color-form-border;
 			}
 		}
 		&__vertical {

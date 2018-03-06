@@ -64,7 +64,7 @@ export const actions = {
 
 			// checking
 			if (result.status === 'error') throw result;
-			if (!result.info) throw 'Server error';
+			if (!result.info) throw { code: 500, message: 'Server error' };
 
 			// update status
 			commit('updateStatus', {

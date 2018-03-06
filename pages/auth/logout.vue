@@ -6,12 +6,12 @@ export default {
 
 	async mounted()
 	{
-		const { $store, $axios } = this;
+		const { $store, $axios, $lang } = this;
 
 		// check hash
 		if (!$store.state.system.hash)
 		{
-			alert('You are not logged in.');
+			alert($lang.out('message.logined'));
 			location.href = '/';
 		}
 
@@ -33,7 +33,7 @@ export default {
 		}
 		catch(e)
 		{
-			alert('Failed logout.');
+			alert($lang.out('message.failedLogout'));
 			this.$router.back();
 		}
 	}

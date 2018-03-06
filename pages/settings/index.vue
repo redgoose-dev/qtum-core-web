@@ -78,23 +78,23 @@
 		<section class="settings__section">
 			<header class="settings__sectionHeader">
 				<h1>{{$lang.out('global.layout')}}</h1>
-				<p>Layout setting area</p>
+				<p>{{$lang.out('settings.layout.description')}}</p>
 			</header>
 			<form class="form-kit settings__form" @submit="onSubmitLayout">
 				<dl class="form-kit__horizontal">
-					<dt>Theme</dt>
+					<dt>{{$lang.out('settings.layout.theme')}}</dt>
 					<dd>
 						<form-radios
 							name="theme"
 							v-model="layout.theme"
 							:items="[
-								{ label: 'Light', value: constant.theme.light },
-								{ label: 'Dark', value: constant.theme.dark },
+								{ label: $lang.out('settings.layout.light'), value: constant.theme.light },
+								{ label: $lang.out('settings.layout.dark'), value: constant.theme.dark },
 							]"/>
 					</dd>
 				</dl>
 				<dl class="form-kit__horizontal">
-					<dt>Language</dt>
+					<dt>{{$lang.out('settings.layout.language')}}</dt>
 					<dd>
 						<form-radios
 							name="language"
@@ -106,7 +106,7 @@
 					</dd>
 				</dl>
 				<dl class="form-kit__horizontal">
-					<dt>Items count</dt>
+					<dt>{{$lang.out('settings.layout.itemsCount')}}</dt>
 					<dd class="fields">
 						<div>
 							<label>
@@ -120,7 +120,7 @@
 									className="form-text-size-small"/>
 							</label>
 							<p class="form-kit__description">
-								Set count from "Recent transactions".
+								{{$lang.out('settings.layout.msg_setCountRecentTransactions')}}
 							</p>
 						</div>
 						<div>
@@ -133,7 +133,7 @@
 								placeholder="Please input number."
 								className="form-text-size-small"/>
 							<p class="form-kit__description">
-								Set count from "Transaction".
+								{{$lang.out('settings.layout.msg_setCountTransactions')}}
 							</p>
 						</div>
 					</dd>
@@ -141,7 +141,7 @@
 				<nav class="form-kit__nav text-center">
 					<button-basic
 						type="submit"
-						:label="processing.layout ? 'Processing..' : 'Update layout'"
+						:label="processing.layout ? `${$lang.out('global.processing')}..` : $lang.out('settings.layout.updateLayout')"
 						:disabled="processing.layout"
 						:loading="processing.layout"
 						className="button-color-key button-inline"/>
@@ -170,8 +170,13 @@ export default {
 		LoadingMini,
 		FormText,
 	},
-	head: {
-		title: lib.util.makeTitle('Settings')
+	head()
+	{
+		const { $lang } = this;
+
+		return {
+			title: lib.util.makeTitle($lang.out('layout.profileMenu.settings'))
+		};
 	},
 	computed: {
 		status() { return this.$store.state.status; },
@@ -211,7 +216,7 @@ export default {
 		 */
 		onChangeQtumCorePower: async function(sw=false)
 		{
-			const { qtum, $store, $axios, processing } = this;
+			const { qtum, $store, $axios, $lang, processing } = this;
 
 			if (processing.core__power) return;
 
@@ -219,7 +224,7 @@ export default {
 			{
 				// turn off qtum core
 
-				if (confirm('Do you really want to turn off the Qtum-core?'))
+				if (confirm($lang.out('settings.qtum.turnOffCore')))
 				{
 					// on processing
 					processing.core__power = true;
@@ -249,7 +254,7 @@ export default {
 					}
 					catch(e)
 					{
-						alert('Failed turn off qtum-core');
+						alert($lang.out('settings.qtum.failedOffCore'));
 						console.error(e);
 						processing.core__power = false;
 					}
@@ -295,7 +300,7 @@ export default {
 				}
 				catch(e)
 				{
-					alert('Failed turn on qtum-core');
+					alert($lang.out('settings.out.failedOnCore'));
 					console.error(e);
 					processing.core__power = false;
 				}
@@ -309,7 +314,7 @@ export default {
 		 */
 		onSubmitLayout: async function(e)
 		{
-			const { $store, $axios, processing } = this;
+			const { $store, $axios, $lang, processing } = this;
 
 			e.preventDefault();
 
@@ -327,7 +332,7 @@ export default {
 
 			if (response.status === 'error')
 			{
-				alert('Failed to update layout.');
+				alert($lang.out('settings.layout.failedUpdateLayout'));
 				return;
 			}
 			if (response.data)
@@ -346,7 +351,7 @@ export default {
 		 */
 		onSubmitUnlock: async function(e)
 		{
-			const { $store, $axios, processing, qtum } = this;
+			const { $store, $axios, $lang, processing, qtum } = this;
 
 			e.preventDefault();
 
@@ -355,7 +360,7 @@ export default {
 			// check password value
 			if (!target.password.value)
 			{
-				alert('Please input password.');
+				alert($lang.out('message.placeholder_password'));
 				target.password.focus();
 				return;
 			}
@@ -379,7 +384,7 @@ export default {
 			}
 			catch(e)
 			{
-				alert('Failed unlock wallet.');
+				alert($lang.out('settings.qtum.failedUnlockWallet'));
 				console.error(e);
 			}
 			processing.core__unlock = false;
@@ -392,9 +397,9 @@ export default {
 		 */
 		onChangeLock: async function(e)
 		{
-			const { $store, $axios, processing } = this;
+			const { $store, $axios, $lang, processing } = this;
 
-			if (confirm('Do you really want to lock it?'))
+			if (confirm($lang.out('settings.qtum.questionLockWallet')))
 			{
 				processing.core__unlock = true;
 				try
@@ -411,7 +416,7 @@ export default {
 				}
 				catch(e)
 				{
-					alert('Failed lock wallet.');
+					alert($lang.out('settings.qtum.failedLockWallet'));
 					console.error(e);
 				}
 				processing.core__unlock = false;
