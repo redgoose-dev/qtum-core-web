@@ -32,13 +32,13 @@
 				</table>
 			</div>
 		</div>
-		<nav class="text-right">
-			<button-basic
-				type="button"
-				:label="$lang.out('receive.addAddress')"
-				@click="onShowAddAddress"
-				className="button-color-key button-inline button-size-small"/>
-		</nav>
+		<!--<nav class="text-right">-->
+			<!--<button-basic-->
+				<!--type="button"-->
+				<!--:label="$lang.out('receive.addAddress')"-->
+				<!--@click="onShowAddAddress"-->
+				<!--className="button-color-key button-inline button-size-small"/>-->
+		<!--</nav>-->
 	</div>
 
 	<layout-popup
