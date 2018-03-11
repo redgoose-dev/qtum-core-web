@@ -63,7 +63,7 @@
 						</dl>
 						<dl class="description" v-if="testnet">
 							<dt>{{$lang.out('global.testnet')}}</dt>
-							<dd><strong>{{ testnet }}</strong></dd>
+							<dd><strong>true</strong></dd>
 						</dl>
 					</div>
 				</article>

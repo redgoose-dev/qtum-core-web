@@ -73,7 +73,7 @@ export default {
 			staking: false,
 			networkWeight: 0,
 			connections: 0,
-			testnet: store.state.status.testnet,
+			testnet: !!store.state.status.testnet,
 			transactions: [],
 			walletStatus: 'Locked',
 		};
