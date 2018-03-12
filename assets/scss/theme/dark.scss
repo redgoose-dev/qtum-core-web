@@ -73,7 +73,7 @@ html.theme-dark {
 	.login {
 		&__body {
 			background: $theme-color-more-dark;
-			box-shadow: 0 0 0;
+			box-shadow: none;
 		}
 		&__label {
 			color: $color-key;
