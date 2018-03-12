@@ -93,6 +93,12 @@ html.theme-dark {
 				}
 			}
 		}
+
+		@media (max-width: $size-mobile) {
+			&__body {
+				background: none;
+			}
+		}
 	}
 
 	// button
@@ -177,14 +183,9 @@ html.theme-dark {
 	.index {
 		&__item {
 			border-top-color: $theme-color-more-dark;
-			color: $color-key;
+			color: $color-form-border;
 		}
 		&__metas {
-			> span {
-				> b {
-					color: $color-form-border;
-				}
-			}
 			em {
 				color: $color-key;
 			}
