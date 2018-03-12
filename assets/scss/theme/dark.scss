@@ -91,6 +91,13 @@ html.theme-dark {
 					color: $color-key;
 					opacity: .4;
 				}
+				&:-webkit-autofill,
+				&:-webkit-autofill:hover,
+				&:-webkit-autofill:focus,
+				&:-webkit-autofill {
+					-webkit-text-fill-color: $color-key;
+					-webkit-box-shadow: 0 0 0 1000px mix($color-key, $theme-color-more-dark, 5%) inset;
+				}
 			}
 		}
 
@@ -223,6 +230,13 @@ html.theme-dark {
 			background: none;
 			&:focus {
 				background: mix($color-dark, #000, 90%);
+			}
+			&:-webkit-autofill,
+			&:-webkit-autofill:hover,
+			&:-webkit-autofill:focus,
+			&:-webkit-autofill {
+				-webkit-text-fill-color: $color-medium-gray;
+				-webkit-box-shadow: 0 0 0 1000px mix($color-key, $theme-color-more-dark, 5%) inset;
 			}
 		}
 	}

@@ -31,6 +31,14 @@
 		&::placeholder {
 			color: $color-form-border;
 		}
+		&:-webkit-autofill,
+		&:-webkit-autofill:hover,
+		&:-webkit-autofill:focus,
+		&:-webkit-autofill {
+			border: none;
+			-webkit-text-fill-color: $color-dark;
+			-webkit-box-shadow: 0 0 0 1000px mix(yellow, #fff, 15%) inset;
+		}
 	}
 	&-block {
 		display: block;
