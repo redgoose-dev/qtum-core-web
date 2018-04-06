@@ -4,7 +4,8 @@
  */
 
 const fs = require('fs');
-const childProcess = require('child_process');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 const setupFile = require('../../modules/setupFile');
 
 const config = setupFile.get('all');
@@ -75,16 +76,9 @@ function cli(file='qtum-cli', testnet=false, params='', json=true, callback)
 
 	const cmd = checkExec(file);
 
-	function onChildProcess(error, stdout, stderr)
+	function onChildProcess(res)
 	{
-		if (error)
-		{
-			callback({
-				status: 'error',
-				message: error
-			});
-			return;
-		}
+		const { stdout, stderr } = res;
 
 		if (stdout)
 		{
@@ -109,11 +103,12 @@ function cli(file='qtum-cli', testnet=false, params='', json=true, callback)
 		{
 			callback({
 				status: 'error',
-				message: 'stderr'
+				message: stderr
 			});
+			return;
 		}
 
-		if (!error)
+		if (!stderr)
 		{
 			callback({
 				status: 'success',
@@ -125,7 +120,8 @@ function cli(file='qtum-cli', testnet=false, params='', json=true, callback)
 	// run
 	if (cmd.status === 'success')
 	{
-		childProcess.exec(`${cmd.command} ${testnet ? '-testnet' : ''} ${params}`, onChildProcess);
+		const word = `${cmd.command} ${testnet ? '-testnet' : ''} ${params}`;
+		exec(word).then(onChildProcess);
 	}
 	else
 	{

@@ -68,9 +68,17 @@ module.exports = function(req, res)
 			qtumCore.action('-version', !!req.headers.testnet, false, (result) => {
 				if (result.status === 'success' && !!result.data)
 				{
-					let regex = new RegExp(/version v\s*([\d.]+)-/, 'i');
-					let match = regex.exec(result.data);
-					cb(null, match[1]);
+					try
+					{
+						let regex = new RegExp(/ion-v\s*([\d.]+)/, 'i');
+						let match = regex.exec(result.data);
+						if (!(match && match[1])) throw '';
+						cb(null, match[1]);
+					}
+					catch(e)
+					{
+						cb(null, null);
+					}
 				}
 				else
 				{

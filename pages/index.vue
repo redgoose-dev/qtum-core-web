@@ -39,7 +39,7 @@
 					<div class="section__body">
 						<dl class="description">
 							<dt>{{$lang.out('global.version')}}</dt>
-							<dd><strong>v{{ version }}</strong></dd>
+							<dd><strong>{{ version ? `v${version}`: 'unknown' }}</strong></dd>
 						</dl>
 						<dl class="description">
 							<dt>{{$lang.out('dashboard.currentBlock')}}</dt>
