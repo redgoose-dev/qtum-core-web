@@ -54,6 +54,8 @@ export const actions = {
 		// set language
 		app.$lang.set(state.layout.language || 'en');
 
+		if (state.system.hash)
+		{
 		// update status
 		try
 		{
@@ -84,6 +86,7 @@ export const actions = {
 				errorMessage: e.message,
 				testnet
 			});
+		}
 		}
 
 		// recovery store from cookie

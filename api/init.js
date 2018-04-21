@@ -13,6 +13,7 @@ const setupFile = require('../modules/setupFile');
 
 module.exports = function(req, res)
 {
+	// check header
 	if (!authorization(req.headers))
 	{
 		res.json({

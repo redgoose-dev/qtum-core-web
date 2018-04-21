@@ -59,74 +59,82 @@ function checkExec(file='qtum-cli')
 }
 
 /**
+ * sleep
+ *
+ * @param {Number} delay
+ * @return {Promise}
+ */
+function sleep(delay=3000)
+{
+	return new Promise(function(resolve) {
+		setTimeout(resolve, delay);
+	});
+}
+
+/**
  * run cli
  *
  * @param {String} file
  * @param {Boolean} testnet
  * @param {String} params
  * @param {Boolean} json
- * @param {Function} callback
+ * @return {Promise}
  */
-function cli(file='qtum-cli', testnet=false, params='', json=true, callback)
+async function cli(file='qtum-cli', testnet=false, params='', json=true)
 {
-	if (!(callback && typeof callback === 'function')) callback({
-		status: 'error',
-		message: 'Not found callback'
-	});
-
 	const cmd = checkExec(file);
 
-	function onChildProcess(res)
-	{
-		const { stdout, stderr } = res;
-
-		if (stdout)
-		{
-			try
-			{
-				callback({
-					status: 'success',
-					data: json ? JSON.parse(stdout) : stdout
-				});
-			}
-			catch(e)
-			{
-				callback({
-					status: 'error',
-					message: `parsing error/${e}`,
-				});
-			}
-			return;
-		}
-
-		if (stderr)
-		{
-			callback({
-				status: 'error',
-				message: stderr
-			});
-			return;
-		}
-
-		if (!stderr)
-		{
-			callback({
-				status: 'success',
-				data: null
-			});
-		}
-	}
-
 	// run
-	if (cmd.status === 'success')
+	if (cmd.status !== 'success')
 	{
-		const word = `${cmd.command} ${testnet ? '-testnet' : ''} ${params}`;
-		exec(word).then(onChildProcess);
+		return cmd;
 	}
-	else
+
+	const word = `${cmd.command} ${testnet ? '-testnet' : ''} ${params}`;
+	let res = null;
+
+	try
 	{
-		callback(cmd);
+		res = await exec(word);
 	}
+	catch(e)
+	{
+		return {
+			status: 'error',
+			message: e
+		};
+	}
+
+	if (res.stdout)
+	{
+		try
+		{
+			return {
+				status: 'success',
+				data: json ? JSON.parse(res.stdout) : res.stdout
+			};
+		}
+		catch(e)
+		{
+			return {
+				status: 'error',
+				message: `parsing error/${e}`,
+			};
+		}
+	}
+
+	if (res.stderr)
+	{
+		return {
+			status: 'error',
+			message: stderr
+		};
+	}
+
+	return {
+		status: 'success',
+		data: null
+	};
 }
 
 
@@ -140,9 +148,7 @@ function cli(file='qtum-cli', testnet=false, params='', json=true, callback)
  */
 exports.action = function(cmd, testnet, json=true, cb)
 {
-	cli('qtum-cli', testnet, cmd, json, function(res) {
-		cb(res);
-	});
+	cli('qtum-cli', testnet, cmd, json).then(cb);
 };
 
 /**
@@ -153,7 +159,7 @@ exports.action = function(cmd, testnet, json=true, cb)
  */
 exports.check = function(testnet=false, cb)
 {
-	cli('qtum-cli', testnet, 'getinfo', true, function(res) {
+	cli('qtum-cli', testnet, 'getinfo', true).then((res) => {
 		if (res.status === 'error')
 		{
 			cb(false, res.message);
@@ -179,41 +185,42 @@ exports.power = function(sw=true, testnet=false, cb)
 
 	/**
 	 * try check core
+	 *
 	 * 코어를 켜고나면 결과값이 없기 때문에 켜졌는지 알수가 없다.
 	 * 그래서 `qtum-cli getinfo`명령을 실행해서 결과값이 나오면 탈출, 아니면 아직 꺼져있다고 간주하고 다시 호출하여 1초후에 다시 명령실행을 반복.
 	 * 무한대로 반복되는 부분이다보니 일정횟수를 넘기면 오류상태를 남기고 탈출시킴
 	 */
-	function tryCheckCore()
+	async function tryCheckCore()
 	{
-		setTimeout(function() {
-			cli('qtum-cli', testnet, 'getinfo', true, function(res) {
-				if (res.status === 'success')
-				{
-					cb({ status: 'success' });
-				}
-				else
-				{
-					if (count < maxTry)
-					{
-						count++;
-						tryCheckCore();
-					}
-					else
-					{
-						cb({ status: 'error' });
-					}
-				}
-			});
-		}, 1000);
+		await sleep(1000);
+
+		const res = await cli('qtum-cli', testnet, 'getinfo', true);
+		if (res.status === 'success')
+		{
+			cb({ status: 'success' });
+		}
+		else
+		{
+			if (count < maxTry)
+			{
+				count++;
+				tryCheckCore().then();
+			}
+			else
+			{
+				cb({ status: 'error' });
+			}
+		}
 	}
 
 	if (sw)
 	{
 		// on
-		cli('qtumd', testnet, '-daemon', false, function(res) {
-			if (res.status === 'success')
+		cli('qtumd', testnet, '-daemon', false).then((res) => {
+			console.log('AAA', res);
+			if (res && res.status === 'success')
 			{
-				tryCheckCore();
+				tryCheckCore().then();
 			}
 			else
 			{
@@ -224,8 +231,6 @@ exports.power = function(sw=true, testnet=false, cb)
 	else
 	{
 		// off
-		cli('qtum-cli', testnet, 'stop', false, function(res) {
-			cb(res);
-		});
+		cli('qtum-cli', testnet, 'stop', false).then(cb);
 	}
 };
