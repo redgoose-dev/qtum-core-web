@@ -28,6 +28,14 @@ export default {
 			if (res.status === 'success')
 			{
 				$store.commit('updateSystem', { hash: null });
+				// clear storage
+				if (window.localStorage && window.sessionStorage)
+				{
+					window.localStorage.removeItem('hash');
+					window.localStorage.removeItem('testnet');
+					window.sessionStorage.removeItem('hash');
+					window.sessionStorage.removeItem('testnet');
+				}
 				location.href = '/';
 			}
 		}

@@ -217,7 +217,6 @@ exports.power = function(sw=true, testnet=false, cb)
 	{
 		// on
 		cli('qtumd', testnet, '-daemon', false).then((res) => {
-			console.log('AAA', res);
 			if (res && res.status === 'success')
 			{
 				tryCheckCore().then();

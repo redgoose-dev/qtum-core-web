@@ -10,10 +10,16 @@ module.exports = {
 		title: 'Qtum core',
 		meta: [
 			{ charset: 'utf-8' },
-			{ name: 'viewport', content: 'width=device-width, initial-scale=1' }
+			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
+			{ name: 'apple-mobile-web-app-capable', content: 'yes' },
+			{ name: 'mobile-web-app-capable', content: 'yes' },
+			{ name: 'apple-mobile-web-app-status-bar-style', content: 'black' }
 		],
 		link: [
-			{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico?v=2' }
+			{ rel: 'shortcut icon', href: '/favicon.ico' },
+			{ rel: 'icon', type: 'image/x-icon', href: '/images/icon-256x256.png' },
+			{ rel: 'apple-touch-icon', href: '/images/icon-256x256.png' },
+			{ rel: 'manifest', href: '/manifest.json' },
 		]
 	},
 

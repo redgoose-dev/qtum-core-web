@@ -29,7 +29,7 @@ html.theme-dark {
 		&__wrap {
 			background: $theme-color-more-dark;
 		}
-		.dropDown {
+		.drop-down {
 			&__button {
 				&-active {
 					background: $color-key;
@@ -348,6 +348,12 @@ html.theme-dark {
 		&:after {
 			border-color: $color-weak-dark;
 			border-top-color: transparent;
+		}
+	}
+	.loader-full {
+		background: $color-dark;
+		&__message {
+			color: $color-light-gray;
 		}
 	}
 }

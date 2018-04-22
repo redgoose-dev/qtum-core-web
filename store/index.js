@@ -43,6 +43,8 @@ export const actions = {
 			hash: (req.session.auth && req.session.auth.hash) ? req.session.auth.hash : null,
 		});
 
+		//console.log((req.session.auth && req.session.auth.hash) ? req.session.auth.hash : null);
+
 		// update layout
 		if (env.LAYOUT)
 		{

@@ -35,12 +35,28 @@
 				<div class="headerSide__wrap headerSide__balance" v-if="status.core">
 					<em class="headerSide__balanceText">{{ balance }}</em>
 				</div>
+				<div class="headerSide__wrap headerSide__menu">
+					<nav class="drop-down">
+						<button type="button" class="drop-down__button" @click="toggleDropDown">
+							<i class="sp-ico ico-menu">menu</i>
+						</button>
+						<div class="drop-down__children drop-down__children-menu">
+							<ul>
+								<li v-for="item in menu" v-if="item.show">
+									<nuxt-link :to="item.to" :title="item.title">
+										{{item.text}}
+									</nuxt-link>
+								</li>
+							</ul>
+						</div>
+					</nav>
+				</div>
 				<div class="headerSide__wrap">
-					<nav class="dropDown">
-						<button type="button" class="dropDown__button" @click="toggleDropDown">
+					<nav class="drop-down">
+						<button type="button" class="drop-down__button" @click="toggleDropDown">
 							<i class="sp-ico ico-person">profile</i>
 						</button>
-						<div class="dropDown__children dropDown__children-profile">
+						<div class="drop-down__children drop-down__children-profile">
 							<ul>
 								<li>
 									<nuxt-link to="/settings">{{$lang.out('layout.profileMenu.settings')}}</nuxt-link>
@@ -70,28 +86,10 @@
 				</button>
 				<nav class="gnb">
 					<ul>
-						<li class="gnb__item">
-							<nuxt-link to="/" title="Dashboard">
-								<em><i class="sp-ico ico-gnb-home"></i></em>
-								<span>{{$lang.out('dashboard.title')}}</span>
-							</nuxt-link>
-						</li>
-						<li class="gnb__item">
-							<nuxt-link to="/transactions" title="Transactions">
-								<em><i class="sp-ico ico-gnb-switch"></i></em>
-								<span>{{$lang.out('transactions.title')}}</span>
-							</nuxt-link>
-						</li>
-						<li class="gnb__item">
-							<nuxt-link to="/receive" title="Receive">
-								<em><i class="sp-ico ico-gnb-receive"></i></em>
-								<span>{{$lang.out('receive.title')}}</span>
-							</nuxt-link>
-						</li>
-						<li class="gnb__item" v-if="false">
-							<nuxt-link to="/send" title="Send to">
-								<em><i class="sp-ico ico-gnb-post"></i></em>
-								<span>{{$lang.out('send.title')}}</span>
+						<li v-for="item in menu" v-if="item.show" class="gnb__item">
+							<nuxt-link :to="item.to" :title="item.title">
+								<em><i :class="`sp-ico ${item.icon}`"></i></em>
+								<span>{{item.text}}</span>
 							</nuxt-link>
 						</li>
 					</ul>
@@ -152,25 +150,15 @@ export default {
 		toggleDropDown: function(e)
 		{
 			e.stopPropagation();
-
-			const classNameActive = 'dropDown__button-active';
-			const classList = e.currentTarget.classList;
-
-			function close()
+			const target = e.currentTarget;
+			const activeElement = document.querySelector('.drop-down__button-active');
+			if (activeElement && !target.classList.contains('drop-down__button-active'))
 			{
-				classList.remove(classNameActive);
-				document.removeEventListener('click', close);
+				activeElement.classList.remove('drop-down__button-active');
+				activeElement.nextSibling.classList.remove('drop-down__children-active');
 			}
-
-			if (classList.contains(classNameActive))
-			{
-				classList.remove(classNameActive);
-			}
-			else
-			{
-				classList.add(classNameActive);
-				document.addEventListener('click', close);
-			}
+			target.classList.toggle('drop-down__button-active');
+			target.nextSibling.classList.toggle('drop-down__children-active');
 		},
 	},
 	beforeMount()
@@ -188,10 +176,53 @@ export default {
 		// set header in axios
 		$axios.setHeader('testnet', $store.state.status.testnet ? 1 : 0);
 	},
+	mounted()
+	{
+		window.addEventListener('click', function() {
+			const dropdowns = document.getElementsByClassName("drop-down__children");
+			for (let i = 0; i < dropdowns.length; i++) {
+				const openDropdown = dropdowns[i];
+				if (openDropdown.classList.contains('drop-down__children-active')) {
+					openDropdown.previousSibling.classList.remove('drop-down__button-active');
+					openDropdown.classList.remove('drop-down__children-active');
+				}
+			}
+		});
+	},
 	data()
 	{
 		return {
 			title: process.env.TITLE,
+			menu: [
+				{
+					title: 'Dashboard',
+					to: '/',
+					icon: 'ico-gnb-home',
+					text: this.$lang.out('dashboard.title'),
+					show: true,
+				},
+				{
+					title: 'Transactions',
+					to: '/transactions',
+					icon: 'ico-gnb-switch',
+					text: this.$lang.out('transactions.title'),
+					show: true,
+				},
+				{
+					title: 'Receive',
+					to: '/receive',
+					icon: 'ico-gnb-receive',
+					text: this.$lang.out('receive.title'),
+					show: true,
+				},
+				{
+					title: 'Send to',
+					to: '/send',
+					icon: 'ico-gnb-post',
+					text: this.$lang.out('send.title'),
+					show: false,
+				}
+			],
 		};
 	},
 }

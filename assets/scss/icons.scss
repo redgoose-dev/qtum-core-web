@@ -48,6 +48,10 @@
 	background-position: -116px 0;
 	@include sp-size(14px, 14px);
 }
+.ico-menu {
+	background-position: -140px 0;
+	@include sp-size(16px, 12px);
+}
 
 // sidebar icons
 .ico-gnb-home {

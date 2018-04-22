@@ -1,0 +1,21 @@
+{
+	"short_name": "Qtum Core",
+	"name": "Qtum core web",
+	"icons": [
+		{
+			"src": "/images/icon-128x128.png",
+			"type": "image/png",
+			"sizes": "128x128"
+		},
+		{
+			"src": "/images/icon-256x256.png",
+			"type": "image/png",
+			"sizes": "256x256"
+		}
+	],
+	"start_url": "/",
+	"display": "standalone",
+	"theme_color": "#2e9ad1",
+	"background_color": "#fff",
+	"orientation": "portrait"
+}

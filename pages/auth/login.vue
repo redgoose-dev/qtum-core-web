@@ -53,18 +53,22 @@
 			</form>
 		</div>
 	</article>
+	<loading-full :show="loading"/>
 </main>
 </template>
+
 
 <script>
 import * as lib from '../../lib';
 import FormCheck from '../../components/forms/form-check';
 import ButtonBasic from '../../components/button/button-basic';
+import LoadingFull from '../../components/loading/loading-full';
 
 export default {
 	components: {
 		FormCheck,
 		ButtonBasic,
+		LoadingFull
 	},
 	layout: 'blank',
 	head()
@@ -87,6 +91,7 @@ export default {
 			useTestnet: store.state.system.useTestnet,
 			testnet: false,
 			processing: false,
+			loading: true,
 		};
 	},
 	methods: {
@@ -97,8 +102,6 @@ export default {
 			const { $refs, $axios, $store, $router, $lang, processing } = this;
 
 			if (processing) return;
-
-			this.processing = true;
 
 			// call api
 			let data = {
@@ -111,6 +114,17 @@ export default {
 			let res = await $axios.$post(`/api/login`, data);
 			if (res.status === 'success' && !!res.data.hash)
 			{
+				// save storage
+				if (data.remember && !!window.localStorage)
+				{
+					window.localStorage.setItem('hash', res.data.hash);
+					window.localStorage.setItem('testnet', data.testnet);
+				}
+				else if (!data.remember && !!window.sessionStorage)
+				{
+					window.sessionStorage.setItem('hash', res.data.hash);
+					window.sessionStorage.setItem('testnet', data.testnet);
+				}
 				// update store
 				$store.commit('updateSystem', { hash: res.data.hash });
 				// set header
@@ -132,12 +146,45 @@ export default {
 			this.processing = false;
 		},
 	},
-	mounted: function()
+	mounted: async function()
 	{
-		const { $refs } = this;
+		const { $refs, $store, $router, $axios } = this;
 
 		// focus password form
-		$refs.form_password.focus();
+		if ($refs.form_password)
+		{
+			$refs.form_password.focus();
+		}
+
+		// check hash and save
+		try
+		{
+			if (window.localStorage && window.sessionStorage)
+			{
+				let hash = window.localStorage.getItem('hash') || window.sessionStorage.getItem('hash');
+				let testnet = window.localStorage.getItem('testnet') || window.sessionStorage.getItem('testnet');
+				if (hash)
+				{
+					console.log(hash);
+					await $store.commit('updateSystem', { hash });
+					$axios.setHeader('testnet', testnet ? 1 : 0);
+					await lib.util.resetStatus(this.$axios, this.$store, { testnet });
+					$router.replace('/');
+				}
+				else
+				{
+					throw 'not found hash';
+				}
+			}
+			else
+			{
+				throw 'not found localStorage and sessionStorage';
+			}
+		}
+		catch(e)
+		{
+			this.loading = false;
+		}
 	},
 }
 </script>

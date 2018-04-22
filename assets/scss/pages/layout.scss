@@ -23,6 +23,7 @@ $width-side-mini: 47px;
 		background: $color-dark;
 	}
 	&__logo {
+		position: relative;
 		flex: 1;
 		display: flex;
 		margin: 0;
@@ -41,12 +42,16 @@ $width-side-mini: 47px;
 	}
 
 	.headerSide {
+		position: relative;
 		display: flex;
 		&__wrap {
+			position: relative;
 			display: flex;
 			align-items: center;
 			border-left: 1px solid $line-color;
-			&:first-child {}
+			@media (-webkit-min-device-pixel-ratio: 2) {
+				border-left-width: 0.5px;
+			}
 		}
 		&__balance {
 			display: flex;
@@ -82,9 +87,12 @@ $width-side-mini: 47px;
 				display: block;
 			}
 		}
+		&__menu {
+			display: none;
+		}
 	}
-	.dropDown {
-		$self: '.dropDown';
+	.drop-down {
+		$self: '.drop-down';
 		height: 100%;
 		&__button {
 			display: block;
@@ -105,14 +113,14 @@ $width-side-mini: 47px;
 			}
 			&-active {
 				background: rgba(0,0,0,.2);
-				& + #{$self}__children {
-					display: block;
-				}
 			}
 		}
 		&__children {
 			position: relative;
-			display: none;
+			z-index: -1;
+			pointer-events: none;
+			opacity: 0;
+			transition: opacity .12s ease-out;
 			ul {
 				margin: 0;
 				padding: 0;
@@ -125,6 +133,9 @@ $width-side-mini: 47px;
 			}
 			li {
 				border-top: 1px solid $line-color;
+				@media (-webkit-min-device-pixel-ratio: 2) {
+					border-top-width: 0.5px;
+				}
 			}
 			a, button {
 				display: block;
@@ -153,6 +164,10 @@ $width-side-mini: 47px;
 			&-profile {
 				right: 0;
 			}
+			&-active {
+				opacity: 1;
+				pointer-events: auto;
+			}
 		}
 	}
 
@@ -165,11 +180,26 @@ $width-side-mini: 47px;
 				display: block;
 			}
 		}
-	}
-	@media (max-width: 375px) {
 		.headerSide {
 			&__balance {
 				display: none;
+			}
+			&__menu {
+				display: block;
+			}
+		}
+		.drop-down {
+			&__children {
+				ul {
+					position: fixed;
+					top: auto;
+					left: 0;
+					right: 0;
+				}
+				a, button {
+					padding-top: 18px;
+					padding-bottom: 18px;
+				}
 			}
 		}
 	}
@@ -211,9 +241,12 @@ $width-side-mini: 47px;
 			height: 46px;
 			padding: 0 10px 0 12px;
 			text-decoration: none;
+			transition: background .15s ease-out;
+			tap-highlight-color: rgba(255,255,255,0);
 			&:focus {
 				outline: $border-focus;
 			}
+			&:active,
 			&.nuxt-link-exact-active {
 				background: $color-light-gray;
 			}
@@ -235,12 +268,6 @@ $width-side-mini: 47px;
 			font-family: $font-qtum;
 			font-size: 13px;
 			text-transform: uppercase;
-		}
-	}
-
-	@media (max-width: $size-mobile) {
-		.toggle-sidebar {
-			display: none;
 		}
 	}
 }
@@ -302,13 +329,13 @@ $width-side-mini: 47px;
 
 	@media (max-width: $size-mobile) {
 		&__sideWrap {
-			width: $width-side-mini;
+			display: none;
 		}
 		&__side {
 			width: $width-side-mini;
 		}
 		&__body {
-			margin-left: $width-side-mini;
+			margin-left: 0;
 		}
 		.layout-side {
 			.gnb {
@@ -318,6 +345,13 @@ $width-side-mini: 47px;
 				a {
 					justify-content: center;
 					padding: 0;
+				}
+			}
+		}
+		&-minimum-side {
+			#{$self} {
+				&__body {
+					margin-left: 0;
 				}
 			}
 		}
