@@ -59,6 +59,7 @@ html.theme-dark {
 		border-right: none;
 		.gnb {
 			a {
+				&:active,
 				&.nuxt-link-exact-active {
 					background: $color-dark;
 				}
