@@ -58,37 +58,37 @@ export const actions = {
 
 		if (state.system.hash)
 		{
-		// update status
-		try
-		{
-			// get api data
-			const result = await app.$axios.$post(`/api`, {
-				hash: state.system.hash,
-			});
-
-			// checking
-			if (result.status === 'error') throw result;
-			if (!result.info) throw { code: 500, message: 'Server error' };
-
 			// update status
-			commit('updateStatus', {
-				core: true,
-				coreVersion: result.version,
-				staking: result.staking.staking,
-				lock: lib.string.getLockInformation(result.wallet.unlocked_until),
-				...((result.info.balance && typeof result.info.balance === 'number') ? { balance: result.info.balance } : null),
-				testnet,
-			});
-		}
-		catch(e)
-		{
-			commit('changeStatus', {
-				error: true,
-				errorCode: e.code,
-				errorMessage: e.message,
-				testnet
-			});
-		}
+			try
+			{
+				// get api data
+				const result = await app.$axios.$post(`/api`, {
+					hash: state.system.hash,
+				});
+
+				// checking
+				if (result.status === 'error') throw result;
+				if (!result.info) throw { code: 500, message: 'Server error' };
+
+				// update status
+				commit('updateStatus', {
+					core: true,
+					coreVersion: result.version,
+					staking: result.staking.staking,
+					lock: lib.string.getLockInformation(result.wallet.unlocked_until),
+					...((result.info.balance && typeof result.info.balance === 'number') ? { balance: result.info.balance } : null),
+					testnet,
+				});
+			}
+			catch(e)
+			{
+				commit('changeStatus', {
+					error: true,
+					errorCode: e.code,
+					errorMessage: e.message,
+					testnet
+				});
+			}
 		}
 
 		// recovery store from cookie

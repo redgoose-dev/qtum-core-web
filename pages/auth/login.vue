@@ -165,9 +165,8 @@ export default {
 				let testnet = window.localStorage.getItem('testnet') || window.sessionStorage.getItem('testnet');
 				if (hash)
 				{
-					console.log(hash);
 					await $store.commit('updateSystem', { hash });
-					$axios.setHeader('testnet', testnet ? 1 : 0);
+					$axios.setHeader('testnet', Number(testnet) ? 1 : 0);
 					await lib.util.resetStatus(this.$axios, this.$store, { testnet });
 					$router.replace('/');
 				}
