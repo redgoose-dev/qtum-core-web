@@ -12,15 +12,15 @@ function correction(src, store)
 {
 	let url_explorer = lib.constant.urlExplorer[store.status.testnet ? 'testnet': 'mainnet'];
 	let result = {
-		balance: (src.info.balance || 0).toFixed(6),
+		balance: (src.wallet.balance || 0).toFixed(6),
 		immature_balance: (src.wallet.immature_balance || 0).toFixed(6),
 		unconfirmed_balance: (src.wallet.unconfirmed_balance || 0).toFixed(6),
-		stake: (src.info.stake || 0).toFixed(6),
-		version: src.info.version,
-		blocks: lib.number.toLocaleNumber(src.info.blocks),
+		stake: (src.wallet.stake || 0).toFixed(6),
+		version: src.getnetworkinfo.version,
+		blocks: lib.number.toLocaleNumber(src.getblockchaininfo.blocks),
 		staking: src.staking.staking,
 		networkWeight: lib.number.toLocaleNumber(src.staking.netstakeweight, 0.00000001),
-		connections: src.info.connections,
+		connections: src.getnetworkinfo.connections,
 		transactions: src.transactions.map((o, k) => {
 			return {
 				address: o.address,
@@ -36,11 +36,11 @@ function correction(src, store)
 	};
 
 	// set status
-	if (src.info.unlocked_until === undefined)
+	if (src.wallet.unlocked_until === undefined)
 	{
 		result.walletStatus = 'Not Encrypted';
 	}
-	else if (src.info.unlocked_until && src.info.unlocked_until > 0)
+	else if (src.wallet.unlocked_until && src.wallet.unlocked_until > 0)
 	{
 		result.walletStatus = (store.status.unlockForStaking) ? 'Unlocked For Staking' : 'Unlocked';
 	}
@@ -84,7 +84,7 @@ export default {
 		{
 			const count = store.state.layout.count__recentTransactions;
 			let res = await $axios.$get(`/api/dashboard/?count_recent=${count}`);
-			if (!res.info) throw 'API import failed.';
+			if (!res.wallet) throw 'API import failed.';
 			return {
 				...result,
 				...correction(res, store.state),

@@ -25,19 +25,6 @@ module.exports = function(req, res)
 
 	// task
 	const tasks = {
-		info: function(cb)
-		{
-			qtumCore.action('getinfo', !!req.headers.testnet, true, (result) => {
-				if (result.status === 'success' && !!result.data)
-				{
-					cb(null, result.data);
-				}
-				else
-				{
-					cb(result.message, null);
-				}
-			});
-		},
 		staking: function(cb)
 		{
 			qtumCore.action('getstakinginfo', !!req.headers.testnet, true, (result) => {
@@ -64,6 +51,32 @@ module.exports = function(req, res)
 				}
 			});
 		},
+		getnetworkinfo: function(cb)
+		{
+			qtumCore.action('getnetworkinfo', !!req.headers.testnet, true, (result) => {
+				if (result.status === 'success' && !!result.data)
+				{
+					cb(null, result.data);
+				}
+				else
+				{
+					cb(result.message, null);
+				}
+			});
+		},
+		getblockchaininfo: function(cb)
+		{
+			qtumCore.action('getblockchaininfo', !!req.headers.testnet, true, (result) => {
+				if (result.status === 'success' && !!result.data)
+				{
+					cb(null, result.data);
+				}
+				else
+				{
+					cb(result.message, null);
+				}
+			});
+		},
 		version: function(cb)
 		{
 			qtumCore.action('-version', !!req.headers.testnet, false, (result) => {
@@ -71,7 +84,7 @@ module.exports = function(req, res)
 				{
 					try
 					{
-						let regex = new RegExp(/ion-v\s*([\d.]+)/, 'i');
+						let regex = new RegExp(/ion v\s*([\d.]+)/, 'i');
 						let match = regex.exec(result.data);
 						if (!(match && match[1])) throw '';
 						cb(null, match[1]);
@@ -103,7 +116,7 @@ module.exports = function(req, res)
 			});
 		}
 
-		if (result && result.info && result.staking)
+		if (result && result.wallet && result.staking)
 		{
 			res.json(result);
 		}

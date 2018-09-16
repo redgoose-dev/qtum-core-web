@@ -68,7 +68,7 @@ export const actions = {
 
 				// checking
 				if (result.status === 'error') throw result;
-				if (!result.info) throw { code: 500, message: 'Server error' };
+				if (!result.wallet) throw { code: 500, message: 'Server error' };
 
 				// update status
 				commit('updateStatus', {
@@ -76,7 +76,7 @@ export const actions = {
 					coreVersion: result.version,
 					staking: result.staking.staking,
 					lock: lib.string.getLockInformation(result.wallet.unlocked_until),
-					...((result.info.balance && typeof result.info.balance === 'number') ? { balance: result.info.balance } : null),
+					...((result.wallet.balance && typeof result.wallet.balance === 'number') ? { balance: result.wallet.balance } : null),
 					testnet,
 				});
 			}

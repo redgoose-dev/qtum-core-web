@@ -18,9 +18,22 @@ module.exports = function(req, res)
 
 	const params = string.urlToQueryObject(req.url);
 	const tasks = {
-		info: function(cb)
+		getnetworkinfo: function(cb)
 		{
-			qtumCore.action('getinfo', !!req.headers.testnet, true, (result) => {
+			qtumCore.action('getnetworkinfo', !!req.headers.testnet, true, (result) => {
+				if (result.status === 'success' && !!result.data)
+				{
+					cb(null, result.data);
+				}
+				else
+				{
+					cb(result.message, null);
+				}
+			});
+		},
+		getblockchaininfo: function(cb)
+		{
+			qtumCore.action('getblockchaininfo', !!req.headers.testnet, true, (result) => {
 				if (result.status === 'success' && !!result.data)
 				{
 					cb(null, result.data);

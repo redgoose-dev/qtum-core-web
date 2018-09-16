@@ -283,7 +283,7 @@ export default {
 
 					// check
 					if (response.status === 'error') throw '';
-					if (!response.info) throw '';
+					if (!response.wallet) throw '';
 
 					// reset status
 					await lib.util.sleep(100);

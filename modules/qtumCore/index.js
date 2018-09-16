@@ -194,7 +194,7 @@ exports.power = function(sw=true, testnet=false, cb)
 	{
 		await sleep(1000);
 
-		const res = await cli('qtum-cli', testnet, 'getinfo', true);
+		const res = await cli('qtum-cli', testnet, 'getwalletinfo', true);
 		if (res.status === 'success')
 		{
 			cb({ status: 'success' });
@@ -223,7 +223,7 @@ exports.power = function(sw=true, testnet=false, cb)
 			}
 			else
 			{
-				cb(res)
+				cb(res);
 			}
 		});
 	}
