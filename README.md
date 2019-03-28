@@ -6,7 +6,7 @@
 
 ## Demo
 
-1. Connect https://qtum.redgoose.me
+1. Connect https://qtum.redgoose.me(closed)
 1. Check `Using testnet`
 1. Input password: `1234`
 1. Login
